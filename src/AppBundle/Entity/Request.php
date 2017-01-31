@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Request
@@ -12,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Request
 {
+    use ORMBehaviors\Timestampable\Timestampable;
+
     /**
      * @var int
      *

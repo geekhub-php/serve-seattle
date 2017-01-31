@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Event
@@ -13,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Event
 {
+    use ORMBehaviors\Timestampable\Timestampable;
+
     /**
      * @var int
      *

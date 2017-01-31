@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * User
@@ -11,8 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  */
-class User
+class User implements AdvancedUserInterface
 {
+    use ORMBehaviors\Timestampable\Timestampable;
+
     /**
      * @var int
      *
@@ -68,6 +72,22 @@ class User
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Request", mappedBy="user")
      */
     private $requests;
+
+    /**
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive = true;
+
+    /**
+     * @var
+     * @ORM\Column(type="json_array")
+     */
+    private $roles;
+
+    /**
+     * @var string
+     */
+    private $plainPassword;
 
     public function __construct()
     {
@@ -236,5 +256,89 @@ class User
     public function setRequests($requests)
     {
         $this->requests = $requests;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+    public function isAccountNonExpired()
+    {
+        // TODO: Implement isAccountNonExpired() method.
+    }
+
+    public function isAccountNonLocked()
+    {
+        // TODO: Implement isAccountNonLocked() method.
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        // TODO: Implement isCredentialsNonExpired() method.
+    }
+
+    public function isEnabled()
+    {
+        // TODO: Implement isEnabled() method.
+    }
+
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
     }
 }
