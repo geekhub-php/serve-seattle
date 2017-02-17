@@ -7,3 +7,10 @@ services:
       app.api_token_authenticator:
           class: AppBundle\Security\ApiTokenAuthenticator
           arguments: ["@doctrine.orm.entity_manager"]
+
+
+      app.doctrine_listener:
+          class: AppBundle\Security\PasswordListener
+          arguments: ['@security.password_encoder']
+          tags:
+              - { name: doctrine.event_subscriber }

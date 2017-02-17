@@ -1,18 +1,30 @@
 security:
     encoders:
         AppBundle\Entity\User: bcrypt
+
     providers:
-        database_users:
+        web_provider:
             entity: { class: AppBundle:User, property: email }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
-        api:
+        default:
             anonymous: ~
             guard:
                 authenticators:
                     - app.api_token_authenticator
 
+        main:
+            provider: web_provider
+            anonymous: true
+            security: true
+            form_login:
+                login_path: login
+                check_path: login
+
+            logout:
+                path:   /logout
+                target: /login
+
     access_control:
-      - { path: /homepage, roles: ROLE_USER }
