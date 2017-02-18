@@ -4,15 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Request
+ * Survey
  *
- * @ORM\Table(name="request")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RequestRepository")
+ * @ORM\Table(name="survey")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SurveyRepository")
  */
-class Request
+class Survey
 {
     use ORMBehaviors\Timestampable\Timestampable;
 
@@ -29,19 +30,10 @@ class Request
      * @var object
      * @Assert\Type("object")
      * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="RequestType", inversedBy="requests")
+     * @ORM\ManyToOne(targetEntity="SurveyType", inversedBy="surveys")
      */
     private $type;
 
-    /**
-     * @var int
-     * @Assert\Range(
-     *      min = 0,
-     *      max = 2
-     * )
-     * @ORM\Column(name="count", type="integer")
-     */
-    private $status = 0;
 
     /**
      * @var object
@@ -50,6 +42,19 @@ class Request
      * @ORM\ManyToOne(targetEntity="UserIntern", inversedBy="requests")
      */
     private $intern;
+
+    /**
+     * @var ArrayCollection|$questions[]
+     *
+     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey")
+     */
+    private $questions;
+
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+
+    }
 
 
     /**
@@ -65,11 +70,11 @@ class Request
     /**
      * Set type.
      *
-     * @param RequestType $type
+     * @param SurveyType $type
      *
-     * @return Request
+     * @return Survey
      */
-    public function setType(RequestType $type)
+    public function setType(SurveyType $type)
     {
         $this->type = $type;
 
@@ -79,43 +84,20 @@ class Request
     /**
      * Get type.
      *
-     * @return object RequestType
+     * @return object SurveyType
      */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * Set status
-     *
-     * @param int $status
-     *
-     * @return Request
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return int
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
 
     /**
      * Set intern.
      *
      * @param UserIntern $intern
      *
-     * @return Request
+     * @return Survey
      */
     public function setIntern(UserIntern $intern)
     {
@@ -132,5 +114,15 @@ class Request
     public function getIntern()
     {
         return $this->intern;
+    }
+
+    /**
+     * Get Questions.
+     *
+     * @return ArrayCollection
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
     }
 }

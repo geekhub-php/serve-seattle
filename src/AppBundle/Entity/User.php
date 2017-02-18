@@ -2,20 +2,14 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
-use Knp\DoctrineBehaviors\Model as ORMBehaviors;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
-/**
- * User
- *
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
- */
-class User implements AdvancedUserInterface
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/** @ORM\MappedSuperclass */
+abstract class User implements AdvancedUserInterface, \Serializable
 {
-    use ORMBehaviors\Timestampable\Timestampable;
 
     /**
      * @var int
@@ -28,50 +22,46 @@ class User implements AdvancedUserInterface
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=190)
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 190
+     * )
+     * @ORM\Column(name="user_name", type="string", length=190, unique=true)
      */
-    private $name;
+    private $userName;
+
 
     /**
      * @var string
+     * @Assert\Email(
+     *     checkMX = true
+     * )
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      max = 250
+     * )
+     * @ORM\Column(name="email", type="string", length=250, unique=true)
      *
-     * @ORM\Column(name="lastName", type="string", length=190)
-     */
-    private $lastName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateOfBirth", type="datetime")
-     */
-    private $dateOfBirth;
-
-    /**
-     * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      max = 255
+     * )
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
 
     /**
-     * @var ArrayCollection|$events[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Event", inversedBy="users")
+     * @var string
      */
-    private $events;
+    private $plainPassword;
 
-    /**
-     * @var ArrayCollection|$requests[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Request", mappedBy="user")
-     */
-    private $requests;
 
     /**
      * @ORM\Column(name="is_active", type="boolean")
@@ -86,15 +76,17 @@ class User implements AdvancedUserInterface
 
     /**
      * @var string
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
+     * @ORM\Column(name="api_token", type="string", unique=true)
      */
-    private $plainPassword;
+    private $apiToken;
 
     public function __construct()
     {
-        $this->events = new ArrayCollection();
-        $this->requests = new ArrayCollection();
-    }
+        $this->apiToken = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
 
+    }
 
     /**
      * Get id
@@ -107,15 +99,15 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * Set name
+     * Set username
      *
      * @param string $name
      *
      * @return User
      */
-    public function setName($name)
+    public function setUsername($name)
     {
-        $this->name = $name;
+        $this->userName = $name;
 
         return $this;
     }
@@ -125,34 +117,12 @@ class User implements AdvancedUserInterface
      *
      * @return string
      */
-    public function getName()
+    public function getUsername()
     {
-        return $this->name;
+        return $this->userName;
     }
 
-    /**
-     * Set lastName
-     *
-     * @param string $lastName
-     *
-     * @return User
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
 
-        return $this;
-    }
-
-    /**
-     * Get lastName
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
 
     /**
      * Set email
@@ -178,29 +148,6 @@ class User implements AdvancedUserInterface
         return $this->email;
     }
 
-    /**
-     * Set dateOfBirth
-     *
-     * @param \DateTime $dateOfBirth
-     *
-     * @return User
-     */
-    public function setDateOfBirth($dateOfBirth)
-    {
-        $this->dateOfBirth = $dateOfBirth;
-
-        return $this;
-    }
-
-    /**
-     * Get dateOfBirth
-     *
-     * @return \DateTime
-     */
-    public function getDateOfBirth()
-    {
-        return $this->dateOfBirth;
-    }
 
     /**
      * Set password
@@ -227,38 +174,6 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function getEvents()
-    {
-        return $this->events;
-    }
-
-    /**
-     * @param ArrayCollection $events
-     */
-    public function setEvents($events)
-    {
-        $this->events = $events;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getRequests()
-    {
-        return $this->requests;
-    }
-
-    /**
-     * @param ArrayCollection $requests
-     */
-    public function setRequests($requests)
-    {
-        $this->requests = $requests;
-    }
-
-    /**
      * @return string
      */
     public function getPlainPassword()
@@ -275,19 +190,21 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * @return mixed
+     * @param bool $status
+     * @return $this
      */
-    public function getIsActive()
+    public function setIsEnabled($status)
     {
-        return $this->isActive;
+        $this->isActive = $status;
+        return $this;
     }
 
     /**
-     * @param mixed $isActive
+     * @return bool
      */
-    public function setIsActive($isActive)
+    public function isEnabled()
     {
-        $this->isActive = $isActive;
+        return $this->isActive;
     }
 
     public function isAccountNonExpired()
@@ -305,25 +222,25 @@ class User implements AdvancedUserInterface
         // TODO: Implement isCredentialsNonExpired() method.
     }
 
-    public function isEnabled()
-    {
-        // TODO: Implement isEnabled() method.
-    }
-
 
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
     }
 
-    public function getUsername()
-    {
-        // TODO: Implement getUsername() method.
-    }
 
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles)
+    {
+        $json = json_encode($roles);
+        $this->roles = $roles;
     }
 
     /**
@@ -335,10 +252,33 @@ class User implements AdvancedUserInterface
     }
 
     /**
-     * @param mixed $roles
+     * @return
      */
-    public function setRoles($roles)
+    public function getApiToken()
     {
-        $this->roles = $roles;
+        return $this->apiToken;
+    }
+
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->userName,
+            $this->email,
+            $this->isActive,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->userName,
+            $this->email,
+            $this->isActive,
+            ) = unserialize($serialized);
     }
 }
