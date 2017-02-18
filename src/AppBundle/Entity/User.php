@@ -76,7 +76,7 @@ abstract class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="api_token", type="string", unique=true)
      */
     private $apiToken;
