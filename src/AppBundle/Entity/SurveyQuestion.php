@@ -26,7 +26,7 @@ class SurveyQuestion
     private $id;
 
     /**
-     * @var object
+     * @var Survey
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="Survey", inversedBy="questions")
@@ -35,7 +35,7 @@ class SurveyQuestion
 
 
     /**
-     * @var object
+     * @var UserIntern
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="UserIntern", inversedBy="requests")
@@ -43,7 +43,7 @@ class SurveyQuestion
     private $intern;
 
     /**
-     * @var object
+     * @var SurveyQuestionContent
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="SurveyQuestionContent", inversedBy="questions")
@@ -88,7 +88,7 @@ class SurveyQuestion
     /**
      * Get survey.
      *
-     * @return object Survey
+     * @return Survey
      */
     public function getSurvey()
     {
@@ -113,7 +113,7 @@ class SurveyQuestion
     /**
      * Get intern.
      *
-     * @return object UserIntern
+     * @return UserIntern
      */
     public function getIntern()
     {
@@ -137,7 +137,7 @@ class SurveyQuestion
     /**
      * Get question content.
      *
-     * @return object QuestionContent
+     * @return SurveyQuestionContent
      */
     public function getQuectionContent()
     {

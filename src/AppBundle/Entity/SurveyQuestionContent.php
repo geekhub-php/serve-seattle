@@ -27,7 +27,7 @@ class SurveyQuestionContent
     private $id;
 
     /**
-     * @var object
+     * @var SurveyType
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="SurveyType", inversedBy="question_contents")
@@ -46,7 +46,7 @@ class SurveyQuestionContent
     private $content;
 
     /**
-     * @var ArrayCollection|$questions[]
+     * @var ArrayCollection|SurveyQuestion[]
      *
      * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey")
      */
@@ -85,7 +85,7 @@ class SurveyQuestionContent
     /**
      * Get survey type.
      *
-     * @return object SurveyType
+     * @return SurveyType
      */
     public function getSurveyType()
     {

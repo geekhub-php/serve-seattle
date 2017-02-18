@@ -78,7 +78,7 @@ class UserSupervisor extends User
 
 
     /**
-     * @var ArrayCollection|$interns[]
+     * @var ArrayCollection|UserIntern[]
      * @ORM\OneToMany(targetEntity="UserIntern", mappedBy="sypervisor")
      */
     private $interns;
@@ -119,7 +119,7 @@ class UserSupervisor extends User
      *
      * @param string $lastName
      *
-     * @return User
+     * @return UserSupervisor
      */
     public function setLastName($lastName)
     {
@@ -143,7 +143,7 @@ class UserSupervisor extends User
      *
      * @param string $address
      *
-     * @return User
+     * @return UserSupervisor
      */
     public function setAddress($address)
     {
@@ -167,7 +167,7 @@ class UserSupervisor extends User
      *
      * @param string $phone_number
      *
-     * @return User
+     * @return UserSupervisor
      */
     public function setPhoneNumber($phone_number)
     {
@@ -191,7 +191,7 @@ class UserSupervisor extends User
      *
      * @param \DateTime $dateOfBirth
      *
-     * @return User
+     * @return UserSupervisor
      */
     public function setDateOfBirth($dateOfBirth)
     {

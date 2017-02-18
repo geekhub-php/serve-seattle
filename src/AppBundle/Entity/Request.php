@@ -26,7 +26,7 @@ class Request
     private $id;
 
     /**
-     * @var object
+     * @var RequestType
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="RequestType", inversedBy="requests")
@@ -39,12 +39,12 @@ class Request
      *      min = 0,
      *      max = 2
      * )
-     * @ORM\Column(name="count", type="integer")
+     * @ORM\Column(name="status", type="integer")
      */
     private $status = 0;
 
     /**
-     * @var object
+     * @var UserIntern
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="UserIntern", inversedBy="requests")
@@ -79,7 +79,7 @@ class Request
     /**
      * Get type.
      *
-     * @return object RequestType
+     * @return RequestType
      */
     public function getType()
     {
@@ -127,7 +127,7 @@ class Request
     /**
      * Get intern.
      *
-     * @return object UserIntern
+     * @return UserIntern
      */
     public function getIntern()
     {

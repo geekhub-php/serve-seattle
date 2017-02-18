@@ -48,6 +48,7 @@ abstract class User implements AdvancedUserInterface, \Serializable
     private $email;
 
     /**
+     * @var string
      * @Assert\NotBlank()
      * @Assert\Type("string")
      * @Assert\Length(

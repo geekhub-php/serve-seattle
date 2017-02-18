@@ -81,7 +81,7 @@ class UserIntern extends User
 
     /**
      *
-     * @var object
+     * @var UserSupervisor
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="UserSupervisor", inversedBy="interns")
@@ -89,19 +89,19 @@ class UserIntern extends User
     private $supervisor;
 
     /**
-     * @var ArrayCollection|$events[]
+     * @var ArrayCollection|Event[]
      * @ORM\ManyToMany(targetEntity="Event", inversedBy="users")
      */
     private $events;
 
     /**
-     * @var ArrayCollection|$requests[]
+     * @var ArrayCollection|Request[]
      * @ORM\OneToMany(targetEntity="Request", mappedBy="intern")
      */
     private $requests;
 
     /**
-     * @var ArrayCollection|$surveys[]
+     * @var ArrayCollection|Survey[]
      * @ORM\OneToMany(targetEntity="Survey", mappedBy="user")
      */
     private $surveys;
@@ -167,7 +167,7 @@ class UserIntern extends User
      *
      * @param string $address
      *
-     * @return User
+     * @return UserIntern
      */
     public function setAddress($address)
     {
@@ -191,7 +191,7 @@ class UserIntern extends User
      *
      * @param string $phone_number
      *
-     * @return User
+     * @return UserIntern
      */
     public function setPhoneNumber($phone_number)
     {
@@ -215,7 +215,7 @@ class UserIntern extends User
      *
      * @param \DateTime $dateOfBirth
      *
-     * @return User
+     * @return UserIntern
      */
     public function setDateOfBirth($dateOfBirth)
     {
@@ -251,7 +251,7 @@ class UserIntern extends User
     /**
      * Get supervisor.
      *
-     * @return object UserSupervisor
+     * @return UserSupervisor
      */
     public function getSupervisor()
     {

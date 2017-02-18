@@ -47,7 +47,7 @@ class RequestType
     private $description;
 
     /**
-     * @var ArrayCollection|$requests[]
+     * @var ArrayCollection|Request[]
      *
      * @ORM\OneToMany(targetEntity="Request", mappedBy="type")
      */

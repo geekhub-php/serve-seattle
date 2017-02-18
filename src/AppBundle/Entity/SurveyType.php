@@ -40,14 +40,14 @@ class SurveyType
 
 
     /**
-     * @var ArrayCollection|$question_contents[]
+     * @var ArrayCollection|SurveyQuestionContent[]
      *
      * @ORM\OneToMany(targetEntity="SurveyQuestionContent", mappedBy="survey_type")
      */
     private $questionContents;
 
     /**
-     * @var ArrayCollection|$surveys[]
+     * @var ArrayCollection|Survey[]
      *
      * @ORM\OneToMany(targetEntity="Survey", mappedBy="type")
      */
