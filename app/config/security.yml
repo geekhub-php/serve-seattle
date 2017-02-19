@@ -27,3 +27,7 @@ security:
                 path:   /logout
                 target: /login
 
+    access_control:
+          - { path: /api/login$, allow_if: "not has_role('ROLE_USER_INTERN')" }
+          - { path: ^/api/, roles: ROLE_USER_INTERN }
+
