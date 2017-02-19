@@ -4,7 +4,7 @@ security:
 
     providers:
         web_provider:
-            entity: { class: AppBundle:User, property: email }
+            entity: { class: AppBundle:User, property: userName }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
