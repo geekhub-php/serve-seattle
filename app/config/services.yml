@@ -4,6 +4,13 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+      app.api_token_authenticator:
+          class: AppBundle\Security\ApiTokenAuthenticator
+          arguments: ["@doctrine.orm.entity_manager"]
+
+
+      app.doctrine_listener:
+          class: AppBundle\Security\PasswordListener
+          arguments: ['@security.password_encoder']
+          tags:
+              - { name: doctrine.event_subscriber }

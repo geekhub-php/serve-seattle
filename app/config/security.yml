@@ -1,28 +1,29 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/security.html
 security:
+    encoders:
+        AppBundle\Entity\User: bcrypt
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
-
+        web_provider:
+            entity: { class: AppBundle:User, property: email }
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
+        default:
+            anonymous: ~
+            guard:
+                authenticators:
+                    - app.api_token_authenticator
 
         main:
-            anonymous: ~
-            # activate different ways to authenticate
+            provider: web_provider
+            anonymous: true
+            security: true
+            form_login:
+                login_path: login
+                check_path: login
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            logout:
+                path:   /logout
+                target: /login
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
-
-    encoders:
-          Symfony\Component\Security\Core\User\User: bcrypt
-          AppBundle\Entity\User: bcrypt
