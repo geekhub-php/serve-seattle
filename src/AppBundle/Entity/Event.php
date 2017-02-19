@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Event
@@ -149,10 +150,14 @@ class Event
     }
 
     /**
-     * @param ArrayCollection $users
+     * @param UserIntern $user
+     *
+     * @return Event
      */
     public function setUsers($users)
     {
         $this->users = $users;
+
+        return $this;
     }
 }
