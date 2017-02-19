@@ -50,3 +50,11 @@
 .idea
 .DS_Store
 
+# Node modules and bower
+/bower_components
+/node_modules
+/web/css
+/web/js
+/web/images
+/web/fonts
+
