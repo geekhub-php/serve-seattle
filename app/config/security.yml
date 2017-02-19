@@ -27,4 +27,3 @@ security:
                 path:   /logout
                 target: /login
 
-    access_control:
