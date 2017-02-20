@@ -108,10 +108,12 @@ class UserIntern extends User
 
     public function __construct()
     {
-        parent::__construct();
         $this->events = new ArrayCollection();
         $this->requests = new ArrayCollection();
         $this->surveys = new ArrayCollection();
+        $roles = array('ROLE_USER_INTERN');
+        $json = json_encode($roles);
+        $this->roles = $json;
     }
 
     /**
@@ -296,5 +298,7 @@ class UserIntern extends User
     {
         return $this->surveys;
     }
+
+
 
 }

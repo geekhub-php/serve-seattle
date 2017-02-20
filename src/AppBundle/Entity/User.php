@@ -73,20 +73,15 @@ abstract class User implements AdvancedUserInterface, \Serializable
      * @var
      * @ORM\Column(type="json_array")
      */
-    private $roles;
+    protected $roles;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="api_token", type="string", unique=true)
+     * @ORM\Column(name="api_token", type="string", unique=true, nullable=true)
      */
     private $apiToken;
 
-    public function __construct()
-    {
-        $this->apiToken = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-
-    }
 
     /**
      * Get id
@@ -209,17 +204,17 @@ abstract class User implements AdvancedUserInterface, \Serializable
 
     public function isAccountNonExpired()
     {
-        // TODO: Implement isAccountNonExpired() method.
+        return true;
     }
 
     public function isAccountNonLocked()
     {
-        // TODO: Implement isAccountNonLocked() method.
+        return true;
     }
 
     public function isCredentialsNonExpired()
     {
-        // TODO: Implement isCredentialsNonExpired() method.
+        return true;
     }
 
 
@@ -231,7 +226,7 @@ abstract class User implements AdvancedUserInterface, \Serializable
 
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        return true;
     }
 
     /**
@@ -249,6 +244,20 @@ abstract class User implements AdvancedUserInterface, \Serializable
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * Set api token
+     *
+     * @param string $apiToken
+     *
+     * @return User
+     */
+    public function setApiToken($apiToken)
+    {
+        $this->apiToken = $apiToken;
+
+        return $this;
     }
 
     /**
