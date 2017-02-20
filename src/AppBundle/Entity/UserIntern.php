@@ -80,7 +80,6 @@ class UserIntern extends User
 
 
     /**
-     *
      * @var UserSupervisor
      * @Assert\Type("object")
      * @Assert\Valid
@@ -102,7 +101,7 @@ class UserIntern extends User
 
     /**
      * @var ArrayCollection|Survey[]
-     * @ORM\OneToMany(targetEntity="Survey", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Survey", mappedBy="intern")
      */
     private $surveys;
 
