@@ -31,7 +31,7 @@ class DefaultController extends Controller
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('', array(
+        return $this->render('@App/login.html.twig', array(
             'last_username' => $lastUsername, //$lastUsername,
             'error' => $error,
         ));
