@@ -4,7 +4,7 @@ security:
 
     providers:
         web_provider:
-            entity: { class: AppBundle:User, property: userName }
+            entity: { class: AppBundle:UserSupervisor, property: userName }
 
     firewalls:
         dev:
