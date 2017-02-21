@@ -95,7 +95,6 @@ class SurveyQuestion
         return $this->survey;
     }
 
-
     /**
      * Set intern.
      *
@@ -123,13 +122,13 @@ class SurveyQuestion
     /**
      * Set question content.
      *
-     * @param SurveyQuestionContent $question_content
+     * @param SurveyQuestionContent $questionContent
      *
      * @return SurveyQuestion
      */
-    public function setQuestionContent(SurveyQuestionContent $question_content)
+    public function setQuestionContent(SurveyQuestionContent $questionContent)
     {
-        $this->questionContent = $question_content;
+        $this->questionContent = $questionContent;
 
         return $this;
     }
@@ -167,6 +166,4 @@ class SurveyQuestion
     {
         return $this->answer;
     }
-
-
 }

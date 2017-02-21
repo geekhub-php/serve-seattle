@@ -2,7 +2,6 @@
 
 namespace AppBundle\Security;
 
-
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,6 +29,11 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return $request->headers->get('X-TOKEN');
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         /** @var User $user */
@@ -42,11 +46,21 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return $user;
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function checkCredentials($credentials, UserInterface $user)
     {
         return true;
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         return new JsonResponse(
@@ -55,6 +69,11 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         );
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         return;
@@ -65,6 +84,11 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return false;
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function start(Request $request, AuthenticationException $authException = null)
     {
         return new JsonResponse(
@@ -72,5 +96,4 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
             401
         );
     }
-
 }

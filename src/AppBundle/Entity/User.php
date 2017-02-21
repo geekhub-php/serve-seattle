@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** @ORM\MappedSuperclass */
 abstract class User implements AdvancedUserInterface, \Serializable
 {
-
     /**
      * @var int
      *
@@ -63,7 +61,6 @@ abstract class User implements AdvancedUserInterface, \Serializable
      */
     private $plainPassword;
 
-
     /**
      * @ORM\Column(name="is_active", type="boolean")
      */
@@ -81,7 +78,6 @@ abstract class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(name="api_token", type="string", unique=true, nullable=true)
      */
     private $apiToken;
-
 
     /**
      * Get id
@@ -116,8 +112,6 @@ abstract class User implements AdvancedUserInterface, \Serializable
     {
         return $this->userName;
     }
-
-
 
     /**
      * Set email
@@ -217,12 +211,10 @@ abstract class User implements AdvancedUserInterface, \Serializable
         return true;
     }
 
-
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
     }
-
 
     public function eraseCredentials()
     {
@@ -234,7 +226,6 @@ abstract class User implements AdvancedUserInterface, \Serializable
      */
     public function setRoles($roles)
     {
-        $json = json_encode($roles);
         $this->roles = $roles;
     }
 
@@ -261,13 +252,12 @@ abstract class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return
+     * @return string
      */
     public function getApiToken()
     {
         return $this->apiToken;
     }
-
 
     /** @see \Serializable::serialize() */
     public function serialize()

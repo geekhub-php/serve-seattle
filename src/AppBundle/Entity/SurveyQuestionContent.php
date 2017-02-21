@@ -55,7 +55,6 @@ class SurveyQuestionContent
     public function __construct()
     {
         $this->questions = new ArrayCollection();
-
     }
 
     /**
@@ -71,13 +70,13 @@ class SurveyQuestionContent
     /**
      * Set survey type.
      *
-     * @param SurveyType $survey_type
+     * @param SurveyType $surveyType
      *
      * @return SurveyQuestionContent
      */
-    public function setSurveyType(SurveyType $survey_type)
+    public function setSurveyType(SurveyType $surveyType)
     {
-        $this->surveyType = $survey_type;
+        $this->surveyType = $surveyType;
 
         return $this;
     }
@@ -126,6 +125,4 @@ class SurveyQuestionContent
     {
         return $this->questions;
     }
-
-
 }
