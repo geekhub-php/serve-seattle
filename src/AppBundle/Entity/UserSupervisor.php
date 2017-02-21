@@ -78,7 +78,7 @@ class UserSupervisor extends User
 
     /**
      * @var ArrayCollection|UserIntern[]
-     * @ORM\OneToMany(targetEntity="UserIntern", mappedBy="sypervisor")
+     * @ORM\OneToMany(targetEntity="UserIntern", mappedBy="supervisor")
      */
     private $interns;
 
