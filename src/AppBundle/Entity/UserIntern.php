@@ -78,7 +78,6 @@ class UserIntern extends User
      */
     private $dateOfBirth;
 
-
     /**
      * @var UserSupervisor
      * @Assert\Type("object")
@@ -190,13 +189,13 @@ class UserIntern extends User
     /**
      * Set phone number
      *
-     * @param string $phone_number
+     * @param string $phoneNumber
      *
      * @return UserIntern
      */
-    public function setPhoneNumber($phone_number)
+    public function setPhoneNumber($phoneNumber)
     {
-        $this->phoneNumber = $phone_number;
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
@@ -297,7 +296,4 @@ class UserIntern extends User
     {
         return $this->surveys;
     }
-
-
-
 }

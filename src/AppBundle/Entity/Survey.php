@@ -34,7 +34,6 @@ class Survey
      */
     private $type;
 
-
     /**
      * @var UserIntern
      * @Assert\Type("object")
@@ -52,9 +51,7 @@ class Survey
     public function __construct()
     {
         $this->questions = new ArrayCollection();
-
     }
-
 
     /**
      * Get id
