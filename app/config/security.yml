@@ -4,13 +4,15 @@ security:
 
     providers:
         web_provider:
-            entity: { class: AppBundle:User, property: userName }
+            entity: { class: AppBundle:UserSupervisor, property: userName }
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
         default:
             anonymous: ~
+            pattern: ^/api
             guard:
                 authenticators:
                     - app.api_token_authenticator
@@ -18,6 +20,7 @@ security:
         main:
             provider: web_provider
             anonymous: true
+            pattern: /
             security: true
             form_login:
                 login_path: login
@@ -26,4 +29,8 @@ security:
             logout:
                 path:   /logout
                 target: /login
+
+    access_control:
+          - { path: /api/login$, allow_if: "not has_role('ROLE_USER_INTERN')" }
+          - { path: ^/api/, roles: ROLE_USER_INTERN }
 
