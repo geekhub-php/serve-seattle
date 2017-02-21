@@ -1,0 +1,11 @@
+checks:
+    php:
+        code_rating: true
+        duplication: true
+filter:
+    excluded_paths:
+        - src/AppBundle/Tests/*
+
+tools:
+    external_code_coverage:
+        timeout: 600
