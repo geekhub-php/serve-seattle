@@ -218,7 +218,7 @@ abstract class User implements AdvancedUserInterface, \Serializable
 
     public function eraseCredentials()
     {
-        return true;
+        $this->setPlainPassword(null);
     }
 
     /**
