@@ -29,10 +29,7 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "knplabs/doctrine-behaviors": "^1.4",
-        "doctrine/doctrine-migrations-bundle": "^1.2",
-        "doctrine/doctrine-fixtures-bundle": "^2.3",
-        "fzaninotto/faker": "^1.6",
-        "phpunit/phpunit": "^6.0"
+        "doctrine/doctrine-migrations-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -42,7 +39,10 @@
         "theofidry/alice-data-fixtures": "^1.0@beta",
         "doctrine/data-fixtures": "^1.2",
         "squizlabs/php_codesniffer": "^2.8",
-        "phpmd/phpmd": "^2.6"
+        "phpmd/phpmd": "^2.6",
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "fzaninotto/faker": "^1.6",
+        "phpunit/phpunit": "5.7.*"
     },
     "scripts": {
         "symfony-scripts": [
