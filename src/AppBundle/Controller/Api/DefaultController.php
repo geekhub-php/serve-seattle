@@ -16,17 +16,19 @@ class DefaultController extends Controller
      * @Route("/login", name="api_login")
      * @return JsonResponse
      */
-    public function loginAction()
+    public function loginAction(Request $request)
     {
         $user = $this->getDoctrine()->getRepository('AppBundle:UserIntern')
             ->findOneBy(['userName' => $request->get('login')]);
-        if (!$user){
+        if (!$user)
+        {
             return new JsonResponse(['message' => 'Bad credentials'], 403);
         }
         $result = $this->get('security.encoder_factory')
             ->getEncoder($user)
             ->isPasswordValid($user->getPassword(), $request->get('password'), null);
-        if (!$result){
+        if (!$result)
+        {
             return new JsonResponse(['message' => 'Bad credentials'], 403);
         }
 
