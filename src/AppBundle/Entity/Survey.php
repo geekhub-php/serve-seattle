@@ -34,18 +34,16 @@ class Survey
      */
     private $type;
 
-
     /**
      * @var UserIntern
      * @Assert\Type("object")
      * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="UserIntern", inversedBy="requests")
+     * @ORM\ManyToOne(targetEntity="UserIntern", inversedBy="surveys")
      */
     private $intern;
 
     /**
      * @var ArrayCollection|SurveyQuestion[]
-     *
      * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey")
      */
     private $questions;
@@ -53,9 +51,7 @@ class Survey
     public function __construct()
     {
         $this->questions = new ArrayCollection();
-
     }
-
 
     /**
      * Get id

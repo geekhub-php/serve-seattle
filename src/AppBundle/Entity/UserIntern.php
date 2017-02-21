@@ -78,9 +78,7 @@ class UserIntern extends User
      */
     private $dateOfBirth;
 
-
     /**
-     *
      * @var UserSupervisor
      * @Assert\Type("object")
      * @Assert\Valid
@@ -102,16 +100,18 @@ class UserIntern extends User
 
     /**
      * @var ArrayCollection|Survey[]
-     * @ORM\OneToMany(targetEntity="Survey", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Survey", mappedBy="intern")
      */
     private $surveys;
 
     public function __construct()
     {
-        parent::__construct();
         $this->events = new ArrayCollection();
         $this->requests = new ArrayCollection();
         $this->surveys = new ArrayCollection();
+        $roles = array('ROLE_USER_INTERN');
+        $json = json_encode($roles);
+        $this->roles = $json;
     }
 
     /**
@@ -189,13 +189,13 @@ class UserIntern extends User
     /**
      * Set phone number
      *
-     * @param string $phone_number
+     * @param string $phoneNumber
      *
      * @return UserIntern
      */
-    public function setPhoneNumber($phone_number)
+    public function setPhoneNumber($phoneNumber)
     {
-        $this->phoneNumber = $phone_number;
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
@@ -296,5 +296,4 @@ class UserIntern extends User
     {
         return $this->surveys;
     }
-
 }

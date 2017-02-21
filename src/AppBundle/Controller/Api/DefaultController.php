@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller\Api;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,11 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends Controller
 {
     /**
+
      * @param Request $request
      * @Route("/login", name="api_login")
      * @return JsonResponse
      */
-    public function loginAction(Request $request)
+    public function loginAction()
     {
         $user = $this->getDoctrine()->getRepository('AppBundle:UserIntern')
             ->findOneBy(['userName' => $request->get('login')]);

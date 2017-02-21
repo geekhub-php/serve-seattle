@@ -76,7 +76,6 @@ class UserSupervisor extends User
      */
     private $dateOfBirth;
 
-
     /**
      * @var ArrayCollection|UserIntern[]
      * @ORM\OneToMany(targetEntity="UserIntern", mappedBy="sypervisor")
@@ -85,9 +84,10 @@ class UserSupervisor extends User
 
     public function __construct()
     {
-        parent::__construct();
         $this->interns = new ArrayCollection();
-
+        $roles = array('ROLE_USER_SUPERVISOR');
+        $json = json_encode($roles);
+        $this->roles = $json;
     }
 
     /**
@@ -165,13 +165,13 @@ class UserSupervisor extends User
     /**
      * Set phone number
      *
-     * @param string $phone_number
+     * @param string $phoneNumber
      *
      * @return UserSupervisor
      */
-    public function setPhoneNumber($phone_number)
+    public function setPhoneNumber($phoneNumber)
     {
-        $this->phoneNumber = $phone_number;
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
@@ -218,5 +218,4 @@ class UserSupervisor extends User
     {
         return $this->interns;
     }
-
 }
