@@ -4,9 +4,9 @@ echo;
 echo "Installing project";
 
 composer install;
-./bin/console d:d:c;
-./bin/console d:s:c;
-./bin/console h:f:l -n;
+./bin/console doctrine:database:create;
+./bin/console doctrine:schema:create;
+./bin/console hautelook:fixtures:load -n;
 npm install
-bower install --allow-root
+bower install
 gulp
