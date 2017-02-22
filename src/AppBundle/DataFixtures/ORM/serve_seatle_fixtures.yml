@@ -6,7 +6,7 @@ AppBundle\Entity\UserSupervisor:
         address: <address()>
         phoneNumber: <phoneNumber()>
         dateOfBirth: <dateTime()>
-        password: supervisor1
+        plainPassword: supervisor1
     supervisor2:
         userName: supervisor2
         firstName: <firstName()>
@@ -14,7 +14,7 @@ AppBundle\Entity\UserSupervisor:
         address: <address()>
         phoneNumber: <phoneNumber()>
         dateOfBirth: <dateTime()>
-        password: supervisor2
+        plainPassword: supervisor2
 
 AppBundle\Entity\UserIntern:
     intern1:
@@ -24,7 +24,7 @@ AppBundle\Entity\UserIntern:
         address: <address()>
         phoneNumber: <phoneNumber()>
         dateOfBirth: <dateTime()>
-        password: intern1
+        plainPassword: intern1
         supervisor: '@supervisor1'
     intern2:
         userName: intern2
@@ -33,7 +33,7 @@ AppBundle\Entity\UserIntern:
         address: <address()>
         phoneNumber: <phoneNumber()>
         dateOfBirth: <dateTime()>
-        password: intern2
+        plainPassword: intern2
         supervisor: '@supervisor1'
     intern3:
         userName: intern3
@@ -42,7 +42,7 @@ AppBundle\Entity\UserIntern:
         address: <address()>
         phoneNumber: <phoneNumber()>
         dateOfBirth: <dateTime()>
-        password: intern3
+        plainPassword: intern3
         supervisor: '@supervisor2'
 
 AppBundle\Entity\SurveyType:

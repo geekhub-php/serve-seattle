@@ -6,7 +6,6 @@ use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -29,7 +28,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */
@@ -46,7 +46,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */
@@ -56,7 +57,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */
@@ -69,7 +71,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */
@@ -84,7 +87,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */
