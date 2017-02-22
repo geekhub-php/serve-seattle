@@ -2,7 +2,6 @@
 
 namespace AppBundle\Security;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -14,7 +13,6 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 {
-
     public function getCredentials(Request $request)
     {
         return $request->headers->get('X-AUTH-TOKEN');
