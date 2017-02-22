@@ -2,10 +2,14 @@
 
 namespace AppBundle\Controller;
 
+//use AppBundle\Entity\Request;
+use AppBundle\Entity\UserIntern;
+use phpDocumentor\Reflection\Types\Array_;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -34,6 +38,25 @@ class DefaultController extends Controller
             'last_username' => $lastUsername, //$lastUsername,
             'error' => $error,
         ));
+    }
+
+    /**
+     * @Route("/users", name="user_list")
+     * @Template("@App/users.html.twig")
+     *
+     * @return array
+     */
+    public function usersListAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository(UserIntern::class)->findall();
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
+
+        return [
+            "users" => $pagination
+        ];
     }
 
     /**
