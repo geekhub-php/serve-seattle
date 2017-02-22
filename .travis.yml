@@ -13,7 +13,7 @@ matrix:
 before_script:
     - composer self-update
     - composer install
-#    - if [ "$TARGET" = "phpunit" ]; then php bin/reload; fi
+    - if [ "$TARGET" = "phpunit" ]; then ./install.sh; fi
 
 script:
   - if [ "$TARGET" = "phpunit" ]; then bin/phpunit --coverage-clover=coverage.clover; fi
