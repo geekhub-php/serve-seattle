@@ -85,9 +85,7 @@ class UserSupervisor extends User
     public function __construct()
     {
         $this->interns = new ArrayCollection();
-        $roles = array('ROLE_USER_SUPERVISOR');
-        $json = json_encode($roles);
-        $this->roles = $json;
+        $this->roles = array('ROLE_USER_SUPERVISOR');
     }
 
     /**

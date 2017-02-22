@@ -6,9 +6,13 @@ security:
         web_provider:
             entity: { class: AppBundle:UserSupervisor, property: userName }
 
+        api_provider:
+            entity: { class: AppBundle:UserIntern }
+
     firewalls:
 
         api:
+            provider: api_provider
             anonymous: ~
             pattern: ^/api/
             stateless: true
