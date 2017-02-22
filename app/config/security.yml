@@ -16,7 +16,7 @@ security:
                 authenticators:
                     - app.api_token_authenticator
 
-        web:
+        main:
             provider: web_provider
             anonymous: true
             pattern: /
