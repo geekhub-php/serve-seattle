@@ -8,12 +8,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * RequestType
+ * RequestType.
  *
  * @ORM\Table(name="request_type")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RequestTypeRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FormRequestTypeRepository")
  */
-class RequestType
+class FormRequestType
 {
     use ORMBehaviors\Timestampable\Timestampable;
 
@@ -47,9 +47,9 @@ class RequestType
     private $description;
 
     /**
-     * @var ArrayCollection|Request[]
+     * @var ArrayCollection|FormRequest[]
      *
-     * @ORM\OneToMany(targetEntity="Request", mappedBy="type")
+     * @ORM\OneToMany(targetEntity="FormRequest", mappedBy="type")
      */
     private $requests;
 
@@ -59,7 +59,7 @@ class RequestType
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -69,11 +69,11 @@ class RequestType
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
-     * @return RequestType
+     * @return FormRequestType
      */
     public function setName($name)
     {
@@ -83,7 +83,7 @@ class RequestType
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -93,11 +93,11 @@ class RequestType
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
-     * @return RequestType
+     * @return FormRequestType
      */
     public function setDescription($description)
     {
@@ -107,7 +107,7 @@ class RequestType
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */

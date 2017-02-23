@@ -5,10 +5,9 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Event
+ * Event.
  *
  * @ORM\Table(name="event")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
@@ -58,9 +57,8 @@ class Event
         $this->users = new ArrayCollection();
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -70,7 +68,7 @@ class Event
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -84,7 +82,7 @@ class Event
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -94,7 +92,7 @@ class Event
     }
 
     /**
-     * Set start
+     * Set start.
      *
      * @param \DateTime $start
      *
@@ -108,7 +106,7 @@ class Event
     }
 
     /**
-     * Get start
+     * Get start.
      *
      * @return \DateTime
      */
@@ -118,7 +116,7 @@ class Event
     }
 
     /**
-     * Set end
+     * Set end.
      *
      * @param \DateTime $end
      *
@@ -132,7 +130,7 @@ class Event
     }
 
     /**
-     * Get end
+     * Get end.
      *
      * @return \DateTime
      */

@@ -4,12 +4,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * SurveyQuestion
+ * SurveyQuestion.
  *
- * @ORM\Table(name="survey_question")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SurveyQuestionRepository")
  */
 class SurveyQuestion
@@ -19,50 +19,53 @@ class SurveyQuestion
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var Survey
-     * @Assert\Type("object")
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="Survey", inversedBy="questions")
-     */
-    private $survey;
-
-
-    /**
-     * @var UserIntern
-     * @Assert\Type("object")
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="UserIntern", inversedBy="requests")
-     */
-    private $intern;
-
-    /**
-     * @var SurveyQuestionContent
-     * @Assert\Type("object")
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="SurveyQuestionContent", inversedBy="questions")
-     */
-    private $questionContent;
-
-    /**
      * @var string
      * @Assert\NotBlank()
      * @Assert\Type("string")
      * @Assert\Length(
-     *      max = 1000
+     *      max = 500
      * )
      * @ORM\Column(name="body", type="text")
      */
-    private $answer;
+    private $title;
 
     /**
-     * Get id
+     * @var SurveyType
+     * @Assert\Type("object")
+     * @Assert\Valid
+     * @ORM\ManyToOne(targetEntity="SurveyType", inversedBy="questions")
+     */
+    private $surveyType;
+
+    /**
+     * @var Survey
+     * @Assert\Type("object")
+     * @Assert\Valid
+     * @ORM\ManyToMany(targetEntity="Survey", inversedBy="questions")
+     */
+    private $surveys;
+
+    /**
+     * @var ArrayCollection|SurveyAnswer[]
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="question")
+     */
+    private $answers;
+
+    public function __construct()
+    {
+        $this->surveys = new ArrayCollection();
+        $this->answers = new ArrayCollection();
+    }
+
+    /**
+     * Get id.
      *
      * @return int
      */
@@ -72,98 +75,85 @@ class SurveyQuestion
     }
 
     /**
-     * Set survey.
+     * Set title.
      *
+     * @param string $title
+     *
+     * @return SurveyQuestion
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set type.
+     *
+     * @param SurveyType $type
+     *
+     * @return SurveyQuestion
+     */
+    public function setSurveyType(SurveyType $type)
+    {
+        $this->surveyType = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type.
+     *
+     * @return SurveyType
+     */
+    public function getSurveyType()
+    {
+        return $this->surveyType;
+    }
+
+    /**
      * @param Survey $survey
      *
      * @return SurveyQuestion
      */
-    public function setSurvey(Survey $survey)
+    public function addSurvey(Survey $survey)
     {
-        $this->survey = $survey;
+        if (!$this->surveys->contains($survey)) {
+            $this->surveys->add($survey);
+            $survey->addQuestion($this);
+        }
 
         return $this;
     }
 
     /**
-     * Get survey.
+     * Get Surveys.
      *
-     * @return Survey
+     * @return ArrayCollection
      */
-    public function getSurvey()
+    public function getSurveys()
     {
-        return $this->survey;
+        return $this->surveys;
     }
 
     /**
-     * Set intern.
+     * Get Answers.
      *
-     * @param UserIntern $intern
-     *
-     * @return SurveyQuestion
+     * @return ArrayCollection
      */
-    public function setIntern(UserIntern $intern)
+    public function getAnswers()
     {
-        $this->intern = $intern;
-
-        return $this;
-    }
-
-    /**
-     * Get intern.
-     *
-     * @return UserIntern
-     */
-    public function getIntern()
-    {
-        return $this->intern;
-    }
-
-    /**
-     * Set question content.
-     *
-     * @param SurveyQuestionContent $questionContent
-     *
-     * @return SurveyQuestion
-     */
-    public function setQuestionContent(SurveyQuestionContent $questionContent)
-    {
-        $this->questionContent = $questionContent;
-
-        return $this;
-    }
-
-    /**
-     * Get question content.
-     *
-     * @return SurveyQuestionContent
-     */
-    public function getQuectionContent()
-    {
-        return $this->questionContent;
-    }
-
-    /**
-     * Set answer.
-     *
-     * @param string $answer
-     *
-     * @return SurveyQuestion
-     */
-    public function setAnswer($answer)
-    {
-        $this->answer = $answer;
-
-        return $this;
-    }
-
-    /**
-     * Get answer.
-     *
-     * @return string
-     */
-    public function getAnswer()
-    {
-        return $this->answer;
+        return $this->answers;
     }
 }

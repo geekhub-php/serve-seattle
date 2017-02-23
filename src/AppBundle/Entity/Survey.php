@@ -8,9 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Survey
+ * Survey.
  *
- * @ORM\Table(name="survey")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SurveyRepository")
  */
 class Survey
@@ -20,7 +19,7 @@ class Survey
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -35,26 +34,33 @@ class Survey
     private $type;
 
     /**
-     * @var UserIntern
+     * @var User
      * @Assert\Type("object")
      * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="UserIntern", inversedBy="surveys")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="surveys")
      */
-    private $intern;
+    private $user;
 
     /**
      * @var ArrayCollection|SurveyQuestion[]
-     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey")
+     * @ORM\ManyToMany(targetEntity="SurveyQuestion", mappedBy="surveys")
      */
     private $questions;
+
+    /**
+     * @var ArrayCollection|SurveyAnswer[]
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey")
+     */
+    private $answers;
 
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -87,29 +93,43 @@ class Survey
         return $this->type;
     }
 
-
     /**
-     * Set intern.
+     * Set user.
      *
-     * @param UserIntern $intern
+     * @param User $user
      *
      * @return Survey
      */
-    public function setIntern(UserIntern $intern)
+    public function setUser(User $user)
     {
-        $this->intern = $intern;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get intern.
+     * Get user.
      *
-     * @return UserIntern
+     * @return User
      */
-    public function getIntern()
+    public function getUser()
     {
-        return $this->intern;
+        return $this->user;
+    }
+
+    /**
+     * @param SurveyQuestion $question
+     *
+     * @return Survey
+     */
+    public function addQuestion(SurveyQuestion $question)
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->addSurvey($this);
+        }
+
+        return $this;
     }
 
     /**
@@ -120,5 +140,15 @@ class Survey
     public function getQuestions()
     {
         return $this->questions;
+    }
+
+    /**
+     * Get Questions.
+     *
+     * @return ArrayCollection
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
     }
 }
