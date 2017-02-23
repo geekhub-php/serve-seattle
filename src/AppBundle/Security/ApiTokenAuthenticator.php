@@ -2,11 +2,8 @@
 
 namespace AppBundle\Security;
 
-use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -16,28 +13,21 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 {
-    private $em;
-
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
-
     public function getCredentials(Request $request)
     {
-        return $request->headers->get('X-TOKEN');
+        return $request->headers->get('X-AUTH-TOKEN');
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        /** @var User $user */
-        $user = $this->em->getRepository('AppBundle:User')
-            ->findOneBy(array('apiToken' => $credentials));
+        $user = $userProvider->loadUserByUsername($credentials);
+
         if (!$user) {
             throw new AuthenticationCredentialsNotFoundException();
         }
@@ -46,7 +36,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */
@@ -56,7 +47,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */
@@ -69,7 +61,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */
@@ -84,7 +77,8 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * Remove SuppressWarnings after method will fully implemented
+     * Remove SuppressWarnings after method will fully implemented.
+     *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * {@inheritdoc}
      */

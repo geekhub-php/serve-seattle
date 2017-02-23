@@ -1,8 +1,8 @@
 <?php
 
-
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\UserIntern;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,25 +14,37 @@ class DefaultController extends Controller
 
      * @param Request $request
      * @Route("/login", name="api_login")
+     *
      * @return JsonResponse
      */
     public function loginAction(Request $request)
     {
+        $data = json_decode($request->getContent(), true);
+
+        /** @var UserIntern $user */
         $user = $this->getDoctrine()->getRepository('AppBundle:UserIntern')
-            ->findOneBy(['userName' => $request->get('login')]);
+            ->findOneBy(['userName' => $data['login']]);
+
         if (!$user) {
             return $this->json(['message' => 'Bad credentials'], 403);
         }
+
         $result = $this->get('security.encoder_factory')
             ->getEncoder($user)
-            ->isPasswordValid($user->getPassword(), $request->get('password'), null);
+            ->isPasswordValid($user->getPassword(), $data['password'], null);
         if (!$result) {
             return $this->json(['message' => 'Bad credentials'], 403);
         }
 
         $token = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
 
-        //set token to user
+        $em = $this->getDoctrine()
+            ->getManager();
+        $user->setApiToken($token);
+
+        $em->persist($user);
+
+        $em->flush();
 
         return $this->json(['X-AUTH-TOKEN' => $token]);
     }

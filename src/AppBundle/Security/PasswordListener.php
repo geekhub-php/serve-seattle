@@ -26,20 +26,22 @@ class PasswordListener implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($entity instanceof User) {
+
+        if ($entity instanceof User && $entity->getPlainPassword()) {
             $this->encodePassword($entity);
         }
     }
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($entity instanceof User) {
+
+        if ($entity instanceof User && $entity->getPlainPassword()) {
             $this->encodePassword($entity);
         }
     }
     private function encodePassword($entity)
     {
-        $password = $entity->getPassword();
+        $password = $entity->getPlainPassword();
         $encoded = $this->encoder->encodePassword($entity, $password);
         $entity->setPassword($encoded);
     }

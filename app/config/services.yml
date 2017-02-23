@@ -6,7 +6,6 @@ parameters:
 services:
       app.api_token_authenticator:
           class: AppBundle\Security\ApiTokenAuthenticator
-          arguments: ["@doctrine.orm.entity_manager"]
 
 
       app.doctrine_listener:

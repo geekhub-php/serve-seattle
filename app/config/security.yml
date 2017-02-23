@@ -6,13 +6,16 @@ security:
         web_provider:
             entity: { class: AppBundle:UserSupervisor, property: userName }
 
+        api_provider:
+            entity: { class: AppBundle:UserIntern }
+
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt|error)|css|images|js)/
-            security: false
-        default:
+
+        api:
+            provider: api_provider
             anonymous: ~
-            pattern: ^/api
+            pattern: ^/api/
+            stateless: true
             guard:
                 authenticators:
                     - app.api_token_authenticator

@@ -109,9 +109,7 @@ class UserIntern extends User
         $this->events = new ArrayCollection();
         $this->requests = new ArrayCollection();
         $this->surveys = new ArrayCollection();
-        $roles = array('ROLE_USER_INTERN');
-        $json = json_encode($roles);
-        $this->roles = $json;
+        $this->roles = array('ROLE_USER_INTERN');
     }
 
     /**
