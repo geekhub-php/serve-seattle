@@ -4,12 +4,12 @@ namespace AppBundle\Controller;
 
 //use AppBundle\Entity\Request;
 use AppBundle\Entity\UserIntern;
-use phpDocumentor\Reflection\Types\Array_;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class DefaultController extends Controller
 {
@@ -57,6 +57,32 @@ class DefaultController extends Controller
         return [
             "users" => $pagination
         ];
+    }
+
+    /**
+     * @Route("/user/add", name="add_user")
+     * @Template("@App/add.html.twig")
+     *
+     * @return array
+     */
+    public function usersAddAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = new User();
+        $form = $this->createForm('AppBundle\Form\UserType', $user,
+            [
+                'action'=>$this->generateUrl('add_user'),
+                'method'=>'POST'
+            ])
+            ->add('Save', SubmitType::class, array(
+                'attr'=> ['class'=> 'btn pull-right btn-warning']
+            ));
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em->persist($user);
+            $em->flush();
+        }
+        return ['form' => $form->createView()];
     }
 
     /**
