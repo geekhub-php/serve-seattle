@@ -54,7 +54,6 @@ class User implements AdvancedUserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, nullable=true)
-     *
      */
     private $lastName;
 
@@ -64,7 +63,6 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="string", nullable=true)
      */
     private $image;
-
 
     /**
      * @var string
@@ -76,7 +74,6 @@ class User implements AdvancedUserInterface, \Serializable
      *      max = 250
      * )
      * @ORM\Column(type="string", length=250, unique=true)
-     *
      */
     private $email;
 
@@ -148,7 +145,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -158,7 +155,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -168,7 +165,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set firstname
+     * Set firstname.
      *
      * @param string $name
      *
@@ -182,7 +179,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get first name
+     * Get first name.
      *
      * @return string
      */
@@ -192,7 +189,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set lastName
+     * Set lastName.
      *
      * @param string $lastName
      *
@@ -206,7 +203,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get lastName
+     * Get lastName.
      *
      * @return string
      */
@@ -239,9 +236,8 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->image;
     }
 
-
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
      *
@@ -255,7 +251,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -264,9 +260,8 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->email;
     }
 
-
     /**
-     * Set password
+     * Set password.
      *
      * @param string $password
      *
@@ -280,7 +275,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get password
+     * Get password.
      *
      * @return string
      */
@@ -307,11 +302,13 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @param bool $status
+     *
      * @return $this
      */
     public function setIsEnabled($status)
     {
         $this->isActive = $status;
+
         return $this;
     }
 
@@ -340,7 +337,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set api token
+     * Set api token.
      *
      * @param string $apiToken
      *
@@ -432,13 +429,13 @@ class User implements AdvancedUserInterface, \Serializable
         $this->setPlainPassword(null);
     }
 
-
     /** @see \Serializable::serialize() */
     public function serialize()
     {
         return serialize(array(
             $this->id,
-            $this->userName,
+            $this->firstName,
+            $this->lastName,
             $this->email,
             $this->isActive,
         ));
@@ -449,9 +446,9 @@ class User implements AdvancedUserInterface, \Serializable
     {
         list(
             $this->id,
-            $this->userName,
+            $this->firstName,
+            $this->lastName,
             $this->email,
-            $this->isActive,
-            ) = unserialize($serialized);
+            $this->isActive) = unserialize($serialized);
     }
 }

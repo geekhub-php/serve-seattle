@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * RequestType.
  *
- * @ORM\Table(name="request_type")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\FormRequestTypeRepository")
  */
 class FormRequestType
