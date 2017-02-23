@@ -174,7 +174,7 @@ class SurveyAnswer
     }
 
     /**
-     * Set type.
+     * Set content.
      *
      * @param string $content
      *
@@ -188,7 +188,7 @@ class SurveyAnswer
     }
 
     /**
-     * Get type.
+     * Get content.
      *
      * @return string
      */

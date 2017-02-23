@@ -47,7 +47,7 @@ class FormRequestType
     private $description;
 
     /**
-     * @var ArrayCollection|FormRequest[]
+     * @var ArrayCollection[FormRequest]
      *
      * @ORM\OneToMany(targetEntity="FormRequest", mappedBy="type")
      */

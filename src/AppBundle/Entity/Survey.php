@@ -42,13 +42,13 @@ class Survey
     private $user;
 
     /**
-     * @var ArrayCollection|SurveyQuestion[]
+     * @var ArrayCollection[SurveyQuestion]
      * @ORM\ManyToMany(targetEntity="SurveyQuestion", mappedBy="surveys")
      */
     private $questions;
 
     /**
-     * @var ArrayCollection|SurveyAnswer[]
+     * @var ArrayCollection[SurveyAnswer]
      * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey")
      */
     private $answers;
@@ -122,11 +122,11 @@ class Survey
      *
      * @return Survey
      */
-    public function addQuestion(SurveyQuestion $question)
+    public function setQuestions(SurveyQuestion $question)
     {
         if (!$this->questions->contains($question)) {
             $this->questions->add($question);
-            $question->addSurvey($this);
+            $question->setSurveys($this);
         }
 
         return $this;

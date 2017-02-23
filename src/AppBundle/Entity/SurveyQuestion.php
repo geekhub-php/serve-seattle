@@ -45,15 +45,13 @@ class SurveyQuestion
     private $surveyType;
 
     /**
-     * @var Survey
-     * @Assert\Type("object")
-     * @Assert\Valid
+     * @var ArrayCollection[Survey]
      * @ORM\ManyToMany(targetEntity="Survey", inversedBy="questions")
      */
     private $surveys;
 
     /**
-     * @var ArrayCollection|SurveyAnswer[]
+     * @var ArrayCollection[SurveyAnswer]
      * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="question")
      */
     private $answers;
@@ -127,11 +125,11 @@ class SurveyQuestion
      *
      * @return SurveyQuestion
      */
-    public function addSurvey(Survey $survey)
+    public function setSurveys(Survey $survey)
     {
         if (!$this->surveys->contains($survey)) {
             $this->surveys->add($survey);
-            $survey->addQuestion($this);
+            $survey->setQuestions($this);
         }
 
         return $this;

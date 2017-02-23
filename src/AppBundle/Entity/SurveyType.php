@@ -38,13 +38,13 @@ class SurveyType
     private $name;
 
     /**
-     * @var ArrayCollection|Survey[]
+     * @var ArrayCollection[Survey]
      * @ORM\OneToMany(targetEntity="Survey", mappedBy="type")
      */
     private $surveys;
 
     /**
-     * @var ArrayCollection|SurveyQuestion[]
+     * @var ArrayCollection[SurveyQuestion]
      * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="surveyType")
      */
     private $questions;
