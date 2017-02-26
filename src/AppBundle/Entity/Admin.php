@@ -199,5 +199,4 @@ class Admin implements UserInterface
     {
         $this->setPlainPassword(null);
     }
-
 }
