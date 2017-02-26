@@ -12,6 +12,13 @@ AppBundle\Entity\User:
         email: <email()>
         plainPassword: intern3
 
+AppBundle\Entity\Admin:
+    admin:
+        userName: admin1
+        email: <email()>
+        plainPassword: admin1
+        roles: ROLE_ADMIN
+
 AppBundle\Entity\SurveyType:
     survey_type1:
         name: Internship Survey
