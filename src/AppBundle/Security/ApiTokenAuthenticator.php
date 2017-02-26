@@ -5,6 +5,7 @@ namespace AppBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -17,33 +18,54 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return $request->headers->get('X-AUTH-TOKEN');
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented.
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $user = $userProvider->loadUserByUsername($credentials);
 
         if (!$user) {
-            return new JsonResponse(
-                array('message' => 'Bad credentials'),
-                403
-            );
+            throw new AuthenticationCredentialsNotFoundException();
         }
 
         return $user;
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented.
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function checkCredentials($credentials, UserInterface $user)
     {
         return true;
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented.
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         return new JsonResponse(
-            array('message' => 'Bad credentials'),
+            array('message' => $exception->getMessageKey()),
             403
         );
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented.
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         return;
@@ -54,6 +76,12 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         return false;
     }
 
+    /**
+     * Remove SuppressWarnings after method will fully implemented.
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     * {@inheritdoc}
+     */
     public function start(Request $request, AuthenticationException $authException = null)
     {
         return new JsonResponse(
