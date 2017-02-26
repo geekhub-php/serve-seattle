@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
  * Class UserType
  * @package AppBundle\Form
  *
- * @SuppressWarnings("unused")
+ * @SuppressWarnings("UnusedFormalParameter")
  */
 class UserType extends AbstractType
 {
