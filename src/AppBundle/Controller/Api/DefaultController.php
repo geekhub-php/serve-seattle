@@ -16,6 +16,7 @@ class DefaultController extends Controller
      * @param Request $request
      * @Route("/login", name="api_login")
      * @Method("POST")
+     *
      * @return JsonResponse
      */
     public function loginAction(Request $request)
@@ -48,5 +49,16 @@ class DefaultController extends Controller
         $em->flush();
 
         return $this->json(['X-AUTH-TOKEN' => $token]);
+    }
+
+    /**
+     * @Route("/user", name="user")
+     * @Method("GET")
+     *
+     * @return JsonResponse
+     */
+    public function securityTestAction()
+    {
+        return $this->json(['autorization' => 'works!']);
     }
 }
