@@ -4,15 +4,22 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/** @ORM\MappedSuperclass */
-abstract class User implements AdvancedUserInterface, \Serializable
+/**
+ * User.
+ *
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ */
+class User implements AdvancedUserInterface, \Serializable
 {
+    use ORMBehaviors\Timestampable\Timestampable;
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -21,15 +28,41 @@ abstract class User implements AdvancedUserInterface, \Serializable
     /**
      * @var string
      * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Your name cannot contain a number"
+     * )
      * @Assert\Type("string")
      * @Assert\Length(
      *      min = 2,
      *      max = 190
      * )
-     * @ORM\Column(name="user_name", type="string", length=190, unique=true)
+     * @ORM\Column(type="string", length=190)
      */
-    private $userName;
+    private $firstName;
 
+    /**
+     * @var string
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Your lastname cannot contain a number"
+     * )
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      max = 190
+     * )
+     * @ORM\Column(type="string", length=190, nullable=true)
+     */
+    private $lastName;
+
+    /**
+     * @var string
+     * @Assert\Image()
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $image;
 
     /**
      * @var string
@@ -40,8 +73,7 @@ abstract class User implements AdvancedUserInterface, \Serializable
      * @Assert\Length(
      *      max = 250
      * )
-     * @ORM\Column(name="email", type="string", length=250, unique=true)
-     *
+     * @ORM\Column(type="string", length=250, unique=true)
      */
     private $email;
 
@@ -52,7 +84,7 @@ abstract class User implements AdvancedUserInterface, \Serializable
      * @Assert\Length(
      *      max = 255
      * )
-     * @ORM\Column(name="password", type="string", length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $password;
 
@@ -62,7 +94,7 @@ abstract class User implements AdvancedUserInterface, \Serializable
     private $plainPassword;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $isActive = true;
 
@@ -75,12 +107,45 @@ abstract class User implements AdvancedUserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="api_token", type="string", unique=true, nullable=true)
+     * @ORM\Column(type="string", unique=true, nullable=true)
      */
     private $apiToken;
 
     /**
-     * Get id
+     * @var ArrayCollection[Event]
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="users")
+     */
+    private $events;
+
+    /**
+     * @var ArrayCollection[FormRequest]
+     * @ORM\OneToMany(targetEntity="FormRequest", mappedBy="user")
+     */
+    private $formRequests;
+
+    /**
+     * @var ArrayCollection[Survey]
+     * @ORM\OneToMany(targetEntity="Survey", mappedBy="user")
+     */
+    private $surveys;
+
+    /**
+     * @var ArrayCollection[SurveyAnswer]
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="user")
+     */
+    private $answers;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+        $this->formRequests = new ArrayCollection();
+        $this->surveys = new ArrayCollection();
+        $this->answers = new ArrayCollection();
+        $this->roles = array('ROLE_USER');
+    }
+
+    /**
+     * Get id.
      *
      * @return int
      */
@@ -90,31 +155,89 @@ abstract class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set username
-     *
-     * @param string $name
-     *
-     * @return User
-     */
-    public function setUsername($name)
-    {
-        $this->userName = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
     public function getUsername()
     {
-        return $this->userName;
+        return $this->email;
     }
 
     /**
-     * Set email
+     * Set firstname.
+     *
+     * @param string $name
+     *
+     * @return User
+     */
+    public function setFirstName($name)
+    {
+        $this->firstName = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get first name.
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName.
+     *
+     * @param string $lastName
+     *
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName.
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * Set image.
+     *
+     * @param string $image
+     *
+     * @return User
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image.
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set email.
      *
      * @param string $email
      *
@@ -128,7 +251,7 @@ abstract class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -137,9 +260,8 @@ abstract class User implements AdvancedUserInterface, \Serializable
         return $this->email;
     }
 
-
     /**
-     * Set password
+     * Set password.
      *
      * @param string $password
      *
@@ -153,7 +275,7 @@ abstract class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Get password
+     * Get password.
      *
      * @return string
      */
@@ -180,11 +302,13 @@ abstract class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @param bool $status
+     *
      * @return $this
      */
     public function setIsEnabled($status)
     {
         $this->isActive = $status;
+
         return $this;
     }
 
@@ -194,6 +318,90 @@ abstract class User implements AdvancedUserInterface, \Serializable
     public function isEnabled()
     {
         return $this->isActive;
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Set api token.
+     *
+     * @param string $apiToken
+     *
+     * @return User
+     */
+    public function setApiToken($apiToken)
+    {
+        $this->apiToken = $apiToken;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiToken()
+    {
+        return $this->apiToken;
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @return User
+     */
+    public function setEvent($event)
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFormRequests()
+    {
+        return $this->formRequests;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSurveys()
+    {
+        return $this->surveys;
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
     }
 
     public function isAccountNonExpired()
@@ -221,50 +429,13 @@ abstract class User implements AdvancedUserInterface, \Serializable
         $this->setPlainPassword(null);
     }
 
-    /**
-     * @param mixed $roles
-     */
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    /**
-     * Set api token
-     *
-     * @param string $apiToken
-     *
-     * @return User
-     */
-    public function setApiToken($apiToken)
-    {
-        $this->apiToken = $apiToken;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApiToken()
-    {
-        return $this->apiToken;
-    }
-
     /** @see \Serializable::serialize() */
     public function serialize()
     {
         return serialize(array(
             $this->id,
-            $this->userName,
+            $this->firstName,
+            $this->lastName,
             $this->email,
             $this->isActive,
         ));
@@ -275,9 +446,9 @@ abstract class User implements AdvancedUserInterface, \Serializable
     {
         list(
             $this->id,
-            $this->userName,
+            $this->firstName,
+            $this->lastName,
             $this->email,
-            $this->isActive,
-            ) = unserialize($serialized);
+            $this->isActive) = unserialize($serialized);
     }
 }

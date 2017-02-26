@@ -8,9 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * SurveyType
+ * SurveyType.
  *
- * @ORM\Table(name="survey_type")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SurveyTypeRepository")
  */
 class SurveyType
@@ -20,7 +19,7 @@ class SurveyType
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -34,33 +33,30 @@ class SurveyType
      *      min = 2,
      *      max = 190
      * )
-     * @ORM\Column(name="name", type="string", length=190, unique=true)
+     * @ORM\Column(type="string", length=190, unique=true)
      */
     private $name;
 
-
     /**
-     * @var ArrayCollection|SurveyQuestionContent[]
-     *
-     * @ORM\OneToMany(targetEntity="SurveyQuestionContent", mappedBy="survey_type")
-     */
-    private $questionContents;
-
-    /**
-     * @var ArrayCollection|Survey[]
-     *
+     * @var ArrayCollection[Survey]
      * @ORM\OneToMany(targetEntity="Survey", mappedBy="type")
      */
     private $surveys;
 
+    /**
+     * @var ArrayCollection[SurveyQuestion]
+     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="surveyType")
+     */
+    private $questions;
+
     public function __construct()
     {
-        $this->questions_contents = new ArrayCollection();
         $this->surveys = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -70,7 +66,7 @@ class SurveyType
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -84,24 +80,13 @@ class SurveyType
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
     public function getName()
     {
         return $this->name;
-    }
-
-
-    /**
-     * Get Questions contents.
-     *
-     * @return ArrayCollection
-     */
-    public function getQuestionsContents()
-    {
-        return $this->questionContents;
     }
 
     /**
@@ -112,5 +97,15 @@ class SurveyType
     public function getSurveys()
     {
         return $this->surveys;
+    }
+
+    /**
+     * Get Questions.
+     *
+     * @return ArrayCollection
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
     }
 }

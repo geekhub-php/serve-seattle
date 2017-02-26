@@ -1,49 +1,16 @@
-AppBundle\Entity\UserSupervisor:
-    supervisor1:
-        userName: supervisor1
-        firstName: <firstName()>
-        email: <email()>
-        address: <address()>
-        phoneNumber: <phoneNumber()>
-        dateOfBirth: <dateTime()>
-        plainPassword: supervisor1
-    supervisor2:
-        userName: supervisor2
-        firstName: <firstName()>
-        email: <email()>
-        address: <address()>
-        phoneNumber: <phoneNumber()>
-        dateOfBirth: <dateTime()>
-        plainPassword: supervisor2
-
-AppBundle\Entity\UserIntern:
+AppBundle\Entity\User:
     intern1:
-        userName: intern1
         firstName: <firstName()>
         email: <email()>
-        address: <address()>
-        phoneNumber: <phoneNumber()>
-        dateOfBirth: <dateTime()>
         plainPassword: intern1
-        supervisor: '@supervisor1'
     intern2:
-        userName: intern2
         firstName: <firstName()>
         email: <email()>
-        address: <address()>
-        phoneNumber: <phoneNumber()>
-        dateOfBirth: <dateTime()>
         plainPassword: intern2
-        supervisor: '@supervisor1'
     intern3:
-        userName: intern3
         firstName: <firstName()>
         email: <email()>
-        address: <address()>
-        phoneNumber: <phoneNumber()>
-        dateOfBirth: <dateTime()>
         plainPassword: intern3
-        supervisor: '@supervisor2'
 
 AppBundle\Entity\SurveyType:
     survey_type1:
@@ -52,44 +19,42 @@ AppBundle\Entity\SurveyType:
         name: Speaker Survey
     survey_type3:
         name: End of year Survey
+    survey_type4:
+        name: Supervisor Survey
+
+AppBundle\Entity\SurveyQuestion:
+    survey_quest1:
+        title: How many hours do you work?
+        surveyType: '@survey_type1'
+    survey_quest2:
+        title: How well did internship meet your expectation?
+        surveyType: '@survey_type2'
 
 AppBundle\Entity\Survey:
     survey1:
         type: '@survey_type1'
-        intern: '@intern1'
+        user: '@intern1'
+        questions: '@survey_quest1'
     survey2:
         type: '@survey_type2'
-        intern: '@intern1'
+        user: '@intern1'
+        questions: '@survey_quest2'
 
-AppBundle\Entity\SurveyQuestionContent:
-    survey_quest_content1:
-        surveyType: '@survey_type1'
-        content: How many hours do you work?
-    survey_quest_content2:
-        surveyType: '@survey_type1'
-        content: How well did internship meet your expectation?
-    survey_quest_content3:
-        surveyType: '@survey_type2'
-        content: Did you feel equipped by what your Supervisor gave you?
-
-AppBundle\Entity\SurveyQuestion:
-    question1:
+AppBundle\Entity\SurveyAnswer:
+    answer1:
+        type: 'plain text'
+        question: '@survey_quest1'
+        user: '@intern1'
         survey: '@survey1'
-        intern: '@intern1'
-        questionContent: '@survey_quest_content1'
-        answer: 3 hour per day
-    question2:
-        survey: '@survey1'
-        intern: '@intern1'
-        questionContent: '@survey_quest_content2'
-        answer: Well enough
-    question3:
+        content: 3 hour per day
+    answer2:
+        type: 'plain text'
+        question: '@survey_quest2'
+        user: '@intern1'
         survey: '@survey2'
-        intern: '@intern1'
-        questionContent: '@survey_quest_content3'
-        answer: Yes, I did
+        content: Well enough
 
-AppBundle\Entity\RequestType:
+AppBundle\Entity\FormRequestType:
     request_type1:
         name: Personal Day Request
     request_type2:
@@ -97,10 +62,12 @@ AppBundle\Entity\RequestType:
     request_type3:
         name: Sick Day Request
 
-AppBundle\Entity\Request:
+AppBundle\Entity\FormRequest:
     request{1..10}:
         type: '@request_type*'
-        intern: '@intern*'
+        user: '@intern*'
+        status: 'new'
+        date: <dateTime()>
 
 
 
