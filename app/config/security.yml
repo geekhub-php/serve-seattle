@@ -3,14 +3,13 @@ security:
         AppBundle\Entity\User: bcrypt
 
     providers:
-        web_provider:
-            entity: { class: AppBundle:UserSupervisor, property: userName }
-
         api_provider:
-            entity: { class: AppBundle:UserIntern }
+            entity: { class: AppBundle:User }
+
+        web_provider:
+            entity: { class: AppBundle:Admin, property: email }
 
     firewalls:
-
         api:
             provider: api_provider
             anonymous: ~
@@ -23,17 +22,20 @@ security:
         main:
             provider: web_provider
             anonymous: true
-            pattern: /
             security: true
             form_login:
                 login_path: login
                 check_path: login
+                default_target_path: /
 
             logout:
                 path:   /logout
                 target: /login
 
     access_control:
-          - { path: /api/login$, allow_if: "not has_role('ROLE_USER_INTERN')" }
+          - { path: /login, allow_if: "is_anonymous() and !is_authenticated()" }
+          - { path: ^/, roles: ROLE_USER_SUPERVISOR }
+          - { path: ^/api/login$, allow_if: "not has_role('ROLE_USER_INTERN')" }
           - { path: ^/api/, roles: ROLE_USER_INTERN }
+
 
