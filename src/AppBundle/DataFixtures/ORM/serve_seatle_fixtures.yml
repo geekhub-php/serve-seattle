@@ -17,7 +17,6 @@ AppBundle\Entity\Admin:
         userName: admin1
         email: <email()>
         plainPassword: admin1
-        roles: ROLE_ADMIN
 
 AppBundle\Entity\SurveyType:
     survey_type1:
