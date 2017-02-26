@@ -67,8 +67,7 @@ class UserType extends AbstractType
                         'label' => false
                     ),
                     'required' => false
-                )
-            );
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
