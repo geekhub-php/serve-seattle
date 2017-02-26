@@ -2,11 +2,10 @@
 
 namespace AppBundle\Security;
 
-use AppBundle\Entity\Admin;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Common\EventSubscriber;
-use AppBundle\Entity\User;
+use Nelmio\Alice\scenario3\UserInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class PasswordListener implements EventSubscriber
@@ -28,7 +27,7 @@ class PasswordListener implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if ($entity instanceof User || $entity instanceof Admin && $entity->getPlainPassword()) {
+        if ($entity instanceof UserInterface && $entity->getPlainPassword()) {
             $this->encodePassword($entity);
         }
     }
@@ -36,7 +35,7 @@ class PasswordListener implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if ($entity instanceof User || $entity instanceof Admin && $entity->getPlainPassword()) {
+        if ($entity instanceof UserInterface && $entity->getPlainPassword()) {
             $this->encodePassword($entity);
         }
     }
