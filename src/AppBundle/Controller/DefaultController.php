@@ -50,10 +50,8 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository(UserIntern::class)->findall();
-
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
-
         return [
             "users" => $pagination
         ];
@@ -69,13 +67,12 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $user = new User();
-        $form = $this->createForm('AppBundle\Form\UserType', $user,
-            [
-                'action'=>$this->generateUrl('add_user'),
-                'method'=>'POST'
-            ])
+        $form = $this->createForm('AppBundle\Form\UserType', $user, [
+            'action' => $this->generateUrl('add_user'),
+            'method' => 'POST'
+        ])
             ->add('Save', SubmitType::class, array(
-                'attr'=> ['class'=> 'btn pull-right btn-warning']
+                'attr' => ['class' => 'btn pull-right btn-warning']
             ));
         $form->handleRequest($request);
         if ($form->isValid()) {
