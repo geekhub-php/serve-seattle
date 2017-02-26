@@ -22,21 +22,21 @@ security:
 
         main:
             provider: web_provider
+            anonymous: ~
             pattern: ^/
             security: true
             form_login:
                 login_path: login
                 check_path: login
-                default_target_path: /
 
             logout:
                 path:   /logout
                 target: /login
 
     access_control:
-          - { path: ^/, roles: ROLE_ADMIN }
-          - { path: ^/login, allow_if: "is_anonymous() and !is_authenticated()" }
+          - { path: ^/$, roles: ROLE_ADMIN }
+          - { path: ^/login$, allow_if: "is_anonymous() and !is_authenticated()" }
+          - { path: ^/api/$, roles: ROLE_USER }
           - { path: ^/api/login$, allow_if: "is_anonymous() and !is_authenticated()" }
-          - { path: ^/api/, roles: ROLE_USER }
 
 
