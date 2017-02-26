@@ -10,9 +10,10 @@ class DefaultControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request('GET', '/login');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('DashBoard', $crawler->filter('.container h1')->text());
+
+        $this->assertCount(3, $crawler->filter('input'));
     }
 }
