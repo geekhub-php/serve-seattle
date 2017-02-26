@@ -5,8 +5,8 @@ namespace AppBundle\Security;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Common\EventSubscriber;
-use Nelmio\Alice\scenario3\UserInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class PasswordListener implements EventSubscriber
 {
