@@ -33,6 +33,9 @@
                 <th>
                     Status
                 </th>
+                <th>
+                    Actions
+                </th>
             </tr>
             {% for user in users %}
                 <tr>
@@ -49,7 +52,23 @@
                         {{ user.firstName }}
                     </td>
                     <td>
-                        {{ user.isenabled }}
+                        {% if user.isenabled %}
+                            <a href="#">
+                                <i class="fa fa-check-circle"></i>
+                            </a>
+                        {% else %}
+                            <a href="#">
+                                <i class="fa fa-minus-circle"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('edit_user', {'id': user.id}) }}">
+                            <i class="fa fa-pencil"></i>edit
+                        </a>
+                        <a href="{{ path('delete_user', {'id': user.id}) }}">
+                            <i class="fa fa-times"></i>delete
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

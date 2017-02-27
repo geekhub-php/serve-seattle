@@ -13,8 +13,9 @@
                 <li><a href="#">Schedules</a></li>
                 <li><a href="#">Request forms</a></li>
                 <li><a href="#">Surveys</a></li>
-                <li><a href="{{ path('user_list') }}">Users</a></li>
-                <li><a href="#">Sign in</a></li>
+                <li><a href="{{ path('users_list') }}">Users</a></li>
+                <li><a href="#">Hi, {{ app.user.userName }}</a></li>
+                <li><a href="{{ path('logout') }}">Sign out</a></li>
             </ul>
 
         </div>

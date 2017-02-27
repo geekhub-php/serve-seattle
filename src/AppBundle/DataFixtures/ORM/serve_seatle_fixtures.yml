@@ -1,22 +1,25 @@
+AppBundle\Entity\Admin:
+    admin:
+      username: admin
+      email: admin@serve-seattle.com
+      plainPassword: admin
+
 AppBundle\Entity\User:
     intern1:
         firstName: <firstName()>
+        lastName: <lastName()>
         email: <email()>
         plainPassword: intern1
     intern2:
         firstName: <firstName()>
+        lastName: <lastName()>
         email: <email()>
         plainPassword: intern2
     intern3:
         firstName: <firstName()>
+        lastName: <lastName()>
         email: <email()>
         plainPassword: intern3
-
-AppBundle\Entity\Admin:
-    admin:
-        userName: admin1
-        email: <email()>
-        plainPassword: admin1
 
 AppBundle\Entity\SurveyType:
     survey_type1:

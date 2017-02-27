@@ -48,13 +48,6 @@ class UserType extends AbstractType
                 ),
                 'label' => false
             ))
-            ->add('userName', TextType::class, array(
-                'attr' => array(
-                    'placeholder' => 'UserName',
-                    'class' => 'form-control'
-                ),
-                'label' => false
-            ))
             ->add('password', RepeatedType::class, array(
                     'type' => PasswordType::class,
                     'first_options' => array(
