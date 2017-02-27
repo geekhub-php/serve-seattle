@@ -13,15 +13,15 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 /**
  * Class UserType
  * @package AppBundle\Form
- *
- * @SuppressWarnings("UnusedFormalParameter")
+
  */
 class UserType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
-     *
+     * @SuppressWarnings("UnusedFormalParameter")
+     * 
      * After add new field in UserType need create
      * offsetUnset() method from this field in Security controller
      */
