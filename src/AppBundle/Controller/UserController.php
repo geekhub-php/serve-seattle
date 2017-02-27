@@ -31,6 +31,26 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/user/activate/{id}", name="activate_user")
+     * @Template("@App/add.html.twig")
+     *
+     * @return RedirectResponse
+     */
+    public function userActivateAction(Request $request, User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        if($user->isEnabled()){
+            $user->setStatus(false);
+        } else {
+            $user->setStatus(true);
+        }
+        $em->persist($user);
+        $em->flush();
+
+        return new RedirectResponse($this->generateUrl("users_list"));
+    }
+
+    /**
      * @Route("/user/add", name="add_user")
      * @Template("@App/add.html.twig")
      *
@@ -81,18 +101,5 @@ class UserController extends Controller
             return new RedirectResponse($this->generateUrl("users_list"));
         }
         return ['form' => $form->createView()];
-    }
-
-    /**
-     * @Route("/user/delete/{id}", name="delete_user")
-     * @return RedirectResponse
-     */
-    public function userDeleteAction(Request $request, User $user)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($user);
-        $em->flush();
-
-        return new RedirectResponse($this->generateUrl("users_list"));
     }
 }

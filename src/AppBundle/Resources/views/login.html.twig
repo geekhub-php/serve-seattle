@@ -1,10 +1,10 @@
-{% extends 'default/index.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
     Dashboards
 {% endblock %}
 
-{% block content %}
+{% block body %}
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}

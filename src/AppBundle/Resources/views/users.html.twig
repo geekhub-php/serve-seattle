@@ -52,22 +52,17 @@
                         {{ user.firstName }}
                     </td>
                     <td>
+                        <a href="{{ path('activate_user', {'id': user.id}) }}">
                         {% if user.isenabled %}
-                            <a href="#">
-                                <i class="fa fa-check-circle"></i>
-                            </a>
+                            <i class="fa fa-check-circle"></i>
                         {% else %}
-                            <a href="#">
-                                <i class="fa fa-minus-circle"></i>
-                            </a>
+                            <i class="fa fa-times-circle"></i>
                         {% endif %}
+                        </a>
                     </td>
                     <td>
                         <a href="{{ path('edit_user', {'id': user.id}) }}">
                             <i class="fa fa-pencil"></i>edit
-                        </a>
-                        <a href="{{ path('delete_user', {'id': user.id}) }}">
-                            <i class="fa fa-times"></i>delete
                         </a>
                     </td>
                 </tr>

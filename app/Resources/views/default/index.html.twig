@@ -14,8 +14,12 @@
                 <li><a href="#">Request forms</a></li>
                 <li><a href="#">Surveys</a></li>
                 <li><a href="{{ path('users_list') }}">Users</a></li>
-                <li><a href="#">Hi, {{ app.user.userName }}</a></li>
-                <li><a href="{{ path('logout') }}">Sign out</a></li>
+                {% if app.user %}
+                    <li><a href="#">Hi, {{ app.user.userName }}</a></li>
+                    <li><a href="{{ path('logout') }}">Sign out</a></li>
+                {% else %}
+
+                {% endif %}
             </ul>
 
         </div>
