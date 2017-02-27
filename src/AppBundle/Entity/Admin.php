@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdminRepository")
  */
-class Admin
+class Admin implements UserInterface
 {
     use ORMBehaviors\Timestampable\Timestampable;
     /**
@@ -187,5 +188,15 @@ class Admin
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        $this->setPlainPassword(null);
     }
 }
