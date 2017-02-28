@@ -22,7 +22,7 @@ class UserController extends Controller
     public function usersListAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository(User::class)->findall();
+        $users = $em->getRepository(User::class)->getUsersByParams($request->query);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
         return [

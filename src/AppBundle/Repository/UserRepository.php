@@ -20,4 +20,30 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getUsersByParams($params)
+    {
+        $em = $this->getEntityManager();
+
+        $postsQuery = $em->createQueryBuilder()
+            ->select('u')
+            ->from('AppBundle:User', 'u');
+        if ($params->has('date') && $params->get('date')== 'asc'){
+            $postsQuery->orderBy('u.createdAt', 'ASC');
+        } else {
+            $postsQuery->orderBy('u.createdAt', 'DESC');
+        }
+
+        if ($params->has('name') && $params->get('name')) {
+            $postsQuery->where(
+                $postsQuery->expr()->like('u.firstName', ':name')
+            )
+                ->orWhere(
+                    $postsQuery->expr()->like('u.lastName', ':name')
+                )
+                ->setParameter('name', '%' . $params->get('name') . '%');
+        }
+
+        return $postsQuery->getQuery()->getResult();
+    }
 }

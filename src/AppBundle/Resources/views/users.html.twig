@@ -7,13 +7,29 @@
 {% block content %}
     <h1>
         Users
-        <small>
+    </h1>
+    <div>
+        <form method="get" class="filters">
+            <i class="fa fa-filter" aria-hidden="true"></i>
+            <select name="date">
+                <option {% if app.request.get('date') == 'desc' or not app.request.get('date') %}selected{% endif %} value="desc">
+                    desc
+                </option>
+                <option {% if app.request.get('date') == 'asc' %} selected {% endif %} value="asc">
+                    asc
+                </option>
+            </select>
+            <input name="name" placeholder="find">
+            <button type="submit">
+                <i class="fa fa-search " aria-hidden="true"></i> Search
+            </button>
+        </form>
             <a href="{{ path('add_user') }}" class="pull-right">
                 <i class="fa fa-plus"></i>
                 Add
             </a>
-        </small>
-    </h1>
+    </div>
+
 
     <div class="row">
         <table class="table">
@@ -29,6 +45,9 @@
                 </th>
                 <th>
                     First Name
+                </th>
+                <th>
+                    Registration date
                 </th>
                 <th>
                     Status
@@ -50,6 +69,9 @@
                     </td>
                     <td>
                         {{ user.firstName }}
+                    </td>
+                    <td>
+                        {{ user.createdAt | date('m/d/Y') }}
                     </td>
                     <td>
                         <a href="{{ path('activate_user', {'id': user.id}) }}">
