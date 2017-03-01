@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository(User::class)->getUsersByParams($request->query);
-        if(!$users) {
+        if (!$users) {
             return [
                 'error' => 'Nothing found!'
             ];

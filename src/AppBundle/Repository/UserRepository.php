@@ -32,7 +32,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
         $postsQuery = $em->createQueryBuilder()
             ->select('u')
             ->from('AppBundle:User', 'u')
-            ->orderBy('u.createdAt',  preg_match('/asc/i', $params->get('order')) ? 'ASC' : 'DESC');
+            ->orderBy('u.createdAt', preg_match('/asc/i', $params->get('order')) ? 'ASC' : 'DESC');
 
         if ($params->has('name') && $params->get('name')) {
             $postsQuery->where(
