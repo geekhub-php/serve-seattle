@@ -38,7 +38,7 @@
                     #
                 </th>
                 <th>
-                    Username
+                    E-mail
                 </th>
                 <th>
                     Last Name
@@ -62,13 +62,13 @@
                         {{ user.id }}
                     </td>
                     <td>
-                        {{ user.username }}
+                        {{ user.email }}
                     </td>
                     <td>
-                        {{ user.lastName }}
+                        {{ user.lastName | capitalize }}
                     </td>
                     <td>
-                        {{ user.firstName }}
+                        {{ user.firstName | capitalize }}
                     </td>
                     <td>
                         {{ user.createdAt | date('m/d/Y') }}

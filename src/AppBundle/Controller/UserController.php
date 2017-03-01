@@ -62,7 +62,8 @@ class UserController extends Controller
         $user = new User();
         $form = $this->createForm('AppBundle\Form\UserType', $user, [
             'action' => $this->generateUrl('add_user'),
-            'method' => 'POST'
+            'method' => 'POST',
+            'validation_groups' => array('registration'),
         ])
             ->add('Save', SubmitType::class, array(
                 'attr' => ['class' => 'btn pull-right btn-warning']
@@ -88,7 +89,8 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm('AppBundle\Form\UserType', $user, [
             'action' => $this->generateUrl('edit_user', array('id' => $user->getId())),
-            'method' => 'POST'
+            'method' => 'POST',
+            'validation_groups' => array('edit'),
         ])
             ->add('Save', SubmitType::class, array(
                 'attr' => ['class' => 'btn pull-right btn-warning']

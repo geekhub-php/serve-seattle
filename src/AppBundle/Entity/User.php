@@ -46,6 +46,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
+     * @Assert\NotBlank()
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
@@ -68,6 +69,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
+     * @Assert\NotBlank()
      * @Assert\Email(
      *     checkMX = true
      * )
@@ -81,16 +83,17 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
-     * @Assert\Type("string")
-     * @Assert\Length(
-     *      max = 255
-     * )
      * @ORM\Column(type="string", length=255)
      */
     private $password;
 
     /**
      * @var string
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      max = 255
+     * )
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $plainPassword;
 
