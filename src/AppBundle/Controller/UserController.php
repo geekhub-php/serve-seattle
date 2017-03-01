@@ -23,6 +23,11 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository(User::class)->getUsersByParams($request->query);
+        if(!$users) {
+            return [
+                'error' => 'Nothing found!'
+            ];
+        }
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
         return [
@@ -34,16 +39,13 @@ class UserController extends Controller
      * @Route("/user/activate/{id}", name="activate_user")
      * @Template("@App/add.html.twig")
      *
+     * @param  User $user
      * @return RedirectResponse
      */
-    public function userActivateAction(Request $request, User $user)
+    public function userActivateAction(User $user)
     {
         $em = $this->getDoctrine()->getManager();
-        if($user->isEnabled()){
-            $user->setStatus(false);
-        } else {
-            $user->setStatus(true);
-        }
+        $user->setStatus($user->isEnabled() ? false : true);
         $em->persist($user);
         $em->flush();
 

@@ -11,11 +11,11 @@
     <div>
         <form method="get" class="filters">
             <i class="fa fa-filter" aria-hidden="true"></i>
-            <select name="date">
-                <option {% if app.request.get('date') == 'desc' or not app.request.get('date') %}selected{% endif %} value="desc">
+            <select name="order">
+                <option {% if app.request.get('order') == 'desc' or not app.request.get('order') %}selected{% endif %} value="desc">
                     desc
                 </option>
-                <option {% if app.request.get('date') == 'asc' %} selected {% endif %} value="asc">
+                <option {% if app.request.get('order') == 'asc' %} selected {% endif %} value="asc">
                     asc
                 </option>
             </select>
@@ -32,6 +32,11 @@
 
 
     <div class="row">
+        {% if error is defined %}
+            <h1>
+                {{ error }}
+            </h1>
+        {% else %}
         <table class="table">
             <tr>
                 <th>
@@ -90,8 +95,9 @@
                 </tr>
             {% endfor %}
         </table>
+        <ul class="pager">
+            {{ knp_pagination_render(users) }}
+        </ul>
+    {% endif %}
     </div>
-    <ul class="pager">
-        {{ knp_pagination_render(users) }}
-    </ul>
 {% endblock %}

@@ -309,7 +309,7 @@ class User implements AdvancedUserInterface, \Serializable
      *
      * @return $this
      */
-    public function setIsEnabled($status)
+    public function setStatus($status)
     {
         $this->isActive = $status;
 

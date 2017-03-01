@@ -21,18 +21,18 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param $params
+     * @return array
+     */
     public function getUsersByParams($params)
     {
         $em = $this->getEntityManager();
 
         $postsQuery = $em->createQueryBuilder()
             ->select('u')
-            ->from('AppBundle:User', 'u');
-        if ($params->has('date') && $params->get('date')== 'asc'){
-            $postsQuery->orderBy('u.createdAt', 'ASC');
-        } else {
-            $postsQuery->orderBy('u.createdAt', 'DESC');
-        }
+            ->from('AppBundle:User', 'u')
+            ->orderBy('u.createdAt',  preg_match('/asc/i', $params->get('order')) ? 'ASC' : 'DESC');
 
         if ($params->has('name') && $params->get('name')) {
             $postsQuery->where(
