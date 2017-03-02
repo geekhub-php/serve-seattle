@@ -13,3 +13,6 @@ services:
           arguments: ['@security.password_encoder']
           tags:
               - { name: doctrine.event_subscriber }
+
+      app.google_calendar:
+          class: AppBundle\Services\GoogleCalendarManager
