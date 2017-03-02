@@ -24,7 +24,11 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
-        $users = $paginator->paginate($em->getRepository(User::class)->selectUsersByParams($request->query), $request->query->getInt('page', 1), 10);
+        $users = $paginator->paginate(
+            $em->getRepository(User::class)->selectUsersByParams($request->query),
+            $request->query->getInt('page', 1),
+            10
+        );
         $activateForm = [];
         foreach ($users as $user) {
             $activateForm[$user->getId()] = $this->createActivateUserForm($user)->createView();
@@ -39,6 +43,7 @@ class UserController extends Controller
      * @Route("/user/activate/{id}", name="activate_user")
      * @Template("@App/add.html.twig")
      *
+     * @Method("PUT")
      * @param  User $user
      * @return RedirectResponse
      */
