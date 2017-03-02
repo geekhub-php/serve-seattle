@@ -17,6 +17,7 @@ class UserController extends Controller
      * @Route("/users", name="users_list")
      * @Template("@App/users.html.twig")
      *
+     * @param Request $request
      * @return array
      */
     public function usersListAction(Request $request)
@@ -56,6 +57,7 @@ class UserController extends Controller
      * @Route("/user/add", name="add_user")
      * @Template("@App/add.html.twig")
      *
+     * @param Request $request
      * @return array|RedirectResponse
      */
     public function userAddAction(Request $request)
@@ -84,6 +86,8 @@ class UserController extends Controller
      * @Route("/user/edit/{id}", name="edit_user")
      * @Template("@App/add.html.twig")
      *
+     * @param Request $request
+     * @param User $user
      * @return array|RedirectResponse
      */
     public function userEditAction(Request $request, User $user)

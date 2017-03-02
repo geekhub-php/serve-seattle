@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * UserRepository.
@@ -22,10 +23,10 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
     }
 
     /**
-     * @param $params
+     * @param ParameterBag $params
      * @return array
      */
-    public function getUsersByParams($params)
+    public function getUsersByParams(ParameterBag $params):array
     {
         $em = $this->getEntityManager();
 
