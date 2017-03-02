@@ -23,16 +23,15 @@ class UserController extends Controller
     public function usersListAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository(User::class)->getUsersByParams($request->query);
-        if (!$users) {
-            return [
-                'error' => 'Nothing found!'
-            ];
-        }
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($users, $request->query->getInt('page', 1), 10);
+        $users = $paginator->paginate($em->getRepository(User::class)->selectUsersByParams($request->query), $request->query->getInt('page', 1), 10);
+        $activateForm = [];
+        foreach ($users as $user) {
+            $activateForm[$user->getId()] = $this->createActivateUserForm($user)->createView();
+        }
         return [
-            "users" => $pagination
+            "users" => $users,
+            'activateForm' => $activateForm
         ];
     }
 
@@ -50,6 +49,20 @@ class UserController extends Controller
         $em->persist($user);
         $em->flush();
         return $this->redirect($this->generateUrl("users_list"));
+    }
+
+    /**
+     * Creates a form to activate|deactivate User profile.
+     * @param User $user
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createActivateUserForm(User $user)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('activate_user', array('id' => $user->getId())))
+            ->setMethod('PUT')
+            ->add('submit', SubmitType::class)
+            ->getForm();
     }
 
     /**

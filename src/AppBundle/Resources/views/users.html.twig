@@ -29,14 +29,8 @@
                 Add
             </a>
     </div>
-
-
     <div class="row">
-        {% if error is defined %}
-            <h1>
-                {{ error }}
-            </h1>
-        {% else %}
+    {% if users|length %}
         <table class="table">
             <tr>
                 <th>
@@ -79,13 +73,11 @@
                         {{ user.createdAt | date('m/d/Y') }}
                     </td>
                     <td>
-                        <a href="{{ path('activate_user', {'id': user.id}) }}">
-                        {% if user.isenabled %}
-                            <i class="fa fa-check-circle"></i>
-                        {% else %}
-                            <i class="fa fa-times-circle"></i>
+                        {% if activateForm[user.id] is defined %}
+                            {{ form_start(activateForm[user.id], {'attr' : {'class' : 'activate' }}) }}
+                            {{ form_widget(activateForm[user.id].submit, { 'label' : ' ' ,'attr' : {'class' : user.isEnabled ? 'fa fa-check-circle' : 'fa fa-times-circle'  }}) }}
+                            {{ form_end(activateForm[user.id]) }}
                         {% endif %}
-                        </a>
                     </td>
                     <td>
                         <a href="{{ path('edit_user', {'id': user.id}) }}">
@@ -98,6 +90,20 @@
         <ul class="pager">
             {{ knp_pagination_render(users) }}
         </ul>
+    {% else %}
+        <h1>
+            Nothing found
+        </h1>
     {% endif %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('document').ready(function () {
+            $('.activate').submit(function() {
+               return confirm("Are you really want to activate/deactivate user?");
+            })
+        });
+    </script>
 {% endblock %}

@@ -26,7 +26,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
      * @param ParameterBag $params
      * @return array
      */
-    public function getUsersByParams(ParameterBag $params):array
+    public function selectUsersByParams(ParameterBag $params):array
     {
         $postsQuery = $this->createQueryBuilder('Users')
             ->select('u')
