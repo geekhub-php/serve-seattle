@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Form\User\EditType;
+use AppBundle\Form\User\RegistrationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -81,13 +83,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $user = new User();
-        $form = $this->createForm('AppBundle\Form\UserType', $user, [
+        $form = $this->createForm(RegistrationType::class, $user, [
             'action' => $this->generateUrl('add_user'),
             'validation_groups' => array('registration'),
-        ])
-            ->add('Register', SubmitType::class, array(
-                'attr' => ['class' => 'btn pull-right btn-warning']
-            ));
+        ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em->persist($user);
@@ -109,14 +108,11 @@ class UserController extends Controller
     public function userEditAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm('AppBundle\Form\UserType', $user, [
+        $form = $this->createForm(EditType::class, $user, [
             'action' => $this->generateUrl('edit_user', array('id' => $user->getId())),
             'method' => 'POST',
             'validation_groups' => array('edit'),
-        ])
-            ->add('Save', SubmitType::class, array(
-                'attr' => ['class' => 'btn pull-right btn-warning']
-            ));
+        ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em->persist($user);

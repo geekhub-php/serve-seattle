@@ -1,8 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\User;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +17,7 @@ use AppBundle\Entity\User;
  * @package AppBundle\Form
 
  */
-class UserType extends AbstractType
+class EditType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -50,23 +51,35 @@ class UserType extends AbstractType
                 'label' => false
             ))
             ->add('plainPassword', RepeatedType::class, array(
-                    'type' => PasswordType::class,
-                    'first_options' => array(
-                        'attr' => array(
-                            'placeholder' => 'Password',
-                            'class' => 'form-control'
-                        ),
-                        'label' => false
+                'type' => PasswordType::class,
+                'first_options' => array(
+                    'attr' => array(
+                        'placeholder' => 'Password',
+                        'class' => 'form-control'
                     ),
-                    'second_options' => array(
-                        'attr' => array(
-                            'placeholder' => 'Repeat password',
-                            'class' => 'form-control'
-                        ),
-                        'label' => false
+                    'label' => false
+                ),
+                'second_options' => array(
+                    'attr' => array(
+                        'placeholder' => 'Repeat password',
+                        'class' => 'form-control'
                     ),
-                    'required' => false
-            ));
+                    'label' => false
+                ),
+                'required' => false
+            ))
+            ->add('image', TextType::class, array(
+                    'attr' => array(
+                    'placeholder' => 'image',
+                    'class' => 'form-control'
+                ),
+                'label' => false,
+                'required' => false,
+            ))
+            ->add('Save', SubmitType::class, array(
+                'attr' => ['class' => 'btn btn-primary']
+            ))
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
