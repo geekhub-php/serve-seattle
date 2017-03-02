@@ -28,9 +28,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
      */
     public function getUsersByParams(ParameterBag $params):array
     {
-        $em = $this->getEntityManager();
-
-        $postsQuery = $em->createQueryBuilder()
+        $postsQuery = $this->createQueryBuilder('Users')
             ->select('u')
             ->from('AppBundle:User', 'u')
             ->orderBy('u.createdAt', preg_match('/asc/i', $params->get('order')) ? 'ASC' : 'DESC');

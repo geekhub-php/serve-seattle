@@ -49,8 +49,7 @@ class UserController extends Controller
         $user->setStatus($user->isEnabled() ? false : true);
         $em->persist($user);
         $em->flush();
-
-        return new RedirectResponse($this->generateUrl("users_list"));
+        return $this->redirect($this->generateUrl("users_list"));
     }
 
     /**
@@ -66,10 +65,9 @@ class UserController extends Controller
         $user = new User();
         $form = $this->createForm('AppBundle\Form\UserType', $user, [
             'action' => $this->generateUrl('add_user'),
-            'method' => 'POST',
             'validation_groups' => array('registration'),
         ])
-            ->add('Save', SubmitType::class, array(
+            ->add('Register', SubmitType::class, array(
                 'attr' => ['class' => 'btn pull-right btn-warning']
             ));
         $form->handleRequest($request);
@@ -77,7 +75,7 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return new RedirectResponse($this->generateUrl("users_list"));
+            return $this->redirect($this->generateUrl("users_list"));
         }
         return ['form' => $form->createView()];
     }
@@ -106,7 +104,7 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return new RedirectResponse($this->generateUrl("users_list"));
+            return $this->redirect($this->generateUrl("users_list"));
         }
         return ['form' => $form->createView()];
     }
