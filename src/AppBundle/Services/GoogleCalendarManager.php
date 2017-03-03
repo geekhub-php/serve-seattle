@@ -18,10 +18,10 @@ class GoogleCalendarManager
         $this->calendar = new \Google_Service_Calendar($this->client);
 
         $scope = new \Google_Service_Calendar_AclRuleScope();
-        $scope->setType('default');
+        $scope->setType('public');
 
         $rule = new \Google_Service_Calendar_AclRule();
-        $rule->setRole('reader');
+        $rule->setRole('writer');
         $rule->setScope($scope);
 
         $this->calendar->acl->insert('primary', $rule);
@@ -58,5 +58,17 @@ class GoogleCalendarManager
     public function getEventById($id)
     {
         return $this->calendar->events->get('primary', $id);
+    }
+
+    public function deleteEvent($id)
+    {
+        return $this->calendar->events->delete('primary', $id);
+    }
+
+    public function editEvent($id)
+    {
+        $event = $this->getEventById($id);
+        //do something
+        return $this->calendar->events->patch('primary', $id, $event);
     }
 }
