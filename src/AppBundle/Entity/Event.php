@@ -63,6 +63,7 @@ class Event
 
     /**
      * @param $users
+     *
      * @return $this
      */
     public function setUsers($users)
@@ -87,5 +88,4 @@ class Event
     {
         $this->googleId = $googleId;
     }
-
 }

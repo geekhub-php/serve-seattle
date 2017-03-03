@@ -436,5 +436,4 @@ class User implements UserInterface, \Serializable
             $this->email,
             $this->isActive) = unserialize($serialized);
     }
-
 }

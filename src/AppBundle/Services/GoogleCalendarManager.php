@@ -1,8 +1,6 @@
 <?php
 
-
 namespace AppBundle\Services;
-
 
 class GoogleCalendarManager
 {
@@ -22,7 +20,7 @@ class GoogleCalendarManager
         $scope = new \Google_Service_Calendar_AclRuleScope();
         $scope->setType('default');
 
-        $rule = new \Google_Service_Calendar_AclRule;
+        $rule = new \Google_Service_Calendar_AclRule();
         $rule->setRole('reader');
         $rule->setScope($scope);
 
@@ -31,21 +29,27 @@ class GoogleCalendarManager
 
     public function newEvent()
     {
-        $event = new \Google_Service_Calendar_Event([
-            'summary' => 'title',
-            'description' => 'descsadasdasd',
-            'start' => ['dateTime' => "2017-03-5T09:00:00-07:00"],
-            'end' => ['dateTime' => "2017-03-6T11:00:00-07:00"],
-            'location' => 'God know where'
-        ]);
+        $event = new \Google_Service_Calendar_Event();
 
+        $event->setSummary('TITLE');
+        $event->setDescription('DESCRIPTION');
+        $event->setLocation('God know where');
+        $event->setVisibility('public');
+
+        $start = new \Google_Service_Calendar_EventDateTime();
+        $start->setDateTime('2017-03-10T09:00:00-07:00');
+        $event->setStart($start);
+
+        $end = new \Google_Service_Calendar_EventDateTime();
+        $end->setDateTime('2017-03-11T09:00:00-07:00');
+        $event->setEnd($end);
 
         return $this->calendar->events->insert('primary', $event);
     }
 
     public function getEventList($calendarId = 'primary')
     {
-       return $this->calendar
+        return $this->calendar
            ->events
            ->listEvents($calendarId)
            ->getItems();
@@ -55,5 +59,4 @@ class GoogleCalendarManager
     {
         return $this->calendar->events->get('primary', $id);
     }
-
 }
