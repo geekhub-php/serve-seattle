@@ -6,42 +6,41 @@ namespace AppBundle\Services;
 
 class GoogleCalendarManager
 {
-    /* @var \Google_Client */
     private $client;
 
-    /* @var \Google_Service_Calendar */
     private $calendar;
 
     public function __construct()
     {
         $this->client = new \Google_Client();
-        $this->client->setApplicationName('serve-seattle');
+        $this->client->setApplicationName('seattle');
         $this->client->setScopes([\Google_Service_Calendar::CALENDAR]);
-        $this->client->setAuthConfig(__DIR__.'/../../../cred.json');
+        $this->client->setAuthConfig(__DIR__.'/../../../app/config/credentials/credentials.json');
 
         $this->calendar = new \Google_Service_Calendar($this->client);
-//
-//        $role =  new \Google_Service_Calendar_AclRule;
-//        $scope = new \Google_Service_Calendar_AclRuleScope();
-//        $scope->setType('default');
-//        $role->setRole('reader');
-//        $role->setScope($scope);
-//
-//        $this->calendar->acl->insert('primary', $role);
+
+        $scope = new \Google_Service_Calendar_AclRuleScope();
+        $scope->setType('default');
+
+        $rule = new \Google_Service_Calendar_AclRule;
+        $rule->setRole('reader');
+        $rule->setScope($scope);
+
+        $this->calendar->acl->insert('primary', $rule);
     }
 
-    public function newEvent($calendarId = 'primary')
+    public function newEvent()
     {
         $event = new \Google_Service_Calendar_Event([
             'summary' => 'title',
             'description' => 'descsadasdasd',
-            'start' => ['dateTime' => "2017-03-4T09:00:00-07:00"],
-            'end' => ['dateTime' => "2017-03-4T11:00:00-07:00"]
+            'start' => ['dateTime' => "2017-03-5T09:00:00-07:00"],
+            'end' => ['dateTime' => "2017-03-6T11:00:00-07:00"],
+            'location' => 'God know where'
         ]);
-        $event->setLocation('God know where');
-        $event->setVisibility('public');
 
-        return $this->calendar->events->insert($calendarId, $event);
+
+        return $this->calendar->events->insert('primary', $event);
     }
 
     public function getEventList($calendarId = 'primary')
@@ -52,20 +51,9 @@ class GoogleCalendarManager
            ->getItems();
     }
 
-    public function getEventById()
+    public function getEventById($id)
     {
-        return $this->calendar->events->get('primary', 'q5tsnq70tbnur8cmlidrpcvvc0');
+        return $this->calendar->events->get('primary', $id);
     }
-//
-//    public function newCalendar()
-//    {
-//        $calendar = new \Google_Service_Calendar_Calendar();
-//        $calendar->setSummary('calendarSummary');
-//        $calendar->setTimeZone('America/Los_Angeles');;
-//
-//        $createdCalendar = $this->calendar->calendars->insert($calendar);
-//
-//        return $createdCalendar;
-//    }
 
 }

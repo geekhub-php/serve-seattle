@@ -2,8 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Event;
+use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CalendarController extends Controller
@@ -22,24 +25,44 @@ class CalendarController extends Controller
     }
 
     /**
-     * @Route("/schedule/event/new")
+     * @param User $user
+     * @Route("/schedule/event/new/{id}")
      * @return JsonResponse
      */
-    public function newEventAction()
+    public function newEventAction(User $user)
     {
-        $result = $this->get('app.google_calendar')->newEvent();
+        $em = $this->getDoctrine()->getManager();
 
-        return new JsonResponse($result);
+        $result = $this->get('app.google_calendar')->newEvent();
+        if (!$result) {
+            return $this->json(['error' => 'Event has not been created'], 412);
+        }
+        $event = new Event();
+        $event->setGoogleId($result->id);
+        $event->setUsers($user);
+        $user->setEvent($event);
+
+        $em->persist($user);
+        $em->persist($event);
+        $em->flush();
+
+        return $this->json([
+            'success' => 'Event created'
+        ], 201);
     }
 
     /**
-     * @Route("/schedule/event")
+     * @param $id
+     * @return JsonResponse
      */
-    public function singleEventAction()
+    public function singleEventAction($id)
     {
         $event = $this->get('app.google_calendar')
-            ->getEventById();
-        dump($event);die;
+            ->getEventById($id);
+        if (!$event) {
+            return $this->json(['error' => 'Event not found'], 404);
+        }
+        return $this->json($event, 200);
     }
 
 }

@@ -4,6 +4,9 @@ parameters:
 #    parameter_name: value
 
 services:
+      app.google_calendar:
+          class: AppBundle\Services\GoogleCalendarManager
+
       app.api_token_authenticator:
           class: AppBundle\Security\ApiTokenAuthenticator
 
@@ -13,6 +16,3 @@ services:
           arguments: ['@security.password_encoder']
           tags:
               - { name: doctrine.event_subscriber }
-
-      app.google_calendar:
-          class: AppBundle\Services\GoogleCalendarManager

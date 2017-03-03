@@ -30,27 +30,13 @@ class Event
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="start", type="datetime")
-     */
-    private $start;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end", type="datetime")
-     */
-    private $end;
+    private $googleId;
 
     /**
      * @var ArrayCollection|$users[]
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="events")
      */
-    private $users;
+    private $users = [];
 
     public function __construct()
     {
@@ -68,78 +54,6 @@ class Event
     }
 
     /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return Event
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set start.
-     *
-     * @param \DateTime $start
-     *
-     * @return Event
-     */
-    public function setStart($start)
-    {
-        $this->start = $start;
-
-        return $this;
-    }
-
-    /**
-     * Get start.
-     *
-     * @return \DateTime
-     */
-    public function getStart()
-    {
-        return $this->start;
-    }
-
-    /**
-     * Set end.
-     *
-     * @param \DateTime $end
-     *
-     * @return Event
-     */
-    public function setEnd($end)
-    {
-        $this->end = $end;
-
-        return $this;
-    }
-
-    /**
-     * Get end.
-     *
-     * @return \DateTime
-     */
-    public function getEnd()
-    {
-        return $this->end;
-    }
-
-    /**
      * @return ArrayCollection
      */
     public function getUsers()
@@ -148,14 +62,30 @@ class Event
     }
 
     /**
-     * @param UserIntern $user
-     *
-     * @return Event
+     * @param $users
+     * @return $this
      */
     public function setUsers($users)
     {
-        $this->users = $users;
+        $this->users[] = $users;
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+    /**
+     * @param string $googleId
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+    }
+
 }
