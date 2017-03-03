@@ -61,38 +61,4 @@ class DefaultController extends Controller
     {
         return $this->json(['autorization' => 'works!']);
     }
-
-    /**
-     * @Route("/lo", name="lo")
-     */
-    public function loAction()
-    {
-        $result = $this->get('app.google_calendar')->newEvent();
-
-        return new JsonResponse($result);
-    }
-
-    /**
-     * @Route("/l", name="l")
-     */
-    public function lAction()
-    {
-        $result = $this->get('app.google_calendar')->getEventList();
-
-        dump($result);die;
-
-        return new JsonResponse($result);
-    }
-
-    /**
-     * @Route("/la", name="la")
-     */
-    public function laAction()
-    {
-        $result = $this->get('app.google_calendar')->newCalendar();
-
-        dump($result);die;
-
-        return new JsonResponse($result);
-    }
 }

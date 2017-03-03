@@ -5,12 +5,12 @@ namespace AppBundle\Controller;
 //use AppBundle\Entity\Request;
 use AppBundle\Entity\UserIntern;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends Controller
 {
@@ -88,39 +88,5 @@ class DefaultController extends Controller
      */
     public function logoutAction()
     {
-    }
-
-    /**
-     * @Route("/newEvent", name="lo")
-     */
-    public function loAction()
-    {
-        $result = $this->get('app.google_calendar')->newEvent();
-
-        return new JsonResponse($result);
-    }
-
-    /**
-     * @Route("/l", name="l")
-     */
-    public function lAction()
-    {
-        $result = $this->get('app.google_calendar')->getEventList();
-
-        dump($result);die;
-
-        return new JsonResponse($result);
-    }
-
-    /**
-     * @Route("/la", name="la")
-     */
-    public function laAction()
-    {
-        $result = $this->get('app.google_calendar')->newCalendar();
-
-        dump($result);die;
-
-        return new JsonResponse($result);
     }
 }

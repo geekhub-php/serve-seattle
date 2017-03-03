@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements UserInterface, \Serializable
 {
     use ORMBehaviors\Timestampable\Timestampable;
     /**
@@ -404,21 +404,6 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->answers;
     }
 
-    public function isAccountNonExpired()
-    {
-        return true;
-    }
-
-    public function isAccountNonLocked()
-    {
-        return true;
-    }
-
-    public function isCredentialsNonExpired()
-    {
-        return true;
-    }
-
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
@@ -451,4 +436,5 @@ class User implements AdvancedUserInterface, \Serializable
             $this->email,
             $this->isActive) = unserialize($serialized);
     }
+
 }
