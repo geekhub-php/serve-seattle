@@ -40,13 +40,6 @@ class SurveyAnswer
      */
     private $question;
 
-    /**
-     * @var User
-     * @Assert\Type("object")
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="answers")
-     */
-    private $user;
 
     /**
      * @var Survey
@@ -125,29 +118,6 @@ class SurveyAnswer
         return $this->question;
     }
 
-    /**
-     * Set user.
-     *
-     * @param User $user
-     *
-     * @return SurveyAnswer
-     */
-    public function setUser(User $user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user.
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
 
     /**
      * Set survey.

@@ -34,6 +34,17 @@ class Survey
     private $type;
 
     /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      max = 500
+     * )
+     * @ORM\Column(type="string")
+     */
+    private $status = 'current';
+
+    /**
      * @var User
      * @Assert\Type("object")
      * @Assert\Valid
@@ -91,6 +102,30 @@ class Survey
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set status.
+     *
+     * @param string $status
+     *
+     * @return Survey
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**

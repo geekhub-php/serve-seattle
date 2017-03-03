@@ -1,0 +1,46 @@
+{% extends 'default/index.html.twig' %}
+
+{% block title %}
+    Dashboards
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="well">
+                <h3>{{ type.getName|capitalize }} survey</h3>
+                <p>Status: {{ form.vars.data.getStatus }}</p>
+
+                {% if form.vars.data.getStatus == 'submited' %}
+                    <p>Intern: {{ form.vars.data.getUser.getFirstName }} {{ form.vars.data.getUser.getLastName }}</p>
+                    <p>Questions:</p>
+                    <ul>
+                        {% for field in form.vars.data.getAnswers %}
+                         <li>{{ field.getQuestion.getTitle }}<br/>
+                         {{ field.getContent }}</li>
+                         {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Questions:</p>
+                    <ul>
+                        {% for field in type.getQuestions %}
+                            <li>{{ field.getTitle }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <p>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {% if app.request.attributes.get('_route') == 'survey_delete' %}
+                    <input type="submit" value="Delete survey"/>
+                    {% else %}
+                    <input type="submit" value="Create survey"/>
+                    {% endif %}
+                    {{ form_end(form) }}
+                </p>
+            </div>
+        </div>
+
+{% endblock %}

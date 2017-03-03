@@ -1,0 +1,24 @@
+{% extends 'default/index.html.twig' %}
+
+{% block title %}
+    Dashboards
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="well">
+                <h3>{{ survey.getType.getName|capitalize }} survey</h3>
+                <h5>Intern name: {{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</h5>
+                <ul>
+                    {% for field in fields %}
+                      <li>{{ field.getQuestion.getTitle }}<br/>
+                      {{ field.getContent }}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+
+{% endblock %}

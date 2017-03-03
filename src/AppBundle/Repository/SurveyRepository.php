@@ -10,4 +10,15 @@ namespace AppBundle\Repository;
  */
 class SurveyRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findSurveyByStatus($status)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->where('s.status = :status')
+            ->setParameter('status', $status)
+            ->orderBy('s.updatedAt', 'ASC')
+            ->getQuery();
+
+        return $query->getResult();
+
+    }
 }

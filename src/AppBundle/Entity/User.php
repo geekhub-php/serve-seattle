@@ -129,18 +129,12 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $surveys;
 
-    /**
-     * @var ArrayCollection[SurveyAnswer]
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="user")
-     */
-    private $answers;
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->formRequests = new ArrayCollection();
         $this->surveys = new ArrayCollection();
-        $this->answers = new ArrayCollection();
         $this->roles = array('ROLE_USER');
     }
 
@@ -396,13 +390,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->surveys;
     }
-    /**
-     * @return ArrayCollection
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
+
 
     public function isAccountNonExpired()
     {

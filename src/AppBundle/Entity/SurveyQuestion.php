@@ -32,7 +32,7 @@ class SurveyQuestion
      * @Assert\Length(
      *      max = 500
      * )
-     * @ORM\Column(name="body", type="text")
+     * @ORM\Column(type="string")
      */
     private $title;
 
