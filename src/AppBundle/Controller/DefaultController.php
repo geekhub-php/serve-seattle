@@ -91,7 +91,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/lo", name="lo")
+     * @Route("/newEvent", name="lo")
      */
     public function loAction()
     {
@@ -105,7 +105,21 @@ class DefaultController extends Controller
      */
     public function lAction()
     {
-        $result = $this->get('app.google_calendar')->getEvent();
+        $result = $this->get('app.google_calendar')->getEventList();
+
+        dump($result);die;
+
+        return new JsonResponse($result);
+    }
+
+    /**
+     * @Route("/la", name="la")
+     */
+    public function laAction()
+    {
+        $result = $this->get('app.google_calendar')->newCalendar();
+
+        dump($result);die;
 
         return new JsonResponse($result);
     }
