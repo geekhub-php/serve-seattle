@@ -40,7 +40,6 @@ class SurveyAnswer
      */
     private $question;
 
-
     /**
      * @var Survey
      * @Assert\Type("object")
@@ -117,7 +116,6 @@ class SurveyAnswer
     {
         return $this->question;
     }
-
 
     /**
      * Set survey.

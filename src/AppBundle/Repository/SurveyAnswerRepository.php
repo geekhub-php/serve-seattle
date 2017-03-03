@@ -18,6 +18,5 @@ class SurveyAnswerRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
 
         return $query->getResult();
-
     }
 }

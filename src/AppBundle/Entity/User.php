@@ -129,7 +129,6 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $surveys;
 
-
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -390,7 +389,6 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->surveys;
     }
-
 
     public function isAccountNonExpired()
     {

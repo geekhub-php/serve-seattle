@@ -11,16 +11,14 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 /**
- * Class SurveyType
- * @package AppBundle\Form
+ * Class SurveyType.
 
  */
 class SurveyType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
-     *
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -29,7 +27,7 @@ class SurveyType extends AbstractType
                 'class' => 'AppBundle:User',
                 'label' => 'Choose intern',
                 'choice_label' => 'firstName',
-                'choice_value' => 'email'
+                'choice_value' => 'email',
             ))
             ->add('created_at', DateTimeType::class, array(
                 'disabled' => true,
@@ -44,17 +42,16 @@ class SurveyType extends AbstractType
             if (!$survey || $survey->getId() === null) {
                 $form->remove('created_at');
                 $form->remove('updated_at');
-            }else{
+            } else {
                 $form->remove('user');
             }
         });
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Survey'
+            'data_class' => 'AppBundle\Entity\Survey',
         ));
     }
 }

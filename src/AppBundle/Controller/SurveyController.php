@@ -2,18 +2,14 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use AppBundle\Repository\SurveyRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class SurveyController extends Controller
 {
@@ -27,8 +23,9 @@ class SurveyController extends Controller
         $surveys = $em->getRepository(Survey::class)->findSurveyByStatus('submited');
         $surveyTypes = $em->getRepository(SurveyType::class)->findAll();
         dump($surveys);
+
         return [
-            "surveys" => $surveys, "survey_types" => $surveyTypes
+            'surveys' => $surveys, 'survey_types' => $surveyTypes,
         ];
     }
 
@@ -41,8 +38,9 @@ class SurveyController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $fields = $em->getRepository(SurveyAnswer::class)->findAnswersBySurvey($survey);
+
         return [
-            "survey" => $survey, 'fields' => $fields
+            'survey' => $survey, 'fields' => $fields,
         ];
     }
 
@@ -66,7 +64,7 @@ class SurveyController extends Controller
         }
 
         return $this->render('@App/surveyform.html.twig', array(
-            'form' => $form->createView(), 'type' => $surveyType
+            'form' => $form->createView(), 'type' => $surveyType,
         ));
     }
 
@@ -90,9 +88,7 @@ class SurveyController extends Controller
         }
 
         return $this->render('@App/surveyform.html.twig', array(
-            'form' => $form->createView(), 'type' => $surveyType
+            'form' => $form->createView(), 'type' => $surveyType,
         ));
     }
-
-
 }
