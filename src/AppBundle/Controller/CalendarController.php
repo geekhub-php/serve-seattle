@@ -19,8 +19,6 @@ class CalendarController extends Controller
     {
         $result = $this->get('app.google_calendar')->getEventList();
 
-        dump($result);die;
-
         return new JsonResponse($result);
     }
 
@@ -53,6 +51,7 @@ class CalendarController extends Controller
 
     /**
      * @param $id
+     * @Route("/schedule/event/{id}")
      * @return JsonResponse
      */
     public function singleEventAction($id)
@@ -63,6 +62,27 @@ class CalendarController extends Controller
             return $this->json(['error' => 'Event not found'], 404);
         }
         return $this->json($event, 200);
+    }
+
+    /**
+     * @param User $user
+     * @Route("/schedule/event/user/{id}")
+     * @return JsonResponse
+     */
+    public function usersEventAction(User $user)
+    {
+        $events = $user->getEvents();
+
+        $googleEvents = [];
+
+        $calendar = $this->get('app.google_calendar');
+        foreach ($events as $event){
+            $googleEvents[] = $calendar->getEventById($event->getGoogleId());
+        }
+        if (!$googleEvents){
+            return $this->json(['error' => 'Events not found'], 404);
+        }
+        return $this->json($googleEvents);
     }
 
 }
