@@ -42,16 +42,17 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/activate/{id}", name="activate_user")
+     * @Route("/user/activate", name="activate_user")
      * @Template("@App/add.html.twig")
      *
      * @Method("PUT")
-     * @param  User $user
+     * @param  Request $request
      * @return RedirectResponse
      */
-    public function userActivateAction(User $user)
+    public function userActivateAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($request->get('id'));
         $user->setStatus($user->isEnabled() ? false : true);
         $em->persist($user);
         $em->flush();

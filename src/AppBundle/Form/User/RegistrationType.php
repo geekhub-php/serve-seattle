@@ -69,7 +69,7 @@ class RegistrationType extends AbstractType
                 'required' => false
             ))
             ->add('Register', SubmitType::class, array(
-                'attr' => ['class' => 'btn btn-primary']
+                'attr' => ['class' => 'btn btn-success']
             ));
     }
 
