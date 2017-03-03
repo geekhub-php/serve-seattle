@@ -2,6 +2,9 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
+logout:
+    path: /logout
+
 api:
     resource: "@AppBundle/Controller/Api/"
     type:     annotation

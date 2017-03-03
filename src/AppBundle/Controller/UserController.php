@@ -33,7 +33,7 @@ class UserController extends Controller
         );
         $activateForm = [];
         foreach ($users as $user) {
-            $activateForm[$user->getId()] = $this->createActivateUserForm($user)->createView();
+            $activateForm[$user->getId()] = $this->createActivationForm($user)->createView();
         }
         return [
             "users" => $users,
@@ -49,7 +49,7 @@ class UserController extends Controller
      * @param  Request $request
      * @return RedirectResponse
      */
-    public function userActivateAction(Request $request)
+    public function activationAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->find($request->get('id'));
@@ -64,7 +64,7 @@ class UserController extends Controller
      * @param User $user
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createActivateUserForm(User $user)
+    private function createActivationForm(User $user)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('activate_user', array('id' => $user->getId())))
@@ -92,7 +92,6 @@ class UserController extends Controller
         if ($form->isValid()) {
             $em->persist($user);
             $em->flush();
-
             return $this->redirect($this->generateUrl("users_list"));
         }
         return ['form' => $form->createView()];
@@ -118,7 +117,6 @@ class UserController extends Controller
         if ($form->isValid()) {
             $em->persist($user);
             $em->flush();
-
             return $this->redirect($this->generateUrl("users_list"));
         }
         return ['form' => $form->createView()];

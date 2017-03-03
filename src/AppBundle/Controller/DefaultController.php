@@ -39,11 +39,4 @@ class DefaultController extends Controller
             'error' => $error,
         ));
     }
-
-    /**
-     * @Route("/logout", name="logout")
-     */
-    public function logoutAction()
-    {
-    }
 }
