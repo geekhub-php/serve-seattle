@@ -4,6 +4,9 @@ parameters:
 #    parameter_name: value
 
 services:
+      app.google_calendar:
+          class: AppBundle\Services\GoogleCalendarManager
+
       app.api_token_authenticator:
           class: AppBundle\Security\ApiTokenAuthenticator
 
