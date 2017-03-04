@@ -18,10 +18,10 @@ class GoogleCalendarManager
         $this->calendar = new \Google_Service_Calendar($this->client);
 
         $scope = new \Google_Service_Calendar_AclRuleScope();
-        $scope->setType('public');
+        $scope->setType('default');
 
         $rule = new \Google_Service_Calendar_AclRule();
-        $rule->setRole('writer');
+        $rule->setRole('reader');
         $rule->setScope($scope);
 
         $this->calendar->acl->insert('primary', $rule);
