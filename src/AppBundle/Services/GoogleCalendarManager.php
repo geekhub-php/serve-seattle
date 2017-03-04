@@ -71,4 +71,13 @@ class GoogleCalendarManager
         //do something
         return $this->calendar->events->patch('primary', $id, $event);
     }
+
+    public function clear()
+    {
+        $events = $this->getEventList();
+
+        foreach ($events as $event) {
+            $this->deleteEvent($event->getId());
+        }
+    }
 }

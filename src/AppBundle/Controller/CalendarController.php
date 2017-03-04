@@ -14,6 +14,7 @@ class CalendarController extends Controller
     /**
      * @Route("/schedule/events")
      * @Method("GET")
+     *
      * @return JsonResponse
      */
     public function eventsListAction()
@@ -28,6 +29,7 @@ class CalendarController extends Controller
      * @param User $user
      * @Route("/schedule/event/new/{id}")
      * @Method({"GET", "POST"})
+     *
      * @return JsonResponse
      */
     public function newEventAction(User $user)
@@ -59,6 +61,7 @@ class CalendarController extends Controller
      * @param $id
      * @Route("/schedule/event/{id}")
      * @Method("GET")
+     *
      * @return JsonResponse
      */
     public function singleEventAction($id)
@@ -79,6 +82,7 @@ class CalendarController extends Controller
      * @param User $user
      * @Route("/schedule/event/user/{id}")
      * @Method("GET")
+     *
      * @return JsonResponse
      */
     public function usersEventAction(User $user)
@@ -104,27 +108,41 @@ class CalendarController extends Controller
 
     /**
      * @param $id
-     * @Route("/schedule/event/{id}")
-     * @Method("DELETE")
+     * @Route("/schedule/event/remove/{id}")
+     *
      * @return JsonResponse
      */
     public function removeEventAction($id)
     {
         $result = $this->get('app.google_calendar')
             ->deleteEvent($id);
+
         return $this->json($result);
     }
 
     /**
      * @param $id
-     * @Route("/schedule/event/{id}")
-     * @Method("PATCH")
+     * @Route("/schedule/event/edit/{id}")
+     *
      * @return JsonResponse
      */
     public function editEventAction($id)
     {
         $result = $this->get('app.google_calendar')
             ->editEvent($id);
+
+        return $this->json($result);
+    }
+
+    /**
+     * FOR DEV ONLY.
+     *
+     * @Route("/schedule/clear")
+     */
+    public function clearAction()
+    {
+        $result = $this->get('app.google_calendar')->clear();
+
         return $this->json($result);
     }
 }
