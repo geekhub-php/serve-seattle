@@ -37,10 +37,7 @@ class CalendarController extends Controller
         $result = $this->get('app.google_calendar')
             ->newEvent();
         if (!$result) {
-            return $this->json([
-                'error' => 'Event has not been created',
-            ],
-                412);
+            return $this->json(['error' => 'Event has not been created'], 412);
         }
         $em = $this->getDoctrine()->getManager();
         $event = new Event();
@@ -69,10 +66,7 @@ class CalendarController extends Controller
         $event = $this->get('app.google_calendar')
             ->getEventById($id);
         if (!$event) {
-            return $this->json([
-                'error' => 'Event not found',
-            ],
-                404);
+            return $this->json(['error' => 'Event not found'], 404);
         }
 
         return $this->json($event, 200);
@@ -97,10 +91,7 @@ class CalendarController extends Controller
                 ->getEventById($event->getGoogleId());
         }
         if (!$googleEvents) {
-            return $this->json([
-                'error' => 'Events not found',
-            ],
-                404);
+            return $this->json(['error' => 'Events not found'], 404);
         }
 
         return $this->json($googleEvents);
