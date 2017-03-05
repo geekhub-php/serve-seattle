@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * SurveyType.
@@ -34,6 +35,7 @@ class SurveyType
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, unique=true)
+     * @Groups({"group1"})
      */
     private $name;
 
@@ -46,6 +48,7 @@ class SurveyType
     /**
      * @var ArrayCollection[SurveyQuestion]
      * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="surveyType")
+     * @Groups({"group3"})
      */
     private $questions;
 

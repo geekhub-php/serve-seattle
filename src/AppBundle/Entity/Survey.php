@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Survey.
@@ -22,6 +23,7 @@ class Survey
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"group1"})
      */
     private $id;
 
@@ -30,6 +32,7 @@ class Survey
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="SurveyType", inversedBy="surveys")
+     * @Groups({"group1"})
      */
     private $type;
 
@@ -41,6 +44,7 @@ class Survey
      *      max = 500
      * )
      * @ORM\Column(type="string")
+     * @Groups({"group1"})
      */
     private $status = 'current';
 
@@ -61,6 +65,7 @@ class Survey
     /**
      * @var ArrayCollection[SurveyAnswer]
      * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey")
+     * @Groups({"group2"})
      */
     private $answers;
 
@@ -185,5 +190,27 @@ class Survey
     public function getAnswers()
     {
         return $this->answers;
+    }
+
+    /**
+     * Get DateTime.
+     *
+     * @return \DateTime
+     * @Groups({"group1", "group2"})
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Get DateTime.
+     *
+     * @return \DateTime
+     * @Groups({"group1", "group2"})
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

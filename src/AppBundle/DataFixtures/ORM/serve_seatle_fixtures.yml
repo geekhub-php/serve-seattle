@@ -38,6 +38,9 @@ AppBundle\Entity\SurveyQuestion:
     survey_quest2:
         title: How well did internship meet your expectation?
         surveyType: '@survey_type2'
+    survey_quest3:
+        title: What do you think about your internship?
+        surveyType: '@survey_type3'
 
 AppBundle\Entity\Survey:
     survey1:
@@ -50,6 +53,10 @@ AppBundle\Entity\Survey:
         status: 'submited'
         user: '@intern1'
         questions: '@survey_quest2'
+    survey3:
+        type: '@survey_type3'
+        user: '@intern2'
+        questions: '@survey_quest3'
 
 AppBundle\Entity\SurveyAnswer:
     answer1:

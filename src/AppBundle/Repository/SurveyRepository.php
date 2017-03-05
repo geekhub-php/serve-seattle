@@ -15,7 +15,18 @@ class SurveyRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder('s')
             ->where('s.status = :status')
             ->setParameter('status', $status)
-            ->orderBy('s.updatedAt', 'ASC')
+            ->orderBy('s.updatedAt', 'DESC')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findSurveyByUser($user)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->where('s.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('s.updatedAt', 'DESC')
             ->getQuery();
 
         return $query->getResult();

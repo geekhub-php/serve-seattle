@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * SurveyAnswer.
@@ -26,9 +27,8 @@ class SurveyAnswer
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @Assert\Type("string")
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $type;
 
@@ -37,6 +37,7 @@ class SurveyAnswer
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="answers")
+     * @Groups({"group2"})
      */
     private $question;
 
@@ -56,6 +57,7 @@ class SurveyAnswer
      *      max = 1000
      * )
      * @ORM\Column(name="body", type="text")
+     * @Groups({"group2"})
      */
     private $content;
 

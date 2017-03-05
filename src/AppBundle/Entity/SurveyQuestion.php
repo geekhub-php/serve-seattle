@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * SurveyQuestion.
@@ -22,6 +23,7 @@ class SurveyQuestion
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"group2", "group3"})
      */
     private $id;
 
@@ -33,6 +35,7 @@ class SurveyQuestion
      *      max = 500
      * )
      * @ORM\Column(type="string")
+     * @Groups({"group2", "group3"})
      */
     private $title;
 

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 class SurveyController extends Controller
 {
     /**
+     * @param Request $request
      * @Route("/surveys", name="surveys")
      * @Template("@App/surveys.html.twig")
      */
@@ -22,7 +23,6 @@ class SurveyController extends Controller
         $em = $this->getDoctrine()->getManager();
         $surveys = $em->getRepository(Survey::class)->findSurveyByStatus('submited');
         $surveyTypes = $em->getRepository(SurveyType::class)->findAll();
-        dump($surveys);
 
         return [
             'surveys' => $surveys, 'survey_types' => $surveyTypes,
@@ -30,6 +30,7 @@ class SurveyController extends Controller
     }
 
     /**
+     * @param Survey $survey
      * @Route("/survey/{id}", name="survey_get")
      * @Template("@App/survey.html.twig")
      * @ParamConverter("survey", class="AppBundle:Survey")
@@ -45,6 +46,7 @@ class SurveyController extends Controller
     }
 
     /**
+     * @param Request $request, SurveyType $surveyType
      * @Route("/survey/create/{survey_type}", name="survey_create")
      * @ParamConverter("surveyType", options={"mapping": {"survey_type": "name"}})
      */
@@ -69,6 +71,7 @@ class SurveyController extends Controller
     }
 
     /**
+     * @param Request $request, Survey $survey
      * @Route("/survey/delete/{id}", name="survey_delete")
      * @ParamConverter("survey", class="AppBundle:Survey")
      */
