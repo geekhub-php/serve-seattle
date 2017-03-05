@@ -14,11 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 class SurveyController extends Controller
 {
     /**
-     * @param Request $request
      * @Route("/surveys", name="surveys")
      * @Template("@App/surveys.html.twig")
      */
-    public function surveysAction(Request $request)
+    public function surveysAction()
     {
         $em = $this->getDoctrine()->getManager();
         $surveys = $em->getRepository(Survey::class)->findSurveyByStatus('submited');

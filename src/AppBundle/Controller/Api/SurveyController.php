@@ -33,7 +33,8 @@ class SurveyController extends Controller
 
         $json = $serializer->serialize(
             $surveys,
-            'json', array('groups' => array('group1'))
+            'json',
+            array('groups' => array('group1'))
         );
         $response = new Response($json, Response::HTTP_OK);
         $response->headers->set('Content-Type', 'application/json');
@@ -53,7 +54,6 @@ class SurveyController extends Controller
         if (!$user) {
             return $this->json(['message' => 'User is not authorized'], 401);
         }
-        $em = $this->getDoctrine()->getManager();
 
         if (!$survey) {
             return $this->json(['message' => 'No surveys'], 404);
@@ -62,12 +62,14 @@ class SurveyController extends Controller
         if ($survey->getStatus() == 'submited') {
             $json = $serializer->serialize(
                 $survey,
-                'json', array('groups' => array('group1', 'group2'))
+                'json',
+                array('groups' => array('group1', 'group2'))
             );
         } else {
             $json = $serializer->serialize(
                 $survey,
-                'json', array('groups' => array('group1', 'group3'))
+                'json',
+                array('groups' => array('group1', 'group3'))
             );
         }
 
@@ -92,21 +94,22 @@ class SurveyController extends Controller
         if (!$survey || $survey->getStatus() == 'submited') {
             return $this->json(['message' => 'No survey'], 404);
         }
+        $questKey = array();
         foreach ($survey->getType()->getQuestions() as $question) {
-            $quest_key[] = $question->getId();
+            $questKey[] = $question->getId();
         }
         $data = json_decode($request->getContent(), true);
         $em = $this->getDoctrine()->getManager();
-        foreach ($quest_key as $key) {
+        foreach ($questKey as $key) {
             $answer = $data[$key];
             if ($answer == null) {
                 return $this->json(['message' => 'Wrong question id'], 400);
             }
-            $new_answer = new SurveyAnswer();
-            $new_answer->setSurvey($survey);
-            $new_answer->setQuestion($em->getRepository(SurveyQuestion::class)->find($key));
-            $new_answer->setContent($answer);
-            $em->persist($new_answer);
+            $newAnswer = new SurveyAnswer();
+            $newAnswer->setSurvey($survey);
+            $newAnswer->setQuestion($em->getRepository(SurveyQuestion::class)->find($key));
+            $newAnswer->setContent($answer);
+            $em->persist($newAnswer);
         }
         $survey->setStatus('submited');
         $em->flush();
