@@ -65,7 +65,8 @@ class SurveyController extends Controller
                 'json',
                 array('groups' => array('group1', 'group2'))
             );
-        } else {
+        }
+        if ($survey->getStatus() == 'current') {
             $json = $serializer->serialize(
                 $survey,
                 'json',
