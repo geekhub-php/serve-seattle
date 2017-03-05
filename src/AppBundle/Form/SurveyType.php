@@ -18,7 +18,7 @@ class SurveyType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     *
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -39,11 +39,11 @@ class SurveyType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $survey = $event->getData();
             $form = $event->getForm();
-            if (!$survey) {
+            if ($survey->getUser() === null) {
                 $form->remove('created_at');
                 $form->remove('updated_at');
             }
-            if($survey) {
+            if ($survey->getUser() !== null) {
                 $form->remove('user');
             }
         });
