@@ -49,10 +49,21 @@ class GoogleCalendarManager implements GoogleCalendarInterface
         return $this->calendar->events->delete('primary', $id);
     }
 
-    public function editEvent($id)
+    public function editEvent($id, $data)
     {
         $event = $this->getEventById($id);
-        //do something
+        $event->setSummary($data['title']);
+        $event->setDescription($data['description']);
+        $event->setLocation($data['location']);
+        $event->setVisibility('public');
+
+        $start = new \Google_Service_Calendar_EventDateTime();
+        $start->setDateTime($data['start']);
+        $event->setStart($start);
+
+        $end = new \Google_Service_Calendar_EventDateTime();
+        $end->setDateTime($data['end']);
+        $event->setEnd($end);
         return $this->calendar->events->patch('primary', $id, $event);
     }
 

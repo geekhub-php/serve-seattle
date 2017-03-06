@@ -113,15 +113,16 @@ class CalendarController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param $id
      * @Route("/schedule/event/edit/{id}")
-     *
      * @return JsonResponse
      */
-    public function editEventAction($id)
+    public function editEventAction(Request $request, $id)
     {
+        $data = $request->getContent();
         $result = $this->get('app.google_calendar')
-            ->editEvent($id);
+            ->editEvent($id, json_decode($data, true));
 
         return $this->json($result);
     }

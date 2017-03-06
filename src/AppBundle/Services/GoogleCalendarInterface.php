@@ -31,8 +31,9 @@ interface GoogleCalendarInterface
 
     /**
      * @param $id
+     * @param $data
      * Edit the Event found by id.
      * Returns message and status code
      */
-    public function editEvent($id);
+    public function editEvent($id, $data);
 }
