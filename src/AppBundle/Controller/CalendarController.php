@@ -7,6 +7,7 @@ use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CalendarController extends Controller
@@ -26,16 +27,18 @@ class CalendarController extends Controller
     }
 
     /**
-     * @param User $user
+     * @param Request $request
+     * @param User    $user
      * @Route("/schedule/event/new/{id}")
      * @Method({"GET", "POST"})
      *
      * @return JsonResponse
      */
-    public function newEventAction(User $user)
+    public function newEventAction(Request $request, User $user)
     {
+        $data = $request->getContent();
         $result = $this->get('app.google_calendar')
-            ->createEvent();
+            ->createEvent(json_decode($data, true));
         if (!$result) {
             return $this->json(['error' => 'Event has not been created'], 412);
         }

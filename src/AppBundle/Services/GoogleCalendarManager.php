@@ -15,17 +15,17 @@ class GoogleCalendarManager implements GoogleCalendarInterface
     {
         $event = new \Google_Service_Calendar_Event();
 
-        $event->setSummary('TITLE');
-        $event->setDescription('DESCRIPTION');
-        $event->setLocation('God know where');
+        $event->setSummary($data['title']);
+        $event->setDescription($data['description']);
+        $event->setLocation($data['location']);
         $event->setVisibility('public');
 
         $start = new \Google_Service_Calendar_EventDateTime();
-        $start->setDateTime('2017-03-07T09:00:00-07:00');
+        $start->setDateTime($data['start']);
         $event->setStart($start);
 
         $end = new \Google_Service_Calendar_EventDateTime();
-        $end->setDateTime('2017-03-07T09:00:00-07:00');
+        $end->setDateTime($data['end']);
         $event->setEnd($end);
 
         return $this->calendar->events->insert('primary', $event);
