@@ -64,6 +64,7 @@ class GoogleCalendarManager implements GoogleCalendarInterface
         $end = new \Google_Service_Calendar_EventDateTime();
         $end->setDateTime($data['end']);
         $event->setEnd($end);
+
         return $this->calendar->events->patch('primary', $id, $event);
     }
 

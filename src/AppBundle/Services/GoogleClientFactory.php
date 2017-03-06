@@ -43,13 +43,12 @@ class GoogleClientFactory
 
     private function getCredentials()
     {
-        if (file_exists(__DIR__.'/../../../app/config/credentials/credentials.json')) {
-            $this->path = __DIR__.'/../../../app/config/credentials/credentials.json';
-
-            return $this->path;
-        } else {
+        if (!file_exists(__DIR__.'/../../../app/config/credentials/credentials.json')) {
             throw new \Google_Exception('Credentials is not valid');
         }
+        $this->path = __DIR__.'/../../../app/config/credentials/credentials.json';
+
+        return $this->path;
     }
 
     public function setScope($type, $role)
