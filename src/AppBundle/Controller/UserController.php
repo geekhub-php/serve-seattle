@@ -40,6 +40,7 @@ class UserController extends Controller
             ])
                 ->createView();
         }
+
         return [
             "users" => $users,
             'activationForm' => $activationForm
@@ -67,8 +68,8 @@ class UserController extends Controller
         if ($form->isValid()) {
             $em->persist($user);
             $em->flush();
-            return $this->redirect($this->generateUrl("users_list"));
         }
+
         return $this->redirect($this->generateUrl("users_list"));
     }
 
@@ -91,8 +92,10 @@ class UserController extends Controller
         if ($form->isValid()) {
             $em->persist($user);
             $em->flush();
+
             return $this->redirect($this->generateUrl("users_list"));
         }
+
         return ['form' => $form->createView()];
     }
 
@@ -116,8 +119,10 @@ class UserController extends Controller
         if ($form->isValid()) {
             $em->persist($user);
             $em->flush();
+
             return $this->redirect($this->generateUrl("users_list"));
         }
+
         return ['form' => $form->createView()];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -24,14 +25,11 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
 
     /**
      * @param ParameterBag $params
-     * @return array
+     * @return Query
      */
-    public function selectUsersByParams(ParameterBag $params):array
+    public function selectUsersByParams(ParameterBag $params):Query
     {
-        $postsQuery = $this->createQueryBuilder('Users')
-            ->select('u')
-            ->from('AppBundle:User', 'u')
-            ->orderBy('u.createdAt', preg_match('/asc/i', $params->get('order')) ? 'ASC' : 'DESC');
+        $postsQuery = $this->createQueryBuilder('u');
 
         if ($params->has('name') && $params->get('name')) {
             $postsQuery->where(
@@ -43,6 +41,6 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
                 ->setParameter('name', '%' . $params->get('name') . '%');
         }
 
-        return $postsQuery->getQuery()->getResult();
+        return $postsQuery->getQuery();
     }
 }

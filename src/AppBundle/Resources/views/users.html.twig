@@ -45,8 +45,8 @@
                 <th>
                     First Name
                 </th>
-                <th>
-                    Registration date
+                <th {% if users.isSorted('u.createdAt') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(users, 'Registration date', 'u.createdAt') }}
                 </th>
                 <th>
                     Status
