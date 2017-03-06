@@ -389,6 +389,30 @@ class User implements UserInterface, \Serializable
         return $this->answers;
     }
 
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     *
+     * @return User
+     */
+    public function setEnabled(bool $enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
@@ -420,125 +444,5 @@ class User implements UserInterface, \Serializable
             $this->lastName,
             $this->email,
             $this->enabled) = unserialize($serialized);
-    }
-
-    /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     *
-     * @return User
-     */
-    public function setEnabled(bool $enabled)
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    /**
-     * Get enabled
-     *
-     * @return boolean
-     */
-    public function isEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * Add event
-     *
-     * @param \AppBundle\Entity\Event $event
-     *
-     * @return User
-     */
-    public function addEvent(\AppBundle\Entity\Event $event)
-    {
-        $this->events[] = $event;
-
-        return $this;
-    }
-
-    /**
-     * Remove event
-     *
-     * @param \AppBundle\Entity\Event $event
-     */
-    public function removeEvent(\AppBundle\Entity\Event $event)
-    {
-        $this->events->removeElement($event);
-    }
-
-    /**
-     * Add formRequest
-     *
-     * @param \AppBundle\Entity\FormRequest $formRequest
-     *
-     * @return User
-     */
-    public function addFormRequest(\AppBundle\Entity\FormRequest $formRequest)
-    {
-        $this->formRequests[] = $formRequest;
-
-        return $this;
-    }
-
-    /**
-     * Remove formRequest
-     *
-     * @param \AppBundle\Entity\FormRequest $formRequest
-     */
-    public function removeFormRequest(\AppBundle\Entity\FormRequest $formRequest)
-    {
-        $this->formRequests->removeElement($formRequest);
-    }
-
-    /**
-     * Add survey
-     *
-     * @param \AppBundle\Entity\Survey $survey
-     *
-     * @return User
-     */
-    public function addSurvey(\AppBundle\Entity\Survey $survey)
-    {
-        $this->surveys[] = $survey;
-
-        return $this;
-    }
-
-    /**
-     * Remove survey
-     *
-     * @param \AppBundle\Entity\Survey $survey
-     */
-    public function removeSurvey(\AppBundle\Entity\Survey $survey)
-    {
-        $this->surveys->removeElement($survey);
-    }
-
-    /**
-     * Add answer
-     *
-     * @param \AppBundle\Entity\SurveyAnswer $answer
-     *
-     * @return User
-     */
-    public function addAnswer(\AppBundle\Entity\SurveyAnswer $answer)
-    {
-        $this->answers[] = $answer;
-
-        return $this;
-    }
-
-    /**
-     * Remove answer
-     *
-     * @param \AppBundle\Entity\SurveyAnswer $answer
-     */
-    public function removeAnswer(\AppBundle\Entity\SurveyAnswer $answer)
-    {
-        $this->answers->removeElement($answer);
     }
 }

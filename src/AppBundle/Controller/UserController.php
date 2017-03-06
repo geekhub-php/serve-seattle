@@ -33,9 +33,9 @@ class UserController extends Controller
         );
         $activationForm = [];
         foreach ($users as $user) {
-            $activationForm[$user->getId()] = $form = $this->createForm(ActivationType::class, $user, [
+            $activationForm[$user->getId()] = $this->createForm(ActivationType::class, $user, [
                 'method' => "PUT",
-                'action' => $this->generateUrl('activate_user', ['id' => $user->getId()]),
+                'action' => $this->generateUrl('activate_user', array('id' => $user->getId())),
                 'validation_groups' => array('edit'),
             ])
                 ->createView();
@@ -60,10 +60,9 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(ActivationType::class, $user, [
             'method' => "PUT",
-            'action' => $this->generateUrl('activate_user'),
+            'action' => $this->generateUrl('activate_user', array('id' => $user->getId())),
             'validation_groups' => array('edit'),
-        ])
-            ->createView();
+        ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em->persist($user);
@@ -71,7 +70,6 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl("users_list"));
         }
         return $this->redirect($this->generateUrl("users_list"));
-
     }
 
     /**

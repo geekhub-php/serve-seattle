@@ -74,7 +74,7 @@
                     </td>
                     <td>
                         {% if activationForm[user.id] is defined %}
-                            {{ form_start(activationForm[user.id], {'attr' : {'class' : 'activate' }}) }}
+                            {{ form_start(activationForm[user.id]) }}
                             {{ form_end(activationForm[user.id]) }}
                         {% endif %}
                     </td>
@@ -98,11 +98,13 @@
 {% endblock %}
 
 {% block javascripts %}
-    {#<script>#}
-        {#$('document').ready(function () {#}
-            {#$('.activate').submit(function() {#}
-               {#return confirm("Are you really want to activate/deactivate user?");#}
-            {#})#}
-        {#});#}
-    {#</script>#}
+    <script>
+        $('document').ready(function () {
+            $('.activate').click(function() {
+               if(confirm("Are you really want to activate/deactivate user?")) {
+                   this.parentNode.parentNode.submit();
+               }
+            })
+        });
+    </script>
 {% endblock %}

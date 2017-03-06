@@ -28,10 +28,8 @@ class ActivationType extends AbstractType
         $builder
             ->add('enabled', CheckboxType::class, array(
                 'required'    => false,
+                'attr'  => ['class' => 'activate'],
                 'label'    => false,
-            ))
-            ->add('Save', SubmitType::class, array(
-                'attr' => ['class' => 'btn btn-primary']
             ))
         ;
     }
