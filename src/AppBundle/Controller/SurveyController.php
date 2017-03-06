@@ -17,14 +17,16 @@ class SurveyController extends Controller
      * @Route("/surveys", name="surveys")
      * @Template("@App/surveys.html.twig")
      */
-    public function surveysAction()
+    public function surveysAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $surveys = $em->getRepository(Survey::class)->findSurveyByStatus('submited');
         $surveyTypes = $em->getRepository(SurveyType::class)->findAll();
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
 
         return [
-            'surveys' => $surveys, 'survey_types' => $surveyTypes,
+            'surveys' => $pagination, 'survey_types' => $surveyTypes,
         ];
     }
 
