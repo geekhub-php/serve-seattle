@@ -35,7 +35,7 @@ class CalendarController extends Controller
     public function newEventAction(User $user)
     {
         $result = $this->get('app.google_calendar')
-            ->newEvent();
+            ->createEvent();
         if (!$result) {
             return $this->json(['error' => 'Event has not been created'], 412);
         }
@@ -49,9 +49,7 @@ class CalendarController extends Controller
         $em->persist($event);
         $em->flush();
 
-        return $this->json([
-            'success' => 'Event created',
-        ], 201);
+        return $this->json(['success' => 'Event created'], 201);
     }
 
     /**

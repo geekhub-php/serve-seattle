@@ -2,32 +2,16 @@
 
 namespace AppBundle\Services;
 
-class GoogleCalendarManager
+class GoogleCalendarManager implements GoogleCalendarInterface
 {
-    private $client;
-
     private $calendar;
 
-    public function __construct()
+    public function __construct(GoogleClientFactory $factory)
     {
-        $this->client = new \Google_Client();
-        $this->client->setApplicationName('seattle');
-        $this->client->setScopes([\Google_Service_Calendar::CALENDAR]);
-        $this->client->setAuthConfig(__DIR__.'/../../../app/config/credentials/credentials.json');
-
-        $this->calendar = new \Google_Service_Calendar($this->client);
-
-        $scope = new \Google_Service_Calendar_AclRuleScope();
-        $scope->setType('default');
-
-        $rule = new \Google_Service_Calendar_AclRule();
-        $rule->setRole('reader');
-        $rule->setScope($scope);
-
-        $this->calendar->acl->insert('primary', $rule);
+        $this->calendar = $factory->createCalendar();
     }
 
-    public function newEvent()
+    public function createEvent($data = null)
     {
         $event = new \Google_Service_Calendar_Event();
 
@@ -37,11 +21,11 @@ class GoogleCalendarManager
         $event->setVisibility('public');
 
         $start = new \Google_Service_Calendar_EventDateTime();
-        $start->setDateTime('2017-03-10T09:00:00-07:00');
+        $start->setDateTime('2017-03-07T09:00:00-07:00');
         $event->setStart($start);
 
         $end = new \Google_Service_Calendar_EventDateTime();
-        $end->setDateTime('2017-03-11T09:00:00-07:00');
+        $end->setDateTime('2017-03-07T09:00:00-07:00');
         $event->setEnd($end);
 
         return $this->calendar->events->insert('primary', $event);
