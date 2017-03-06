@@ -101,9 +101,10 @@
     <script>
         $('document').ready(function () {
             $('.activate').click(function() {
-               if(confirm("Are you really want to activate/deactivate user?")) {
+               if (confirm("Are you really want to activate/deactivate user?"))
                    this.parentNode.parentNode.submit();
-               }
+                else
+                    return false;
             })
         });
     </script>
