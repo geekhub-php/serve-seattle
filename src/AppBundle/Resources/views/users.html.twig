@@ -73,10 +73,9 @@
                         {{ user.createdAt | date('m/d/Y') }}
                     </td>
                     <td>
-                        {% if activateForm[user.id] is defined %}
-                            {{ form_start(activateForm[user.id], {'attr' : {'class' : 'activate' }}) }}
-                            {{ form_widget(activateForm[user.id].submit, { 'label' : ' ' ,'attr' : {'class' : user.isEnabled ? 'fa fa-check-circle' : 'fa fa-times-circle'  }}) }}
-                            {{ form_end(activateForm[user.id]) }}
+                        {% if activationForm[user.id] is defined %}
+                            {{ form_start(activationForm[user.id], {'attr' : {'class' : 'activate' }}) }}
+                            {{ form_end(activationForm[user.id]) }}
                         {% endif %}
                     </td>
                     <td>
@@ -99,11 +98,11 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        $('document').ready(function () {
-            $('.activate').submit(function() {
-               return confirm("Are you really want to activate/deactivate user?");
-            })
-        });
-    </script>
+    {#<script>#}
+        {#$('document').ready(function () {#}
+            {#$('.activate').submit(function() {#}
+               {#return confirm("Are you really want to activate/deactivate user?");#}
+            {#})#}
+        {#});#}
+    {#</script>#}
 {% endblock %}

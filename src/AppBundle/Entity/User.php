@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @UniqueEntity("email")
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements UserInterface, \Serializable
 {
     use ORMBehaviors\Timestampable\Timestampable;
     /**
@@ -98,9 +98,10 @@ class User implements AdvancedUserInterface, \Serializable
     private $plainPassword;
 
     /**
+     * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $isActive = true;
+    private $enabled = true;
 
     /**
      * @var
@@ -305,26 +306,6 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param bool $status
-     *
-     * @return $this
-     */
-    public function setStatus($status)
-    {
-        $this->isActive = $status;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEnabled()
-    {
-        return $this->isActive;
-    }
-
-    /**
      * @param mixed $roles
      */
     public function setRoles($roles)
@@ -408,21 +389,6 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->answers;
     }
 
-    public function isAccountNonExpired()
-    {
-        return true;
-    }
-
-    public function isAccountNonLocked()
-    {
-        return true;
-    }
-
-    public function isCredentialsNonExpired()
-    {
-        return true;
-    }
-
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
@@ -441,7 +407,7 @@ class User implements AdvancedUserInterface, \Serializable
             $this->firstName,
             $this->lastName,
             $this->email,
-            $this->isActive,
+            $this->enabled,
         ));
     }
 
@@ -453,6 +419,126 @@ class User implements AdvancedUserInterface, \Serializable
             $this->firstName,
             $this->lastName,
             $this->email,
-            $this->isActive) = unserialize($serialized);
+            $this->enabled) = unserialize($serialized);
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     *
+     * @return User
+     */
+    public function setEnabled(bool $enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Add event
+     *
+     * @param \AppBundle\Entity\Event $event
+     *
+     * @return User
+     */
+    public function addEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \AppBundle\Entity\Event $event
+     */
+    public function removeEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Add formRequest
+     *
+     * @param \AppBundle\Entity\FormRequest $formRequest
+     *
+     * @return User
+     */
+    public function addFormRequest(\AppBundle\Entity\FormRequest $formRequest)
+    {
+        $this->formRequests[] = $formRequest;
+
+        return $this;
+    }
+
+    /**
+     * Remove formRequest
+     *
+     * @param \AppBundle\Entity\FormRequest $formRequest
+     */
+    public function removeFormRequest(\AppBundle\Entity\FormRequest $formRequest)
+    {
+        $this->formRequests->removeElement($formRequest);
+    }
+
+    /**
+     * Add survey
+     *
+     * @param \AppBundle\Entity\Survey $survey
+     *
+     * @return User
+     */
+    public function addSurvey(\AppBundle\Entity\Survey $survey)
+    {
+        $this->surveys[] = $survey;
+
+        return $this;
+    }
+
+    /**
+     * Remove survey
+     *
+     * @param \AppBundle\Entity\Survey $survey
+     */
+    public function removeSurvey(\AppBundle\Entity\Survey $survey)
+    {
+        $this->surveys->removeElement($survey);
+    }
+
+    /**
+     * Add answer
+     *
+     * @param \AppBundle\Entity\SurveyAnswer $answer
+     *
+     * @return User
+     */
+    public function addAnswer(\AppBundle\Entity\SurveyAnswer $answer)
+    {
+        $this->answers[] = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Remove answer
+     *
+     * @param \AppBundle\Entity\SurveyAnswer $answer
+     */
+    public function removeAnswer(\AppBundle\Entity\SurveyAnswer $answer)
+    {
+        $this->answers->removeElement($answer);
     }
 }

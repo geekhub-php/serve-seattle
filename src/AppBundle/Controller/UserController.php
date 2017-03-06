@@ -5,13 +5,13 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Form\User\EditType;
 use AppBundle\Form\User\RegistrationType;
+use AppBundle\Form\User\ActivationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class UserController extends Controller
 {
@@ -31,46 +31,47 @@ class UserController extends Controller
             $request->query->getInt('page', 1),
             10
         );
-        $activateForm = [];
+        $activationForm = [];
         foreach ($users as $user) {
-            $activateForm[$user->getId()] = $this->createActivationForm($user)->createView();
+            $activationForm[$user->getId()] = $form = $this->createForm(ActivationType::class, $user, [
+                'method' => "PUT",
+                'action' => $this->generateUrl('activate_user', ['id' => $user->getId()]),
+                'validation_groups' => array('edit'),
+            ])
+                ->createView();
         }
         return [
             "users" => $users,
-            'activateForm' => $activateForm
+            'activationForm' => $activationForm
         ];
     }
 
     /**
-     * @Route("/user/activate", name="activate_user")
+     * @Route("/user/activate/{id}", name="activate_user")
      * @Template("@App/add.html.twig")
      *
      * @Method("PUT")
      * @param  Request $request
+     * @param  User $user
      * @return RedirectResponse
      */
-    public function activationAction(Request $request)
+    public function activationAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($request->get('id'));
-        $user->setStatus($user->isEnabled() ? false : true);
-        $em->persist($user);
-        $em->flush();
+        $form = $this->createForm(ActivationType::class, $user, [
+            'method' => "PUT",
+            'action' => $this->generateUrl('activate_user'),
+            'validation_groups' => array('edit'),
+        ])
+            ->createView();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em->persist($user);
+            $em->flush();
+            return $this->redirect($this->generateUrl("users_list"));
+        }
         return $this->redirect($this->generateUrl("users_list"));
-    }
 
-    /**
-     * Creates a form to activate|deactivate User profile.
-     * @param User $user
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createActivationForm(User $user)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('activate_user', array('id' => $user->getId())))
-            ->setMethod('PUT')
-            ->add('submit', SubmitType::class)
-            ->getForm();
     }
 
     /**
