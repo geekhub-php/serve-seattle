@@ -29,16 +29,16 @@ class EditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class, array(
+            ->add('lastName', TextType::class, array(
                 'attr' => array(
-                    'placeholder' => 'firstName',
+                    'placeholder' => 'lastName',
                     'class' => 'form-control'
                 ),
                 'label' => false
             ))
-            ->add('lastName', TextType::class, array(
+            ->add('firstName', TextType::class, array(
                 'attr' => array(
-                    'placeholder' => 'lastName',
+                    'placeholder' => 'firstName',
                     'class' => 'form-control'
                 ),
                 'label' => false

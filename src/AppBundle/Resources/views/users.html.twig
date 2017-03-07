@@ -9,25 +9,12 @@
         Users
     </h1>
     <div>
-        <form method="get" class="filters">
-            <i class="fa fa-filter" aria-hidden="true"></i>
-            <select name="order">
-                <option {% if app.request.get('order') == 'desc' or not app.request.get('order') %}selected{% endif %} value="desc">
-                    desc
-                </option>
-                <option {% if app.request.get('order') == 'asc' %} selected {% endif %} value="asc">
-                    asc
-                </option>
-            </select>
-            <input name="name" placeholder="find">
-            <button type="submit">
-                <i class="fa fa-search " aria-hidden="true"></i> Search
-            </button>
-        </form>
-            <a href="{{ path('add_user') }}" class="pull-right">
-                <i class="fa fa-plus"></i>
-                Add
-            </a>
+        {{ form_start(filter) }}
+        {{ form_end(filter) }}
+        <a href="{{ path('add_user') }}" class="pull-right">
+            <i class="fa fa-plus"></i>
+            Add
+        </a>
     </div>
     <div class="row">
     {% if users|length %}
@@ -40,12 +27,12 @@
                     E-mail
                 </th>
                 <th>
-                    Last Name
+                    {{ knp_pagination_sortable(users, 'Last Name', 'u.lastName') }}
                 </th>
                 <th>
                     First Name
                 </th>
-                <th {% if users.isSorted('u.createdAt') %} class="sorted"{% endif %}>
+                <th>
                     {{ knp_pagination_sortable(users, 'Registration date', 'u.createdAt') }}
                 </th>
                 <th>

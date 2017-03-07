@@ -4,7 +4,6 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\Query;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * UserRepository.
@@ -24,21 +23,23 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
     }
 
     /**
-     * @param ParameterBag $params
+     * @param String $name
      * @return Query
      */
-    public function selectUsersByParams(ParameterBag $params):Query
+    public function selectUsersByParams(string $name):Query
     {
         $postsQuery = $this->createQueryBuilder('u');
-
-        if ($params->has('name') && $params->get('name')) {
+        if ($name) {
             $postsQuery->where(
                 $postsQuery->expr()->like('u.firstName', ':name')
             )
                 ->orWhere(
                     $postsQuery->expr()->like('u.lastName', ':name')
                 )
-                ->setParameter('name', '%' . $params->get('name') . '%');
+                ->orWhere(
+                    $postsQuery->expr()->like('u.email', ':name')
+                )
+                ->setParameter('name', '%' . $name . '%');
         }
 
         return $postsQuery->getQuery();

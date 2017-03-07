@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Filter;
+use AppBundle\Form\FilterType;
 use AppBundle\Form\User\EditType;
 use AppBundle\Form\User\RegistrationType;
 use AppBundle\Form\User\ActivationType;
@@ -25,9 +27,10 @@ class UserController extends Controller
     public function usersListAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $filter = $this->createForm(FilterType::class, new Filter);
         $paginator = $this->get('knp_paginator');
         $users = $paginator->paginate(
-            $em->getRepository(User::class)->selectUsersByParams($request->query),
+            $em->getRepository(User::class)->selectUsersByParams($request->get('name')),
             $request->query->getInt('page', 1),
             10
         );
@@ -43,7 +46,8 @@ class UserController extends Controller
 
         return [
             "users" => $users,
-            'activationForm' => $activationForm
+            "filter" => $filter->createView(),
+            "activationForm" => $activationForm
         ];
     }
 
