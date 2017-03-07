@@ -10,7 +10,7 @@ class ApiDefaultControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $json = '{"email":"moore.mafalda@rogahn.org",
+        $json = '{"email":"intern1@seattle.com",
         "password":"intern1"}';
 
         $client->request('POST', '/api/login', [], [], [], $json
