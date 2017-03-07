@@ -6,15 +6,11 @@ class GoogleClientFactory
 {
     private $path;
 
-    private $scope = 'default';
-
-    private $role = 'reader';
-
-    public function createCalendar()
+    public function createCalendar($scopeType, $role)
     {
         $calendar = new \Google_Service_Calendar($this->createClient());
 
-        $calendar->acl->insert('primary', $this->scope());
+        $calendar->acl->insert('primary', $this->aclRule($scopeType, $role));
 
         return $calendar;
     }
@@ -29,13 +25,13 @@ class GoogleClientFactory
         return $client;
     }
 
-    private function scope()
+    private function aclRule($scopeType, $role)
     {
         $scope = new \Google_Service_Calendar_AclRuleScope();
-        $scope->setType($this->scope);
+        $scope->setType($scopeType);
 
         $rule = new \Google_Service_Calendar_AclRule();
-        $rule->setRole($this->role);
+        $rule->setRole($role);
         $rule->setScope($scope);
 
         return $rule;
@@ -49,12 +45,5 @@ class GoogleClientFactory
         $this->path = __DIR__.'/../../../app/config/credentials/credentials.json';
 
         return $this->path;
-    }
-
-    public function setScope($type, $role)
-    {
-        $this->scope = $type;
-
-        $this->role = $role;
     }
 }

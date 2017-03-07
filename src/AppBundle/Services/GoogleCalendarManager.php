@@ -8,7 +8,7 @@ class GoogleCalendarManager implements GoogleCalendarInterface
 
     public function __construct(GoogleClientFactory $factory)
     {
-        $this->calendar = $factory->createCalendar();
+        $this->calendar = $factory->createCalendar('default', 'reader');
     }
 
     public function createEvent($data = null)
