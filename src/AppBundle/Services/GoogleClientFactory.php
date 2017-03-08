@@ -40,7 +40,7 @@ class GoogleClientFactory
     private function getCredentials()
     {
         if (!file_exists(__DIR__.'/../../../app/config/credentials/credentials.json')) {
-            throw new \Google_Exception('Credentials is not valid');
+            throw new \Google_Exception('Credentials is not found');
         }
         $this->path = __DIR__.'/../../../app/config/credentials/credentials.json';
 

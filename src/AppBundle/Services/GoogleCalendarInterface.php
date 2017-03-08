@@ -9,7 +9,7 @@ interface GoogleCalendarInterface
      * Create a new Google Calendar Event
      * Returns the event representation
      */
-    public function createEvent($data);
+    public function createEvent(array $data);
 
     /**
      * Returns the collection of events.
