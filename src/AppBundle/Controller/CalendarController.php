@@ -116,6 +116,7 @@ class CalendarController extends Controller
      * @param Request $request
      * @param $id
      * @Route("/schedule/event/edit/{id}")
+     *
      * @return JsonResponse
      */
     public function editEventAction(Request $request, $id)
