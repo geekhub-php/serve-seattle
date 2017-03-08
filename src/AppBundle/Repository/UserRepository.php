@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\Query;
+use AppBundle\Entity\Filter;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
@@ -23,13 +24,13 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
     }
 
     /**
-     * @param String $name
+     * @param Filter $filter
      * @return Query
      */
-    public function selectUsersByParams(string $name):Query
+    public function selectUsersByParams(Filter $filter):Query
     {
         $postsQuery = $this->createQueryBuilder('u');
-        if ($name) {
+        if ($filter->name) {
             $postsQuery->where(
                 $postsQuery->expr()->like('u.firstName', ':name')
             )
@@ -39,7 +40,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
                 ->orWhere(
                     $postsQuery->expr()->like('u.email', ':name')
                 )
-                ->setParameter('name', '%' . $name . '%');
+                ->setParameter('name', '%' . $filter->name . '%');
         }
 
         return $postsQuery->getQuery();

@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,10 +28,15 @@ class UserController extends Controller
     public function usersListAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $filter = $this->createForm(FilterType::class, new Filter);
+        $filter = new Filter;
+        $filterForm = $this->createForm(FilterType::class, $filter)
+            ->add("Search", SubmitType::class, array(
+                "attr" => array("class" => "fa fa-search")
+            ));
+        $filterForm->handleRequest($request);
         $paginator = $this->get('knp_paginator');
         $users = $paginator->paginate(
-            $em->getRepository(User::class)->selectUsersByParams($request->get('name')),
+            $em->getRepository(User::class)->selectUsersByParams($filter),
             $request->query->getInt('page', 1),
             10
         );
@@ -46,7 +52,7 @@ class UserController extends Controller
 
         return [
             "users" => $users,
-            "filter" => $filter->createView(),
+            "filterForm" => $filterForm->createView(),
             "activationForm" => $activationForm
         ];
     }
