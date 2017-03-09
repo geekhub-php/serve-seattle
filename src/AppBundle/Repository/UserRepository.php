@@ -3,7 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\Query;
-use AppBundle\Entity\Filter;
+use AppBundle\Entity\DTO\Filter;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**

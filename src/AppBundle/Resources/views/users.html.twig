@@ -60,8 +60,7 @@
                     </td>
                     <td>
                         {% if activationForm[user.id] is defined %}
-                            {{ form_start(activationForm[user.id]) }}
-                            {{ form_end(activationForm[user.id]) }}
+                            {{ form(activationForm[user.id]) }}
                         {% endif %}
                     </td>
                     <td>

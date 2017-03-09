@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use AppBundle\Entity\Filter;
+use AppBundle\Entity\DTO\Filter;
 use AppBundle\Form\FilterType;
 use AppBundle\Form\User\EditType;
 use AppBundle\Form\User\RegistrationType;
@@ -34,8 +34,7 @@ class UserController extends Controller
                 "attr" => array("class" => "fa fa-search")
             ));
         $filterForm->handleRequest($request);
-        $paginator = $this->get('knp_paginator');
-        $users = $paginator->paginate(
+        $users = $this->get('knp_paginator')->paginate(
             $em->getRepository(User::class)->selectUsersByParams($filter),
             $request->query->getInt('page', 1),
             10
