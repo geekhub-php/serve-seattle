@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class SurveyController extends Controller
 {
@@ -31,15 +30,13 @@ class SurveyController extends Controller
         }
         $serializer = $this->get('serializer');
 
-        $json = $serializer->serialize(
+        $json = $serializer->normalize(
             $surveys,
-            'json',
+            null,
             array('groups' => array('group1'))
         );
-        $response = new Response($json, Response::HTTP_OK);
-        $response->headers->set('Content-Type', 'application/json');
 
-        return $response;
+        return $this->json($json);
     }
 
     /**
@@ -60,24 +57,21 @@ class SurveyController extends Controller
         }
         $serializer = $this->get('serializer');
         if ($survey->getStatus() == 'submited') {
-            $json = $serializer->serialize(
+            $json = $serializer->normalize(
                 $survey,
-                'json',
+                null,
                 array('groups' => array('group1', 'group2'))
             );
         }
         if ($survey->getStatus() == 'current') {
-            $json = $serializer->serialize(
+            $json = $serializer->normalize(
                 $survey,
-                'json',
+                null,
                 array('groups' => array('group1', 'group3'))
             );
         }
 
-        $response = new Response($json, Response::HTTP_OK);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return $this->json($json);
     }
 
     /**
