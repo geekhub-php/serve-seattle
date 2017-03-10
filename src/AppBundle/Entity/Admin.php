@@ -26,7 +26,6 @@ class Admin implements UserInterface
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @Assert\Type("string")
      * @Assert\Length(
      *      min = 2,
@@ -51,7 +50,6 @@ class Admin implements UserInterface
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @Assert\Type("string")
      * @Assert\Length(
      *      max = 255
