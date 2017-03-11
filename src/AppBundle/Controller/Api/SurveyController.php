@@ -56,6 +56,7 @@ class SurveyController extends Controller
             return $this->json(['message' => 'No surveys'], 404);
         }
         $serializer = $this->get('serializer');
+        $json = null;
         if ($survey->getStatus() == 'submited') {
             $json = $serializer->normalize(
                 $survey,

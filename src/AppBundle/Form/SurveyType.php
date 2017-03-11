@@ -29,7 +29,6 @@ class SurveyType extends AbstractType
                 'class' => 'AppBundle:User',
                 'label' => 'Choose intern',
                 'choice_label' => 'firstName',
-                'choice_value' => 'email',
             ))
             ->add('created_at', DateTimeType::class, array(
                 'disabled' => true,

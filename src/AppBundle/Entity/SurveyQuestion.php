@@ -128,11 +128,11 @@ class SurveyQuestion
      *
      * @return SurveyQuestion
      */
-    public function setSurveys(Survey $survey)
+    public function addSurvey(Survey $survey)
     {
         if (!$this->surveys->contains($survey)) {
             $this->surveys->add($survey);
-            $survey->setQuestions($this);
+            $survey->addQuestion($this);
         }
 
         return $this;

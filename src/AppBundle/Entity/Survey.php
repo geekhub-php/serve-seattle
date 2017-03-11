@@ -95,6 +95,10 @@ class Survey
     public function setType(SurveyType $type)
     {
         $this->type = $type;
+        $questions = $type->getQuestions();
+        foreach ($questions as $question) {
+            $this->addQuestion($question);
+        }
 
         return $this;
     }
@@ -162,11 +166,11 @@ class Survey
      *
      * @return Survey
      */
-    public function setQuestions(SurveyQuestion $question)
+    public function addQuestion(SurveyQuestion $question)
     {
         if (!$this->questions->contains($question)) {
             $this->questions->add($question);
-            $question->setSurveys($this);
+            $question->addSurvey($this);
         }
 
         return $this;
