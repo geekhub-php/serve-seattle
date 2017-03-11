@@ -11,7 +11,7 @@ class SurveyControllerTest extends WebTestCase
         $client = static::createClient();
 
         $client->request('GET', '/surveys', array(), array(), array(
-            'PHP_AUTH_USER' => 'kaden.collier@waters.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW' => 'admin1',
         ));
 
@@ -23,7 +23,7 @@ class SurveyControllerTest extends WebTestCase
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/survey/1', array(), array(), array(
-            'PHP_AUTH_USER' => 'kaden.collier@waters.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW' => 'admin1',
         ));
 
@@ -39,7 +39,7 @@ class SurveyControllerTest extends WebTestCase
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/survey/create/internship', array(), array(), array(
-            'PHP_AUTH_USER' => 'kaden.collier@waters.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW' => 'admin1',
         ));
 
@@ -63,7 +63,7 @@ class SurveyControllerTest extends WebTestCase
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/survey/delete/4', array(), array(), array(
-            'PHP_AUTH_USER' => 'kaden.collier@waters.com',
+            'PHP_AUTH_USER' => 'admin@gmail.com',
             'PHP_AUTH_PW' => 'admin1',
         ));
 
