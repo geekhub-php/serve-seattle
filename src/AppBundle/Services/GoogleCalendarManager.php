@@ -2,6 +2,8 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\DTO\DtoEvent;
+
 class GoogleCalendarManager implements GoogleCalendarInterface
 {
     private $calendar;
@@ -11,21 +13,21 @@ class GoogleCalendarManager implements GoogleCalendarInterface
         $this->calendar = $factory->createCalendar('default', 'reader');
     }
 
-    public function createEvent($data = null)
+    public function createEvent($dtoEvent)
     {
         $event = new \Google_Service_Calendar_Event();
 
-        $event->setSummary('asd');
-        $event->setDescription('asdasd');
-        $event->setLocation('asdasd');
+        $event->setSummary($dtoEvent->getSummary());
+        $event->setDescription($dtoEvent->getDescription());
+        $event->setLocation($dtoEvent->getLocation());
         $event->setVisibility('public');
 
         $start = new \Google_Service_Calendar_EventDateTime();
-        $start->setDateTime('2015-05-28T09:00:00-07:00');
+        $start->setDateTime($dtoEvent->getStart());
         $event->setStart($start);
 
         $end = new \Google_Service_Calendar_EventDateTime();
-        $end->setDateTime('2016-05-28T09:00:00-07:00');
+        $end->setDateTime($dtoEvent->getEnd());
         $event->setEnd($end);
 
         return $this->calendar->events->insert('primary', $event);

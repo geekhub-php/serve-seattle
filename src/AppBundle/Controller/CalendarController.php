@@ -2,15 +2,18 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\DTO\DtoEvent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
+use AppBundle\Form\EventType;
+use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CalendarController extends Controller
+class CalendarController extends JsonController
 {
     /**
      * @Route("/schedule/events")
@@ -30,16 +33,18 @@ class CalendarController extends Controller
     /**
      * @param Request $request
      * @param User    $user
-     * @Route("/schedule/event/new/{id}")
+     * @Route("/api/schedule/event/new/{id}")
      * @Method({"GET", "POST"})
      *
      * @return JsonResponse
      */
     public function newEventAction(Request $request, User $user)
     {
-        $data = $request->getContent();
+        $dtoEvent = new DtoEvent();
+        $form = $this->createForm(EventType::class, $dtoEvent);
+        $this->handleJsonForm($form, $request);
         $result = $this->get('app.google_calendar')
-            ->createEvent(json_decode($data, true));
+            ->createEvent($dtoEvent);
         if (!$result) {
             return $this->json(['error' => 'Event has not been created'], 412);
         }
