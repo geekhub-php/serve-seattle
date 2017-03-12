@@ -3,9 +3,10 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -39,6 +40,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190)
+     * @Groups({"Short", "Detail"})
      */
     private $firstName;
 
@@ -54,6 +56,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, nullable=true)
+     * @Groups({"Short", "Detail"})
      */
     private $lastName;
 
@@ -61,6 +64,7 @@ class User implements UserInterface, \Serializable
      * @var string
      * @Assert\Image()
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"Short", "Detail"})
      */
     private $image;
 
@@ -74,6 +78,7 @@ class User implements UserInterface, \Serializable
      *      max = 250
      * )
      * @ORM\Column(type="string", length=250, unique=true)
+     * @Groups({"Short", "Detail"})
      */
     private $email;
 
@@ -95,12 +100,14 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"Short", "Detail"})
      */
     private $isActive = true;
 
     /**
      * @var
      * @ORM\Column(type="json_array")
+     * @Groups({"Short", "Detail"})
      */
     protected $roles;
 
@@ -108,6 +115,7 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(type="string", unique=true, nullable=true)
+     * @Groups({"Login"})
      */
     private $apiToken;
 
@@ -129,18 +137,11 @@ class User implements UserInterface, \Serializable
      */
     private $surveys;
 
-    /**
-     * @var ArrayCollection[SurveyAnswer]
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="user")
-     */
-    private $answers;
-
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->formRequests = new ArrayCollection();
         $this->surveys = new ArrayCollection();
-        $this->answers = new ArrayCollection();
         $this->roles = array('ROLE_USER');
     }
 
@@ -305,7 +306,7 @@ class User implements UserInterface, \Serializable
      *
      * @return $this
      */
-    public function setIsEnabled($status)
+    public function setIsActive($status)
     {
         $this->isActive = $status;
 
@@ -315,7 +316,7 @@ class User implements UserInterface, \Serializable
     /**
      * @return bool
      */
-    public function isEnabled()
+    public function isActive()
     {
         return $this->isActive;
     }
@@ -396,12 +397,10 @@ class User implements UserInterface, \Serializable
     {
         return $this->surveys;
     }
-    /**
-     * @return ArrayCollection
-     */
-    public function getAnswers()
+
+    public function eraseCredentials()
     {
-        return $this->answers;
+        $this->setPlainPassword(null);
     }
 
     public function getSalt()
@@ -409,24 +408,25 @@ class User implements UserInterface, \Serializable
         // TODO: Implement getSalt() method.
     }
 
-    public function eraseCredentials()
-    {
-        $this->setPlainPassword(null);
-    }
-
-    /** @see \Serializable::serialize() */
+    /**
+ * @see \Serializable::serialize() 
+*/
     public function serialize()
     {
-        return serialize(array(
+        return serialize(
+            array(
             $this->id,
             $this->firstName,
             $this->lastName,
             $this->email,
             $this->isActive,
-        ));
+            )
+        );
     }
 
-    /** @see \Serializable::unserialize() */
+    /**
+ * @see \Serializable::unserialize() 
+*/
     public function unserialize($serialized)
     {
         list(

@@ -6,6 +6,11 @@ class GoogleClientFactory
 {
     private $path;
 
+    public function __construct($path)
+    {
+        $this->path = $path;
+    }
+
     public function createCalendar($scopeType, $role)
     {
         $calendar = new \Google_Service_Calendar($this->createClient());
@@ -19,8 +24,7 @@ class GoogleClientFactory
     {
         $client = new \Google_Client();
         $client->setScopes([\Google_Service_Calendar::CALENDAR]);
-        $path = $this->getCredentials();
-        $client->setAuthConfig($path);
+        $client->setAuthConfig($this->path);
 
         return $client;
     }
@@ -35,15 +39,5 @@ class GoogleClientFactory
         $rule->setScope($scope);
 
         return $rule;
-    }
-
-    private function getCredentials()
-    {
-        if (!file_exists(__DIR__.'/../../../app/config/credentials/credentials.json')) {
-            throw new \Google_Exception('Credentials is not found');
-        }
-        $this->path = __DIR__.'/../../../app/config/credentials/credentials.json';
-
-        return $this->path;
     }
 }

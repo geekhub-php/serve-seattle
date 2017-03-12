@@ -15,17 +15,17 @@ class GoogleCalendarManager implements GoogleCalendarInterface
     {
         $event = new \Google_Service_Calendar_Event();
 
-        $event->setSummary($data['title']);
-        $event->setDescription($data['description']);
-        $event->setLocation($data['location']);
+        $event->setSummary('asd');
+        $event->setDescription('asdasd');
+        $event->setLocation('asdasd');
         $event->setVisibility('public');
 
         $start = new \Google_Service_Calendar_EventDateTime();
-        $start->setDateTime($data['start']);
+        $start->setDateTime('2015-05-28T09:00:00-07:00');
         $event->setStart($start);
 
         $end = new \Google_Service_Calendar_EventDateTime();
-        $end->setDateTime($data['end']);
+        $end->setDateTime('2016-05-28T09:00:00-07:00');
         $event->setEnd($end);
 
         return $this->calendar->events->insert('primary', $event);
@@ -34,9 +34,9 @@ class GoogleCalendarManager implements GoogleCalendarInterface
     public function getEventList($calendarId = 'primary')
     {
         return $this->calendar
-           ->events
-           ->listEvents($calendarId)
-           ->getItems();
+            ->events
+            ->listEvents($calendarId)
+            ->getItems();
     }
 
     public function getEventById($id)

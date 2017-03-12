@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CalendarController extends Controller
@@ -22,8 +23,9 @@ class CalendarController extends Controller
     {
         $result = $this->get('app.google_calendar')
             ->getEventList();
+        $response = ['events' => $result];
 
-        return new JsonResponse($result);
+        return new JsonResponse($response);
     }
 
     /**
@@ -78,7 +80,7 @@ class CalendarController extends Controller
      * @Route("/schedule/event/user/{id}")
      * @Method("GET")
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function usersEventAction(User $user)
     {
@@ -95,7 +97,9 @@ class CalendarController extends Controller
             return $this->json(['error' => 'Events not found'], 404);
         }
 
-        return $this->json($googleEvents);
+        $response = ['events' => $googleEvents];
+
+        return new JsonResponse($response);
     }
 
     /**

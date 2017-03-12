@@ -23,7 +23,9 @@ class DefaultController extends Controller
     {
         $data = json_decode($request->getContent(), true);
 
-        /** @var User $user */
+        /**
+ * @var User $user 
+*/
         $user = $this->getDoctrine()->getRepository('AppBundle:User')
             ->findOneBy(['email' => $data['email']]);
 
@@ -48,7 +50,18 @@ class DefaultController extends Controller
 
         $em->flush();
 
-        return $this->json(['X-AUTH-TOKEN' => $token]);
+        $serializer = $this->get('serializer');
+        $json = $serializer->normalize(
+
+            $user, null, array('groups' => array('Detail'))
+        );
+
+        return $this->json(
+            [
+            ['user' => $json],
+            ['X-AUTH-TOKEN' => $token]
+            ]
+        );
     }
 
     /**
