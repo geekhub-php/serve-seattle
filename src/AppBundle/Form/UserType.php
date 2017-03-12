@@ -25,17 +25,15 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                'firstName', TextType::class, array(
+            ->add('firstName', TextType::class, array(
                 'attr' => array(
                     'placeholder' => 'firstName',
                     'class' => 'form-control',
                 ),
-                'label' => false,
+                    'label' => false,
                 )
             )
-            ->add(
-                'lastName', TextType::class, array(
+            ->add('lastName', TextType::class, array(
                 'attr' => array(
                     'placeholder' => 'lastName',
                     'class' => 'form-control',
@@ -43,8 +41,7 @@ class UserType extends AbstractType
                 'label' => false,
                 )
             )
-            ->add(
-                'email', EmailType::class, array(
+            ->add('email', EmailType::class, array(
                 'attr' => array(
                     'placeholder' => 'E-mail',
                     'class' => 'form-control',
@@ -52,8 +49,7 @@ class UserType extends AbstractType
                 'label' => false,
                 )
             )
-            ->add(
-                'userName', TextType::class, array(
+            ->add('userName', TextType::class, array(
                 'attr' => array(
                     'placeholder' => 'UserName',
                     'class' => 'form-control',
@@ -61,8 +57,7 @@ class UserType extends AbstractType
                 'label' => false,
                 )
             )
-            ->add(
-                'password', RepeatedType::class, array(
+            ->add('password', RepeatedType::class, array(
                     'type' => PasswordType::class,
                     'first_options' => array(
                         'attr' => array(
@@ -76,7 +71,7 @@ class UserType extends AbstractType
                             'placeholder' => 'Repeat password',
                             'class' => 'form-control',
                         ),
-                        'label' => false,
+                    'label' => false,
                     ),
                     'required' => false,
                 )

@@ -409,8 +409,8 @@ class User implements UserInterface, \Serializable
     }
 
     /**
- * @see \Serializable::serialize()
-*/
+     * @see \Serializable::serialize()
+     */
     public function serialize()
     {
         return serialize(
@@ -425,8 +425,8 @@ class User implements UserInterface, \Serializable
     }
 
     /**
- * @see \Serializable::unserialize()
-*/
+     * @see \Serializable::unserialize()
+     */
     public function unserialize($serialized)
     {
         list(

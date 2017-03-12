@@ -35,7 +35,8 @@ class DefaultController extends Controller
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render(
-            '@App/login.html.twig', array(
+            '@App/login.html.twig',
+             array(
             'last_username' => $lastUsername, //$lastUsername,
             'error' => $error,
             )
@@ -71,15 +72,14 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = new User();
         $form = $this->createForm(
-            'AppBundle\Form\UserType', $user, [
-            'action' => $this->generateUrl('add_user'),
-            'method' => 'POST',
-            ]
+            'AppBundle\Form\UserType',
+             $user,
+            ['action' => $this->generateUrl('add_user'), 'method' => 'POST']
         )
             ->add(
-                'Save', SubmitType::class, array(
-                'attr' => ['class' => 'btn pull-right btn-warning'],
-                )
+                'Save',
+                SubmitType::class,
+                array('attr' => ['class' => 'btn pull-right btn-warning'])
             );
         $form->handleRequest($request);
         if ($form->isValid()) {
