@@ -22,7 +22,9 @@ class DefaultController extends Controller
     public function loginAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        /** @var User $user */
+        /**
+ * @var User $user 
+*/
         $user = $this->getDoctrine()->getRepository('AppBundle:User')
             ->findOneBy(['email' => $data['email']]);
 
