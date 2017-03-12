@@ -66,8 +66,6 @@ class SurveyControllerTest extends WebTestCase
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode());
 
-        $data = array('3' => 'yes');
-
         $client->request(
             'POST',
             '/api/survey/update/3',

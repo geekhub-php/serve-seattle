@@ -11,8 +11,8 @@ class SurveyControllerTest extends WebTestCase
         $client = static::createClient();
 
         $client->request('GET', '/surveys', array(), array(), array(
-            'PHP_AUTH_USER' => 'admin@gmail.com',
-            'PHP_AUTH_PW' => 'admin1',
+            'PHP_AUTH_USER' => 'admin@serve-seattle.com',
+            'PHP_AUTH_PW' => 'admin',
         ));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -23,8 +23,8 @@ class SurveyControllerTest extends WebTestCase
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/survey/1', array(), array(), array(
-            'PHP_AUTH_USER' => 'admin@gmail.com',
-            'PHP_AUTH_PW' => 'admin1',
+            'PHP_AUTH_USER' => 'admin@serve-seattle.com',
+            'PHP_AUTH_PW' => 'admin',
         ));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -39,8 +39,8 @@ class SurveyControllerTest extends WebTestCase
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/survey/create/internship', array(), array(), array(
-            'PHP_AUTH_USER' => 'admin@gmail.com',
-            'PHP_AUTH_PW' => 'admin1',
+            'PHP_AUTH_USER' => 'admin@serve-seattle.com',
+            'PHP_AUTH_PW' => 'admin',
         ));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -63,8 +63,8 @@ class SurveyControllerTest extends WebTestCase
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/survey/delete/4', array(), array(), array(
-            'PHP_AUTH_USER' => 'admin@gmail.com',
-            'PHP_AUTH_PW' => 'admin1',
+            'PHP_AUTH_USER' => 'admin@serve-seattle.com',
+            'PHP_AUTH_PW' => 'admin',
         ));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
