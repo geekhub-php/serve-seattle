@@ -36,7 +36,7 @@ class DefaultController extends Controller
 
         return $this->render(
             '@App/login.html.twig',
-             array(
+            array(
             'last_username' => $lastUsername, //$lastUsername,
             'error' => $error,
             )
@@ -73,7 +73,7 @@ class DefaultController extends Controller
         $user = new User();
         $form = $this->createForm(
             'AppBundle\Form\UserType',
-             $user,
+            $user,
             ['action' => $this->generateUrl('add_user'), 'method' => 'POST']
         )
             ->add(
