@@ -98,7 +98,7 @@ class UserController extends Controller
             'validation_groups' => array('registration'),
         ]);
         $form->handleRequest($request);
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em->persist($user);
                 $em->flush();
@@ -127,7 +127,7 @@ class UserController extends Controller
             'validation_groups' => array('edit'),
         ]);
         $form->handleRequest($request);
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em->persist($user);
                 $em->flush();
