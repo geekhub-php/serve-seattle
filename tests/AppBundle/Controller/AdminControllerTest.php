@@ -2,35 +2,25 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\AppBundle;
 use AppBundle\Entity\Admin;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Entity\User;
 
-class AdminControllerTest extends WebTestCase
+class AdminControllerTest extends AbstractController
 {
     public function testIndexAction()
     {
-        $client = static::createClient();
-        $client->request('GET', '/admin');
-        $this->assertEquals('302', $client->getResponse()->getStatusCode());
-
-        $crawler = $client->request('GET', '/login');
-        $form = $crawler->selectButton('Login')->form();
-        $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'admin']);
-
-
-        $crawler = $client->request('GET', '/admin/');
-        $this->assertEquals('200', $client->getResponse()->getStatusCode());
+        $this->request('/admin/', 'GET', 302);
+        $this->request('/login');
+        $client = $this->logIn();
+        $crawler = $this->request('/admin/');
 
         $form = $crawler->selectButton('Save')->form();
         $client->submit($form, [
             'admin[userName]' => 'test1',
             'admin[email]' => 'test1@gmail.com',
         ]);
-
-        $em = static::$kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
-        $admin = $em->getRepository(Admin::class)->findOneBy(['email' => 'test1@gmail.com']);
+        $admin = $this->em->getRepository(Admin::class)->findOneBy(['userName' => 'test1']);
 
         $this->assertInstanceOf(Admin::class, $admin);
     }
