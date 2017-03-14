@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DomCrawler\Crawler;
 
 abstract class AbstractController extends WebTestCase
 {
@@ -32,6 +31,9 @@ abstract class AbstractController extends WebTestCase
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         self::bootKernel(self::$options);
+
+        $this->container = static::$kernel->getContainer();
+
         $this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
         parent::__construct($name, $data, $dataName);
     }
@@ -72,16 +74,6 @@ abstract class AbstractController extends WebTestCase
             $this->client = static::createClient($options, $server);
         }
         return $this->client;
-    }
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        if (!$this->container) {
-            $this->container = static::$kernel->getContainer();
-        }
-        return $this->container;
     }
 
     protected function logIn($username = 'admin@serve-seattle.com', $password = 'admin')

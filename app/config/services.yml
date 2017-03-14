@@ -7,7 +7,6 @@ services:
       app.api_token_authenticator:
           class: AppBundle\Security\ApiTokenAuthenticator
 
-
       app.doctrine_listener:
           class: AppBundle\Security\PasswordListener
           arguments: ['@security.password_encoder']

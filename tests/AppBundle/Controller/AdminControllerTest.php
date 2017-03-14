@@ -2,9 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\AppBundle;
 use AppBundle\Entity\Admin;
-use AppBundle\Entity\User;
 
 class AdminControllerTest extends AbstractController
 {
