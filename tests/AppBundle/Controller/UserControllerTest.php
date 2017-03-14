@@ -17,7 +17,7 @@ class UserControllerTest extends WebTestCase
         $this->assertEquals('302', $client->getResponse()->getStatusCode());
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
-        $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'ghjynj']);
+        $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'admin']);
         $crawler = $client->request('GET', '/users');
         $this->assertEquals('200', $client->getResponse()->getStatusCode());
     }
@@ -37,7 +37,6 @@ class UserControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/user/add');
         $form = $crawler->selectButton('Register')->form();
-        //dump($form);
         $client->submit($form, [
             'registration[lastName]' => 'test',
             'registration[firstName]' => 'test',
