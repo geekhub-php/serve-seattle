@@ -2,10 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\Form\User\EditType;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\User;
 
 class UserControllerTest extends WebTestCase
@@ -13,18 +10,24 @@ class UserControllerTest extends WebTestCase
     public function testListAction()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/users');
+        $client->request('GET', '/users');
         $this->assertEquals('302', $client->getResponse()->getStatusCode());
         $crawler = $client->request('GET', '/login');
+
         $form = $crawler->selectButton('Login')->form();
         $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'admin']);
-        $crawler = $client->request('GET', '/users');
+        $client->request('GET', '/users');
+
         $this->assertEquals('200', $client->getResponse()->getStatusCode());
     }
 
     public function testAddAction()
     {
         $client = static::createClient();
+        $client->request('GET', '/users');
+
+        $this->assertEquals('302', $client->getResponse()->getStatusCode());
+
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'admin']);
@@ -44,8 +47,8 @@ class UserControllerTest extends WebTestCase
             'registration[plainPassword][first]' => 'test',
             'registration[plainPassword][second]' => 'test',
         ]);
-
         $usersCount2 = count($em->getRepository('AppBundle:User')->findAll());
+
         $this->assertEquals($usersCount1 + 1, $usersCount2);
     }
 
@@ -75,6 +78,8 @@ class UserControllerTest extends WebTestCase
     public function testEditAction()
     {
         $client = static::createClient();
+        $client->request('GET', '/users');
+        $this->assertEquals('302', $client->getResponse()->getStatusCode());
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
         $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'admin']);
@@ -88,10 +93,8 @@ class UserControllerTest extends WebTestCase
         $form = $crawler->filter('table td form')->form();
         $url_params = explode('/', $form->getUri());
         $userid = $url_params[count($url_params)-1];
-
         $crawler = $client->request('GET', '/user/edit/'.$userid);
         $form = $crawler->selectButton('Save')->form();
-
         $client->submit($form, [
             'edit[lastName]' => 'test1',
             'edit[firstName]' => 'test1',
