@@ -98,13 +98,14 @@ class UserController extends Controller
             'validation_groups' => array('registration'),
         ]);
         $form->handleRequest($request);
-        if ($form->isSubmitted())
+        if ($form->isSubmitted()){
             if ($form->isValid()) {
                 $em->persist($user);
                 $em->flush();
 
                 return $this->redirect($this->generateUrl("users_list"));
             }
+        }
 
         return ['form' => $form->createView()];
     }
@@ -126,11 +127,13 @@ class UserController extends Controller
             'validation_groups' => array('edit'),
         ]);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $em->persist($user);
-            $em->flush();
+        if ($form->isSubmitted()){
+            if ($form->isValid()) {
+                $em->persist($user);
+                $em->flush();
 
-            return $this->redirect($this->generateUrl("users_list"));
+                return $this->redirect($this->generateUrl("users_list"));
+            }
         }
 
         return ['form' => $form->createView()];
