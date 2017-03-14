@@ -27,7 +27,7 @@ class UserControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
-        $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'ghjynj']);
+        $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'admin']);
 
         $em = static::$kernel->getContainer()
             ->get('doctrine')
@@ -55,7 +55,7 @@ class UserControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
-        $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'ghjynj']);
+        $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'admin']);
 
         $em = static::$kernel->getContainer()
             ->get('doctrine')
@@ -78,7 +78,7 @@ class UserControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();
-        $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'ghjynj']);
+        $client->submit($form, ['_username' => 'admin@serve-seattle.com', '_password' => 'admin']);
 
         $em = static::$kernel->getContainer()
             ->get('doctrine')
