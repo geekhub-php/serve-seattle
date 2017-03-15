@@ -45,11 +45,11 @@ class UserControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/user/add');
         $form = $crawler->selectButton('Register')->form();
         $client->submit($form, [
-            'registration[lastName]' => 'test',
-            'registration[firstName]' => 'test',
-            'registration[email]' => 'test@gmail.com',
-            'registration[plainPassword][first]' => 'test',
-            'registration[plainPassword][second]' => 'test',
+            'edit[lastName]' => 'test',
+            'edit[firstName]' => 'test',
+            'edit[email]' => 'test@gmail.com',
+            'edit[plainPassword][first]' => 'test',
+            'edit[plainPassword][second]' => 'test',
         ]);
         $usersCount2 = count($em->getRepository('AppBundle:User')->findAll());
 
