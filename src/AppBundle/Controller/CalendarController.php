@@ -8,6 +8,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\EventType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +32,7 @@ class CalendarController extends JsonController
 
     /**
      * @param Request $request
-     * @Route("/api/schedule/event/new/")
+     * @Route("/schedule/event/new")
      * @Method("POST")
      *
      * @return JsonResponse
@@ -46,8 +47,9 @@ class CalendarController extends JsonController
         if (!$result) {
             return $this->json(['error' => 'Event has not been created'], 412);
         }
-        $user = $dtoEvent->getUser();
         $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')
+            ->find($dtoEvent->getUser());
         $event = new Event();
         $event->setGoogleId($result->id);
         $event->setUsers($user);
