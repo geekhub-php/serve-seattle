@@ -1,21 +1,23 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\User;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use AppBundle\Entity\User;
 
 /**
  * Class UserType
  * @package AppBundle\Form
 
  */
-class UserType extends AbstractType
+class EditType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -27,16 +29,16 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class, array(
+            ->add('lastName', TextType::class, array(
                 'attr' => array(
-                    'placeholder' => 'firstName',
+                    'placeholder' => 'lastName',
                     'class' => 'form-control'
                 ),
                 'label' => false
             ))
-            ->add('lastName', TextType::class, array(
+            ->add('firstName', TextType::class, array(
                 'attr' => array(
-                    'placeholder' => 'lastName',
+                    'placeholder' => 'firstName',
                     'class' => 'form-control'
                 ),
                 'label' => false
@@ -48,37 +50,43 @@ class UserType extends AbstractType
                 ),
                 'label' => false
             ))
-            ->add('userName', TextType::class, array(
-                'attr' => array(
-                    'placeholder' => 'UserName',
+            ->add('plainPassword', RepeatedType::class, array(
+                'type' => PasswordType::class,
+                'first_options' => array(
+                    'attr' => array(
+                        'placeholder' => 'Password',
+                        'class' => 'form-control'
+                    ),
+                    'label' => false
+                ),
+                'second_options' => array(
+                    'attr' => array(
+                        'placeholder' => 'Repeat password',
+                        'class' => 'form-control'
+                    ),
+                    'label' => false
+                ),
+                'required' => false
+            ))
+            ->add('image', TextType::class, array(
+                    'attr' => array(
+                    'placeholder' => 'image',
                     'class' => 'form-control'
                 ),
-                'label' => false
+                'label' => false,
+                'required' => false,
             ))
-            ->add('password', RepeatedType::class, array(
-                    'type' => PasswordType::class,
-                    'first_options' => array(
-                        'attr' => array(
-                            'placeholder' => 'Password',
-                            'class' => 'form-control'
-                        ),
-                        'label' => false
-                    ),
-                    'second_options' => array(
-                        'attr' => array(
-                            'placeholder' => 'Repeat password',
-                            'class' => 'form-control'
-                        ),
-                        'label' => false
-                    ),
-                    'required' => false
-            ));
+            ->add('Save', SubmitType::class, array(
+                'attr' => ['class' => 'btn btn-primary']
+            ))
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
+            'data_class' => User::class,
+            'validation_groups' => array('registration','edit'),
         ));
     }
 }

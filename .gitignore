@@ -44,7 +44,7 @@
 /composer.phar
 
 # Backup entities generated with doctrine:generate:entities command
-*/Entity/*~
+*~
 
 # PhpStorm and Mac fs
 .idea
@@ -58,3 +58,4 @@
 /web/images
 /web/fonts
 
+/app/config/credentials/
