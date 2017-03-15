@@ -28,3 +28,4 @@ class UserController extends Controller
         return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Short']]);
     }
 }
+
