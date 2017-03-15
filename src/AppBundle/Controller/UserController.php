@@ -25,7 +25,7 @@ class UserController extends Controller
      * @param Request $request
      * @return array
      */
-    public function usersListAction(Request $request)
+    public function listAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $filter = new Filter;
@@ -89,7 +89,7 @@ class UserController extends Controller
      * @param Request $request
      * @return array|RedirectResponse
      */
-    public function userAddAction(Request $request)
+    public function addAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $user = new User();
@@ -98,11 +98,13 @@ class UserController extends Controller
             'validation_groups' => array('registration'),
         ]);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $em->persist($user);
-            $em->flush();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em->persist($user);
+                $em->flush();
 
-            return $this->redirect($this->generateUrl("users_list"));
+                return $this->redirect($this->generateUrl("users_list"));
+            }
         }
 
         return ['form' => $form->createView()];
@@ -116,7 +118,7 @@ class UserController extends Controller
      * @param User $user
      * @return array|RedirectResponse
      */
-    public function userEditAction(Request $request, User $user)
+    public function editAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(EditType::class, $user, [
@@ -125,11 +127,13 @@ class UserController extends Controller
             'validation_groups' => array('edit'),
         ]);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $em->persist($user);
-            $em->flush();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em->persist($user);
+                $em->flush();
 
-            return $this->redirect($this->generateUrl("users_list"));
+                return $this->redirect($this->generateUrl("users_list"));
+            }
         }
 
         return ['form' => $form->createView()];
