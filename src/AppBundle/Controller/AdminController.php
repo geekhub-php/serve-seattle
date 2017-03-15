@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Class DefaultController
@@ -27,7 +28,10 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $admin = $em->getRepository(Admin::class)->findOneBy(['id' => $this->getUser()->getId()]);
-        $editForm = $this->createForm(AdminType::class, $admin);
+        $editForm = $this->createForm(AdminType::class, $admin)
+            ->add('Save', SubmitType::class, array(
+                'attr' => array('class' => 'btn btn-primary')
+            ));
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted()) {
             if ($editForm->isValid()) {

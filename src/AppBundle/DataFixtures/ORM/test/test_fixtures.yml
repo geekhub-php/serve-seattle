@@ -1,15 +1,15 @@
 AppBundle\Entity\User:
     intern1:
         firstName: intern1
-        email: inter1@gmail.com
+        email: <email()>
         plainPassword: intern1
     intern2:
         firstName: intern2
-        email: intern2@gmail.com
+        email: <email()>
         plainPassword: intern2
     intern3:
         firstName: intern3
-        email: intern3
+        email: <email()>
         plainPassword: intern3
 
 AppBundle\Entity\Admin:

@@ -3,7 +3,6 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -59,9 +58,6 @@ class AdminType extends AbstractType
                     'label' => false
                 ),
                 'required' => false
-            ))
-            ->add('Save', SubmitType::class, array(
-                'attr' => array('class' => 'btn btn-primary')
             ))
         ;
     }
