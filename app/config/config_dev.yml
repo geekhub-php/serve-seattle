@@ -11,6 +11,9 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+hautelook_alice:
+    fixtures_path: 'DataFixtures/ORM/dev'
+
 monolog:
     handlers:
         main:

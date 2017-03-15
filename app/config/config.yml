@@ -75,9 +75,6 @@ doctrine_migrations:
     table_name: migration_versions
     name: Application Migrations
 
-hautelook_alice:
-    fixtures_path: 'DataFixtures/ORM'
-
 knp_paginator:
     page_range: 5                      # default page range used in pagination control
     default_options:
