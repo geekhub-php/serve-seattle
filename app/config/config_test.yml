@@ -15,6 +15,9 @@ web_profiler:
 swiftmailer:
     disable_delivery: true
 
+hautelook_alice:
+    fixtures_path: 'DataFixtures/ORM/test'
+
 doctrine:
     dbal:
         default_connection: default
