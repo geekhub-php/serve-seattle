@@ -30,6 +30,10 @@ abstract class AbstractController extends WebTestCase
      */
     public function __construct($name = null, array $data = [], $dataName = '')
     {
+        exec('./bin/console doctrine:database:create --env=test');
+        exec('./bin/console doctrine:schema:create --env=test');
+        exec('./bin/console hautelook:fixtures:load -n --env=test');
+
         self::bootKernel(self::$options);
 
         $this->container = static::$kernel->getContainer();
@@ -38,6 +42,10 @@ abstract class AbstractController extends WebTestCase
         parent::__construct($name, $data, $dataName);
     }
 
+    public function __destruct()
+    {
+        exec('./bin/console doctrine:database:drop --force --env=test');
+    }
 
     /**
      * @param string $path
@@ -50,7 +58,7 @@ abstract class AbstractController extends WebTestCase
     {
         $client = $this->getClient();
         $crawler = $client->request($method, $path);
-        self::assertEquals(
+        $this->assertEquals(
             $expectedStatusCode,
             $client->getResponse()->getStatusCode(),
             sprintf(
