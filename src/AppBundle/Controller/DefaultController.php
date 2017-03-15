@@ -2,14 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class DefaultController extends Controller
 {
@@ -25,8 +21,9 @@ class DefaultController extends Controller
     /**
      * @Route("/login", name="login")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
      * @Method({"GET", "POST"})
+     * @Template("@App/login.html.twig")
      */
     public function loginAction()
     {
@@ -34,9 +31,9 @@ class DefaultController extends Controller
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('@App/login.html.twig', array(
+        return [
             'last_username' => $lastUsername, //$lastUsername,
             'error' => $error,
-        ));
+        ];
     }
 }

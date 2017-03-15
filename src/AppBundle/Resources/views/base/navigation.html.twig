@@ -1,0 +1,27 @@
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{{ path('homepage') }}">
+                <img src="{{ asset('/images/logo.jpeg') }}">
+            </a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="{{ 'homepage' in app.request.get('_route') ? 'active' : '' }}">
+                <a href="{{ path('homepage') }}">Dashboard</a>
+            </li>
+            <li><a href="#">Schedules</a></li>
+            <li><a href="#">Request forms</a></li>
+            <li><a href="#">Surveys</a></li>
+            <li class="{{ 'users_list' in app.request.get('_route') ? 'active' : '' }}
+                           {{ 'add_user' in app.request.get('_route') ? 'active' : '' }}
+                           {{ 'edit_user' in app.request.get('_route') ? 'active' : '' }}">
+                <a href="{{ path('users_list') }}">Users</a>
+            </li>
+            <li class="{{ 'admin_info' in app.request.get('_route') ? 'active' : '' }}">
+                <a href="{{ path('admin_info') }}">Hi, {{ app.user.userName }}</a>
+            </li>
+            <li><a href="{{ path('logout') }}">Sign out</a></li>
+        </ul>
+
+    </div>
+</nav>

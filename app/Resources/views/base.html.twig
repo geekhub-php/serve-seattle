@@ -10,7 +10,13 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+    {% if app.user %}
+        {% include '@App/base/navigation.html.twig' %}
+    {% endif %}
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
         <script src="{{ asset('/js/jquery.js') }}"></script>
         <script src="{{ asset('/js/bootstrap.js') }}"></script>
         {% block javascripts %}{% endblock %}

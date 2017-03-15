@@ -27,45 +27,45 @@ class AdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('userName', TextType::class, array(
-                'attr' => array(
+            ->add('userName', TextType::class, [
+                'attr' => [
                     'placeholder' => 'UserName',
                     'class' => 'form-control'
-                ),
+                ],
                 'label' => false
-            ))
-            ->add('email', EmailType::class, array(
-                'attr' => array(
+            ])
+            ->add('email', EmailType::class, [
+                'attr' => [
                     'placeholder' => 'E-mail',
                     'class' => 'form-control'
-                ),
+                ],
                 'label' => false
-            ))
-            ->add('plainPassword', RepeatedType::class, array(
+            ])
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => array(
-                    'attr' => array(
+                'first_options' => [
+                    'attr' => [
                         'placeholder' => 'Password',
                         'class' => 'form-control'
-                    ),
+                    ],
                     'label' => false
-                ),
-                'second_options' => array(
-                    'attr' => array(
+                ],
+                'second_options' => [
+                    'attr' => [
                         'placeholder' => 'Repeat password',
                         'class' => 'form-control'
-                    ),
+                    ],
                     'label' => false
-                ),
+                ],
                 'required' => false
-            ))
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Admin'
-        ));
+        ]);
     }
 }

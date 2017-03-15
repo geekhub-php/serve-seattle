@@ -1,4 +1,4 @@
-{% extends 'default/index.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
     Users
@@ -85,9 +85,9 @@
 {% block javascripts %}
     <script>
         $('document').ready(function () {
-            $('.activate').click(function() {
+            $('input[type=checkbox]').click(function() {
                if (confirm("Are you really want to activate/deactivate user?"))
-                   this.parentNode.parentNode.submit();
+                   this.parentNode.parentNode.parentNode.submit();
                 else
                     return false;
             })
