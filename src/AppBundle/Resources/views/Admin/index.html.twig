@@ -1,0 +1,17 @@
+{% extends 'default/index.html.twig' %}
+
+{% block title %}
+    Admin
+{% endblock %}
+
+{% block content %}
+    <div class="col-sm-6">
+        <h1>
+            {{ admin.username }}
+        </h1>
+        {{ admin.email }}
+    </div>
+    <div class="col-sm-6">
+        {{ form(editForm) }}
+    </div>
+{% endblock %}
