@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\DTO\DtoEvent;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\User;
 use AppBundle\Form\EventType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -30,7 +31,6 @@ class CalendarController extends JsonController
 
     /**
      * @param Request $request
-     * @param User $user
      * @Route("/api/schedule/event/new/")
      * @Method("POST")
      *
@@ -46,7 +46,7 @@ class CalendarController extends JsonController
         if (!$result) {
             return $this->json(['error' => 'Event has not been created'], 412);
         }
-        $user = $this->getUser();
+        $user = $dtoEvent->getUser();
         $em = $this->getDoctrine()->getManager();
         $event = new Event();
         $event->setGoogleId($result->id);
@@ -75,18 +75,19 @@ class CalendarController extends JsonController
             return $this->json(['error' => 'Event not found'], 404);
         }
 
-        return $this->json($event, 200);
+        return $this->json(['event' => $event], 200);
     }
 
     /**
-     * @param User $user
-     * @Route("/schedule/event/user/{id}")
+     * @Route("/schedule/event/user")
      * @Method("GET")
      *
      * @return JsonResponse
      */
-    public function usersEventAction(User $user)
+    public function usersEventAction()
     {
+        $user = $this->getUser();
+
         $events = $user->getEvents();
 
         $googleEvents = [];
@@ -107,8 +108,8 @@ class CalendarController extends JsonController
 
     /**
      * @param $id
-     * @Route("/schedule/event/remove/{id}")
-     *
+     * @Route("/schedule/event/{id}")
+     * @Method("DELETE")
      * @return JsonResponse
      */
     public function removeEventAction($id)
@@ -121,16 +122,17 @@ class CalendarController extends JsonController
 
     /**
      * @param Request $request
-     * @param $id
-     * @Route("/schedule/event/edit/{id}")
+     * @param $event
+     * @Method("PATCH")
+     * @Route("/schedule/event/{id}")
      *
      * @return JsonResponse
      */
-    public function editEventAction(Request $request, $id)
+    public function editEventAction(Request $request, DtoEvent $event)
     {
         $data = $request->getContent();
         $result = $this->get('app.google_calendar')
-            ->editEvent($id, json_decode($data, true));
+            ->editEvent($event, json_decode($data, true));
 
         return $this->json($result);
     }

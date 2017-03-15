@@ -2,6 +2,8 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\DTO\DtoEvent;
+
 interface GoogleCalendarInterface
 {
     /**
@@ -9,7 +11,7 @@ interface GoogleCalendarInterface
      * Create a new Google Calendar Event
      * Returns the event representation
      */
-    public function createEvent($data);
+    public function createEvent(DtoEvent $data);
 
     /**
      * Returns the collection of events.
@@ -31,9 +33,9 @@ interface GoogleCalendarInterface
 
     /**
      * @param $id
-     * @param $data
+     * @param $event
      * Edit the Event found by id.
      * Returns message and status code
      */
-    public function editEvent($id, $data);
+    public function editEvent(DtoEvent $event, $id);
 }

@@ -6,6 +6,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class DtoEvent
 {
+    private $user;
+
     private $summary;
 
     private $description;
@@ -102,4 +104,25 @@ class DtoEvent
     {
         $this->end = $end;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     *
+     * @return $this
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
 }

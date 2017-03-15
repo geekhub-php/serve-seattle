@@ -13,7 +13,7 @@ class GoogleCalendarManager implements GoogleCalendarInterface
         $this->calendar = $factory->createCalendar('default', 'reader');
     }
 
-    public function createEvent($dtoEvent)
+    public function createEvent(DtoEvent $dtoEvent)
     {
         $event = new \Google_Service_Calendar_Event();
 
@@ -51,20 +51,20 @@ class GoogleCalendarManager implements GoogleCalendarInterface
         return $this->calendar->events->delete('primary', $id);
     }
 
-    public function editEvent($id, $data)
+    public function editEvent(DtoEvent $dtoEvent, $id)
     {
         $event = $this->getEventById($id);
-        $event->setSummary($data['title']);
-        $event->setDescription($data['description']);
-        $event->setLocation($data['location']);
+        $event->setSummary($dtoEvent->getSummary());
+        $event->setDescription($dtoEvent->getDescription());
+        $event->setLocation($dtoEvent->getLocation());
         $event->setVisibility('public');
 
         $start = new \Google_Service_Calendar_EventDateTime();
-        $start->setDateTime($data['start']);
+        $start->setDateTime($dtoEvent->getStart());
         $event->setStart($start);
 
         $end = new \Google_Service_Calendar_EventDateTime();
-        $end->setDateTime($data['end']);
+        $end->setDateTime($dtoEvent->getEnd());
         $event->setEnd($end);
 
         return $this->calendar->events->patch('primary', $id, $event);
