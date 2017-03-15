@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\DTO\DtoEvent;
 use AppBundle\Entity\Event;
-use AppBundle\Entity\User;
 use AppBundle\Form\EventType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -31,7 +30,7 @@ class CalendarController extends JsonController
 
     /**
      * @param Request $request
-     * @param User    $user
+     * @param User $user
      * @Route("/api/schedule/event/new/")
      * @Method("POST")
      *
