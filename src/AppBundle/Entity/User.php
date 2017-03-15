@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -24,6 +25,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"Short"})
      */
     private $id;
 
@@ -41,6 +43,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190)
+     * @Groups({"Short"})
      */
     private $firstName;
 
@@ -57,6 +60,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, nullable=true)
+     * @Groups({"Short"})
      */
     private $lastName;
 
@@ -78,6 +82,7 @@ class User implements UserInterface, \Serializable
      *      max = 250
      * )
      * @ORM\Column(type="string", length=250, unique=true)
+     * @Groups({"Short"})
      */
     private $email;
 
@@ -100,6 +105,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var bool
      * @ORM\Column(type="boolean")
+     * @Groups({"Short"})
      */
     private $enabled = true;
 
