@@ -9,6 +9,10 @@ class UserControllerTest extends WebTestCase
 {
     public function testListAction()
     {
+        exec('./bin/console d:d:c --env=test');
+        exec('./bin/console d:s:c --env=test');
+        exec('./bin/console h:f:l -n --env=test');
+
         $client = static::createClient();
         $client->request('GET', '/users');
         $this->assertEquals('302', $client->getResponse()->getStatusCode());
@@ -107,5 +111,6 @@ class UserControllerTest extends WebTestCase
             User::class,
             $em->getRepository(User::class)->findOneBy(['email' => 'test123@gmail.com'])
         );
+        exec('./bin/console d:d:d --force --env=test');
     }
 }

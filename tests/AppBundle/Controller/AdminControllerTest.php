@@ -12,6 +12,7 @@ class AdminControllerTest extends WebTestCase
         exec('./bin/console d:d:c --env=test');
         exec('./bin/console d:s:c --env=test');
         exec('./bin/console h:f:l -n --env=test');
+
         $client = static::createClient();
         $em =  $client->getContainer()->get('doctrine');
 
@@ -29,7 +30,6 @@ class AdminControllerTest extends WebTestCase
         $admin = $em->getRepository(Admin::class)->findOneBy(['userName' => 'test1']);
 
         $this->assertInstanceOf(Admin::class, $admin);
-
         exec('./bin/console d:d:d --force --env=test');
     }
 }
