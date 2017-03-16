@@ -2,17 +2,17 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\User;
+use AppBundle\Entity\DTO\DtoUser;
+use AppBundle\Form\LoginType;
+use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends Controller
+class DefaultController extends JsonController
 {
     /**
-
      * @param Request $request
      * @Route("/login", name="api_login")
      * @Method("POST")
@@ -21,11 +21,14 @@ class DefaultController extends Controller
      */
     public function loginAction(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
+        $userCredentials = new DtoUser();
 
-        /** @var User $user */
+        $form = $this->createForm(LoginType::class, $userCredentials);
+
+        $this->handleJsonForm($form, $request);
+
         $user = $this->getDoctrine()->getRepository('AppBundle:User')
-            ->findOneBy(['email' => $data['email']]);
+            ->findOneBy(['email' => $userCredentials->getEmail()]);
 
         if (!$user) {
             return $this->json(['message' => 'Bad credentials'], 401);
@@ -33,7 +36,7 @@ class DefaultController extends Controller
 
         $result = $this->get('security.encoder_factory')
             ->getEncoder($user)
-            ->isPasswordValid($user->getPassword(), $data['password'], null);
+            ->isPasswordValid($user->getPassword(), $userCredentials->getPassword(), null);
         if (!$result) {
             return $this->json(['message' => 'Bad credentials'], 401);
         }
@@ -48,7 +51,16 @@ class DefaultController extends Controller
 
         $em->flush();
 
-        return $this->json(['X-AUTH-TOKEN' => $token]);
+        $serializer = $this->get('serializer');
+        $json = $serializer->normalize(
+            $user,
+            null,
+            array('groups' => array('Short'))
+        );
+
+        return $this->json(
+            ['user' => $json, 'X-AUTH-TOKEN' => $token]
+        );
     }
 
     /**

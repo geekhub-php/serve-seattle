@@ -4,6 +4,15 @@ parameters:
 #    parameter_name: value
 
 services:
+
+      app.google_calendar_factory:
+          class: AppBundle\Services\GoogleClientFactory
+          arguments: ['%google_credentials_path%']
+
+      app.google_calendar:
+          class: AppBundle\Services\GoogleCalendarManager
+          autowire: true
+
       app.api_token_authenticator:
           class: AppBundle\Security\ApiTokenAuthenticator
 

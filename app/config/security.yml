@@ -18,7 +18,7 @@ security:
         api:
             provider: api_provider
             anonymous: ~
-            pattern: ^/api/
+            pattern: ^/api
             stateless: true
             security: true
             guard:
@@ -26,6 +26,7 @@ security:
                     - app.api_token_authenticator
 
         main:
+            http_basic: ~
             provider: web_provider
             anonymous: ~
             security: true
@@ -40,6 +41,6 @@ security:
 
     access_control:
           - { path: ^/api/login$, role:  IS_AUTHENTICATED_ANONYMOUSLY }
-          - { path: ^/api/, roles: ROLE_USER }
+          - { path: ^/api, roles: ROLE_USER }
           - { path: ^/login$, allow_if: "is_anonymous() and !is_authenticated()" }
           - { path: ^/, role:  ROLE_ADMIN }

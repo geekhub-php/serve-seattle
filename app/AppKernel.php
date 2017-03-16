@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Mcfedr\JsonFormBundle\McfedrJsonFormBundle(),
             new AppBundle\AppBundle()
         ];
 

@@ -14,6 +14,7 @@ parameters:
     mailer_host:       127.0.0.1
     mailer_user:       ~
     mailer_password:   ~
+    google_credentials_path: '%kernel.root_dir%/config/credentials/credentials.json'
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
