@@ -39,5 +39,4 @@ class EventType extends AbstractType
                 'data_class' => DtoEvent::class
             ]);
     }
-
 }

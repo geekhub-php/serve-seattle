@@ -124,5 +124,4 @@ class DtoEvent
 
         return $this;
     }
-
 }
