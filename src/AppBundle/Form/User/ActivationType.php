@@ -3,7 +3,6 @@
 namespace AppBundle\Form\User;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -26,19 +25,18 @@ class ActivationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('enabled', CheckboxType::class, array(
+            ->add('enabled', CheckboxType::class, [
                 'required'    => false,
-                'attr'  => ['class' => 'activate'],
                 'label'    => false,
-            ))
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => User::class,
-            'validation_groups' => array('registration','edit'),
-        ));
+            'validation_groups' => ['registration','edit'],
+        ]);
     }
 }

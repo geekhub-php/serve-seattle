@@ -3,7 +3,6 @@
 namespace AppBundle\Form\User;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,64 +28,53 @@ class EditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastName', TextType::class, array(
-                'attr' => array(
+            ->add('lastName', TextType::class, [
+                'attr' => [
                     'placeholder' => 'lastName',
                     'class' => 'form-control'
-                ),
+                ],
                 'label' => false
-            ))
-            ->add('firstName', TextType::class, array(
-                'attr' => array(
+            ])
+            ->add('firstName', TextType::class, [
+                'attr' => [
                     'placeholder' => 'firstName',
                     'class' => 'form-control'
-                ),
+                ],
                 'label' => false
-            ))
-            ->add('email', EmailType::class, array(
-                'attr' => array(
+            ])
+            ->add('email', EmailType::class, [
+                'attr' => [
                     'placeholder' => 'E-mail',
                     'class' => 'form-control'
-                ),
+                ],
                 'label' => false
-            ))
-            ->add('plainPassword', RepeatedType::class, array(
+            ])
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => array(
-                    'attr' => array(
+                'first_options' => [
+                    'attr' => [
                         'placeholder' => 'Password',
                         'class' => 'form-control'
-                    ),
+                    ],
                     'label' => false
-                ),
-                'second_options' => array(
-                    'attr' => array(
+                ],
+                'second_options' => [
+                    'attr' => [
                         'placeholder' => 'Repeat password',
                         'class' => 'form-control'
-                    ),
+                    ],
                     'label' => false
-                ),
+                ],
                 'required' => false
-            ))
-            ->add('image', TextType::class, array(
-                    'attr' => array(
-                    'placeholder' => 'image',
-                    'class' => 'form-control'
-                ),
-                'label' => false,
-                'required' => false,
-            ))
-            ->add('Save', SubmitType::class, array(
-                'attr' => ['class' => 'btn btn-primary']
-            ))
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => User::class,
-            'validation_groups' => array('registration','edit'),
-        ));
+            'validation_groups' => ['registration','edit'],
+        ]);
     }
 }

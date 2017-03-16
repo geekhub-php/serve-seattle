@@ -18,11 +18,11 @@ class FilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
+            ->add('name', TextType::class, [
                 'label' => false,
                 'attr' => array('placeholder' => 'Press enter to search'),
                 'required' => false,
-            ));
+            ]);
     }
 
     /**
