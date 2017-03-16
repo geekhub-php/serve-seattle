@@ -26,6 +26,7 @@ security:
                     - app.api_token_authenticator
 
         main:
+            http_basic: ~
             provider: web_provider
             anonymous: ~
             security: true
