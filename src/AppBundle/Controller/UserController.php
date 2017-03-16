@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\DTO\Filter;
-use AppBundle\Form\FilterType;
+use AppBundle\Form\DTO\UserFilterType;
 use AppBundle\Form\User\EditType;
 use AppBundle\Form\User\ActivationType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -29,7 +29,7 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $filter = new Filter;
-        $filterForm = $this->createForm(FilterType::class, $filter)
+        $filterForm = $this->createForm(UserFilterType::class, $filter)
             ->add("Search", SubmitType::class, [
                 "attr" => ["class" => "fa fa-search"]
             ]);

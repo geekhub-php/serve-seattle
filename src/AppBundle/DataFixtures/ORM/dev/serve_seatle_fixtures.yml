@@ -75,7 +75,7 @@ AppBundle\Entity\FormRequest:
     request{1..10}:
         type: '@request_type*'
         user: '@intern*'
-        status: 'new'
+        status: 'pending'
         date: <dateTime()>
 
 

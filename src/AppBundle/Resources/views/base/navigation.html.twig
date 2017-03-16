@@ -10,7 +10,9 @@
                 <a href="{{ path('homepage') }}">Dashboard</a>
             </li>
             <li><a href="#">Schedules</a></li>
-            <li><a href="#">Request forms</a></li>
+            <li class="{{ 'form_request_list' in app.request.get('_route') ? 'active' : '' }}">
+                <a href="{{ path('form_request_list') }}">Request forms</a>
+            </li>
             <li><a href="#">Surveys</a></li>
             <li class="{{ 'users_list' in app.request.get('_route') ? 'active' : '' }}
                            {{ 'add_user' in app.request.get('_route') ? 'active' : '' }}

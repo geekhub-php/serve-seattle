@@ -16,6 +16,8 @@ class FormRequest
 {
     use ORMBehaviors\Timestampable\Timestampable;
 
+    const STATUS = ['pending', 'approved', 'rejected'];
+
     /**
      * @var int
      *
@@ -102,8 +104,9 @@ class FormRequest
      */
     public function setStatus($status)
     {
-        $this->status = $status;
-
+        if (in_array($status, self::STATUS)) {
+            $this->status = $status;
+        }
         return $this;
     }
 

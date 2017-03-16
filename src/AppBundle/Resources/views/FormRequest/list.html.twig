@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Request Forms
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Request Forms
+    </h1>
+    {{ form(filterForm) }}
+    <div class="row">
+        {% if formRequests|length %}
+            <table class="table">
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Intern Name
+                    </th>
+                    <th>
+                        Request Type
+                        {#{{ knp_pagination_sortable(users, 'Last Name', 'u.lastName') }}#}
+                    </th>
+                    <th>
+                        Action
+                        {#{{ knp_pagination_sortable(users, 'Registration date', 'u.createdAt') }}#}
+                    </th>
+                </tr>
+                {% for formRequest in formRequests %}
+                    <tr>
+                        <td>
+                            {{ formRequest.createdAt | date('m/d/Y') }}
+                        </td>
+                        <td>
+                            {{ formRequest.user.lastName }}
+                            {{ formRequest.user.firstName }}
+                        </td>
+                        <td>
+                            {{ formRequest.type.name }}
+                        </td>
+                        <td>
+                            {% if formRequest.status == 'pending' %}
+                                {% if approveForms[formRequest.id] %}
+                                    {{ form(approveForms[formRequest.id]) }}
+                                {% endif %}
+                            {% else %}
+                                {{ formRequest.status | capitalize }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <ul class="pager">
+                {{ knp_pagination_render(formRequests) }}
+            </ul>
+        {% else %}
+            <h1>
+                Nothing found
+            </h1>
+        {% endif %}
+    </div>
+{% endblock %}
+

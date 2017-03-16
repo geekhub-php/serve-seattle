@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\DTO\Filter;
+
 /**
  * FormRequestRepository.
  *
@@ -10,4 +12,24 @@ namespace AppBundle\Repository;
  */
 class FormRequestRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function selectRequestFormsByParams(Filter $filter)
+    {
+        $query = $this->createQueryBuilder('f')
+            ->leftJoin('f.type', 't')
+            ->leftJoin('f.user', 'u')
+        ;
+        if ($filter->type && $filter->type != 'All') {
+            $query->andWhere('t.name = ?1')
+                ->setParameter('1', $filter->type)
+            ;
+        }
+
+        if ($filter->decision && $filter->decision != 'All') {
+            $query->andWhere('f.status = ?2')
+                ->setParameter('2', $filter->decision)
+            ;
+        }
+
+        return $query->getQuery();
+    }
 }
