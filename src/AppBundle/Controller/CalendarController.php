@@ -8,10 +8,8 @@ use AppBundle\Entity\User;
 use AppBundle\Form\EventType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CalendarController extends JsonController
@@ -22,13 +20,12 @@ class CalendarController extends JsonController
      *
      * @return JsonResponse
      */
-    public function eventsListAction()
+    public function eventsListAction(Request $request)
     {
         $result = $this->get('app.google_calendar')
-            ->getEventList();
-        $response = ['events' => $result];
+            ->getEventList('primary', $request->query->all());
 
-        return new JsonResponse($response);
+        return new JsonResponse($result);
     }
 
     /**
@@ -72,13 +69,22 @@ class CalendarController extends JsonController
      */
     public function singleEventAction($id)
     {
-        $event = $this->get('app.google_calendar')
+        /** @var Event $event */
+        $event = $this->getDoctrine()->getRepository('AppBundle:Event')
+            ->findByGoogleId($id);
+        $user = $event->getUsers()->first();
+        $googleEvent = $this->get('app.google_calendar')
             ->getEventById($id);
-        if (!$event) {
+        if (!$googleEvent) {
             return $this->json(['error' => 'Event not found'], 404);
         }
-
-        return new JsonResponse($event);
+        $serializer = $this->get('serializer');
+        $user = $serializer->normalize(
+            $user,
+            null,
+            ['groups' => ['Short']]
+        );
+        return new JsonResponse(['user' => $user, 'event' => $googleEvent]);
     }
 
     /**

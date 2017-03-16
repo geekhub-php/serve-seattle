@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class EventRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByGoogleId($id)
+    {
+        return $this->createQueryBuilder('event')
+            ->andWhere('event.googleId = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleResult();
+    }
 }

@@ -6,6 +6,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class DtoEvent
 {
+    /**
+     * @var Assert\NotBlank
+     */
     private $user;
 
     private $summary;

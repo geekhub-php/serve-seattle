@@ -4,7 +4,7 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\DTO\DtoEvent;
 
-class GoogleCalendarManager implements GoogleCalendarInterface
+class GoogleCalendarManager
 {
     private $calendar;
 
@@ -16,16 +16,13 @@ class GoogleCalendarManager implements GoogleCalendarInterface
     public function createEvent(DtoEvent $dtoEvent)
     {
         $event = new \Google_Service_Calendar_Event();
-
         $event->setSummary($dtoEvent->getSummary());
         $event->setDescription($dtoEvent->getDescription());
         $event->setLocation($dtoEvent->getLocation());
         $event->setVisibility('public');
-
         $start = new \Google_Service_Calendar_EventDateTime();
         $start->setDateTime($dtoEvent->getStart());
         $event->setStart($start);
-
         $end = new \Google_Service_Calendar_EventDateTime();
         $end->setDateTime($dtoEvent->getEnd());
         $event->setEnd($end);
@@ -33,12 +30,15 @@ class GoogleCalendarManager implements GoogleCalendarInterface
         return $this->calendar->events->insert('primary', $event);
     }
 
-    public function getEventList($calendarId = 'primary')
+    public function getEventList($calendarId = 'primary', $query)
     {
-        return $this->calendar
+        $events = $this->calendar
             ->events
-            ->listEvents($calendarId)
-            ->getItems();
+            ->listEvents($calendarId, $query);
+        return [
+            'next_page' => $events->getNextPageToken(),
+            'events' => $events->getItems()
+        ];
     }
 
     public function getEventById($id)
