@@ -2,11 +2,10 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\User;
+use AppBundle\Entity\DTO\DtoUser;
 use AppBundle\Form\LoginType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends JsonController
 {
     /**
-
      * @param Request $request
      * @Route("/login", name="api_login")
      * @Method("POST")
@@ -23,7 +21,7 @@ class DefaultController extends JsonController
      */
     public function loginAction(Request $request)
     {
-        $userCredentials = new User();
+        $userCredentials = new DtoUser();
 
         $form = $this->createForm(LoginType::class, $userCredentials);
 
@@ -57,7 +55,7 @@ class DefaultController extends JsonController
         $json = $serializer->normalize(
             $user,
             null,
-            array('groups' => array('Detail'))
+            array('groups' => array('Short'))
         );
 
         return $this->json(

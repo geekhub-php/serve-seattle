@@ -8,6 +8,10 @@ class ApiDefaultControllerTest extends WebTestCase
 {
     public function testLogin()
     {
+        exec('./bin/console d:d:c --env=test');
+        exec('./bin/console d:s:c --env=test');
+        exec('./bin/console h:f:l -n --env=test');
+
         $client = static::createClient();
 
         $json = '{
