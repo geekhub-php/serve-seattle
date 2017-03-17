@@ -85,9 +85,7 @@ class CalendarController extends JsonController
         if (!$googleEvent) {
             throw new JsonHttpException(404, 'Event not found');
         }
-        $user = $this->get('serializer')
-            ->normalize($user, null, ['groups' => ['Short']]
-        );
+        $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
         return new JsonResponse(['user' => $user, 'event' => $googleEvent]);
     }
 
