@@ -5,6 +5,13 @@ parameters:
 
 services:
 
+      app.json_exception_listener:
+          class: AppBundle\Listener\JsonExceptionListener
+          arguments:
+              - "@logger"
+          tags:
+              - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
+
       app.google_calendar_factory:
           class: AppBundle\Services\GoogleClientFactory
           arguments: ['%google_credentials_path%']

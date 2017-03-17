@@ -43,7 +43,11 @@ class GoogleCalendarManager
 
     public function getEventById($id)
     {
-        return $this->calendar->events->get('primary', $id);
+        $event = $this->calendar->events->get('primary', $id);
+        if ($event->status == 'cancelled') {
+            return;
+        }
+        return $event;
     }
 
     public function deleteEvent($id)
