@@ -124,7 +124,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var ArrayCollection[Event]
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="users", cascade={"persist", "remove"})
      */
     private $events;
 
@@ -358,7 +358,7 @@ class User implements UserInterface, \Serializable
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            $event->setUsers($this);
+            $event->addUser($this);
         }
 
         return $this;

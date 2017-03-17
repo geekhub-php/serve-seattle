@@ -10,10 +10,10 @@ class GoogleCalendarManager
 
     public function __construct(GoogleClientFactory $factory)
     {
-        $this->calendar = $factory->createCalendar('default', 'reader');
+        $this->calendar = $factory->createCalendar('user', 'owner');
     }
 
-    public function createEvent(DtoEvent $dtoEvent)
+    public function createEvent(DtoEvent $dtoEvent, $data = [])
     {
         $event = new \Google_Service_Calendar_Event();
         $event->setSummary($dtoEvent->getSummary());
@@ -27,16 +27,16 @@ class GoogleCalendarManager
         $end->setDateTime($dtoEvent->getEnd());
         $event->setEnd($end);
 
-        return $this->calendar->events->insert('primary', $event);
+        return $this->calendar->events->insert('primary', $event, $data);
     }
 
-    public function getEventList($calendarId = 'primary', $query)
+    public function getEventList($query = [])
     {
         $events = $this->calendar
             ->events
-            ->listEvents($calendarId, $query);
+            ->listEvents('primary', $query);
         return [
-            'next_page' => $events->getNextPageToken(),
+            'nextPageToken' => $events->getNextPageToken(),
             'events' => $events->getItems()
         ];
     }
@@ -51,7 +51,7 @@ class GoogleCalendarManager
         return $this->calendar->events->delete('primary', $id);
     }
 
-    public function editEvent(DtoEvent $dtoEvent, $id)
+    public function editEvent(DtoEvent $dtoEvent, $id, $data = [])
     {
         $event = $this->getEventById($id);
         $event->setSummary($dtoEvent->getSummary());
@@ -67,12 +67,15 @@ class GoogleCalendarManager
         $end->setDateTime($dtoEvent->getEnd());
         $event->setEnd($end);
 
-        return $this->calendar->events->patch('primary', $id, $event);
+        return $this->calendar->events->patch('primary', $id, $event, $data);
     }
 
     public function clear()
     {
-        $events = $this->getEventList();
+        $events = $this->calendar
+            ->events
+            ->listEvents('primary')
+            ->getItems();
 
         foreach ($events as $event) {
             $this->deleteEvent($event->getId());

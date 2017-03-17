@@ -4,33 +4,34 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\DTO\DtoEvent;
 use AppBundle\Entity\Event;
-use AppBundle\Entity\User;
 use AppBundle\Form\EventType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/schedule/events")
+ */
 class CalendarController extends JsonController
 {
     /**
-     * @Route("/schedule/events")
+     * @Route("/")
      * @Method("GET")
      *
      * @return JsonResponse
      */
     public function eventsListAction(Request $request)
     {
-        $result = $this->get('app.google_calendar')
-            ->getEventList('primary', $request->query->all());
-
-        return new JsonResponse($result);
+        return new JsonResponse($this->get('app.google_calendar')
+            ->getEventList($request->query->all()));
     }
 
     /**
      * @param Request $request
-     * @Route("/schedule/event/new")
+     * @Route("")
      * @Method("POST")
      *
      * @return JsonResponse
@@ -41,20 +42,23 @@ class CalendarController extends JsonController
         $form = $this->createForm(EventType::class, $dtoEvent);
         $this->handleJsonForm($form, $request);
         $result = $this->get('app.google_calendar')
-            ->createEvent($dtoEvent);
+            ->createEvent($dtoEvent, $request->query->all());
         if (!$result) {
             return $this->json(['error' => 'Event has not been created'], 412);
         }
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')
             ->find($dtoEvent->getUser());
+
+        if (!$user) {
+            throw new NotFoundHttpException();
+        }
         $event = new Event();
         $event->setGoogleId($result->id);
-        $event->setUsers($user);
+        $event->addUser($user);
         $user->setEvent($event);
 
         $em->persist($user);
-        $em->persist($event);
         $em->flush();
 
         return $this->json(['success' => 'Event Created']);
@@ -62,7 +66,7 @@ class CalendarController extends JsonController
 
     /**
      * @param $id
-     * @Route("/schedule/event/{id}")
+     * @Route("/{id}")
      * @Method("GET")
      *
      * @return JsonResponse
@@ -73,61 +77,33 @@ class CalendarController extends JsonController
         $event = $this->getDoctrine()->getRepository('AppBundle:Event')
             ->findByGoogleId($id);
         $user = $event->getUsers()->first();
+        if (!$user) {
+            throw new NotFoundHttpException();
+        }
         $googleEvent = $this->get('app.google_calendar')
             ->getEventById($id);
         if (!$googleEvent) {
             return $this->json(['error' => 'Event not found'], 404);
         }
-        $serializer = $this->get('serializer');
-        $user = $serializer->normalize(
-            $user,
-            null,
-            ['groups' => ['Short']]
+        $user = $this->get('serializer')
+            ->normalize($user, null, ['groups' => ['Short']]
         );
         return new JsonResponse(['user' => $user, 'event' => $googleEvent]);
     }
 
     /**
-     * @Route("/api/schedule/event/user")
+     * @Route("/user/{id}")
      * @Method("GET")
      *
      * @return JsonResponse
      */
-    public function currentUserEventsAction()
+    public function userEventsAction($id)
     {
-        $user = $this->getUser();
-
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
         $events = $user->getEvents();
-
         $googleEvents = [];
-
         $calendar = $this->get('app.google_calendar');
-        foreach ($events as $event) {
-            $googleEvents[] = $calendar
-                ->getEventById($event->getGoogleId());
-        }
-        if (!$googleEvents) {
-            return $this->json(['error' => 'Events not found'], 404);
-        }
 
-        $response = ['events' => $googleEvents];
-
-        return new JsonResponse($response);
-    }
-
-    /**
-     * @Route("/schedule/event/user/{id}")
-     * @Method("GET")
-     *
-     * @return JsonResponse
-     */
-    public function userEventsAction(User $user)
-    {
-        $events = $user->getEvents();
-
-        $googleEvents = [];
-
-        $calendar = $this->get('app.google_calendar');
         foreach ($events as $event) {
             $googleEvents[] = $calendar
                 ->getEventById($event->getGoogleId());
@@ -138,29 +114,34 @@ class CalendarController extends JsonController
 
         $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
 
-        $response = ['user' => $user, 'events' => $googleEvents];
+        $response = array_merge(['user' => $user], ['events' => $googleEvents]);
 
         return new JsonResponse($response);
     }
 
     /**
      * @param $id
-     * @Route("/schedule/event/{id}")
+     * @Route("/{id}")
      * @Method("DELETE")
      * @return JsonResponse
      */
     public function removeEventAction($id)
     {
-        $result = $this->get('app.google_calendar')
+        $this->get('app.google_calendar')
             ->deleteEvent($id);
+        $em = $this->getDoctrine()->getManager();
+        /** @var Event $event */
+        $event = $em->getRepository('AppBundle:Event')->findByGoogleId($id);
+        $em->remove($event);
+        $em->flush();
 
-        return $this->json($result);
+        return $this->json(['success' => 'Event was removed']);
     }
 
     /**
      * @param Request $request
      * @Method("PATCH")
-     * @Route("/schedule/event/{id}")
+     * @Route("/{id}")
      *
      * @return JsonResponse
      */
@@ -170,15 +151,15 @@ class CalendarController extends JsonController
         $form = $this->createForm(EventType::class, $dtoEvent);
         $this->handleJsonForm($form, $request);
         $this->get('app.google_calendar')
-            ->editEvent($dtoEvent, $id);
+            ->editEvent($dtoEvent, $id, $request->query->all());
 
         return $this->json(['success' => 'Event edited']);
     }
 
     /**
      * FOR DEV ONLY.
-     *
-     * @Route("/schedule/clear")
+     * @Method("PUT")
+     * @Route("/clear")
      */
     public function clearAction()
     {

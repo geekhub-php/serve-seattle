@@ -33,6 +33,7 @@ class GoogleClientFactory
     {
         $scope = new \Google_Service_Calendar_AclRuleScope();
         $scope->setType($scopeType);
+        $scope->setValue('devserveseattle@gmail.com');
 
         $rule = new \Google_Service_Calendar_AclRule();
         $rule->setRole($role);
