@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\DTO\DtoEvent;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\User;
 use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\EventType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
@@ -47,6 +48,7 @@ class CalendarController extends JsonController
             throw new JsonHttpException(412, 'Event has not been created');
         }
         $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
         $user = $em->getRepository('AppBundle:User')
             ->find($dtoEvent->getUser());
 
@@ -112,9 +114,7 @@ class CalendarController extends JsonController
 
         $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
 
-        $response = array_merge(['user' => $user], ['events' => $googleEvents]);
-
-        return new JsonResponse($response);
+        return new JsonResponse(['user' => $user, 'events' => $googleEvents]);
     }
 
     /**
