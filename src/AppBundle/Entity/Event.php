@@ -34,7 +34,7 @@ class Event
 
     /**
      * @var ArrayCollection|$users[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="events")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="events", cascade={"persist"})
      */
     private $users = [];
 
@@ -44,9 +44,9 @@ class Event
     }
 
     /**
-     * Get id.
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -54,26 +54,22 @@ class Event
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
-     * @param $users
+     * Set googleId
      *
-     * @return $this
+     * @param string $googleId
+     *
+     * @return Event
      */
-    public function setUsers($users)
+    public function setGoogleId($googleId)
     {
-        $this->users[] = $users;
+        $this->googleId = $googleId;
 
         return $this;
     }
 
     /**
+     * Get googleId
+     *
      * @return string
      */
     public function getGoogleId()
@@ -82,10 +78,36 @@ class Event
     }
 
     /**
-     * @param string $googleId
+     * Add user
+     *
+     * @param User $user
+     *
+     * @return Event
      */
-    public function setGoogleId($googleId)
+    public function addUser(User $user)
     {
-        $this->googleId = $googleId;
+        $this->users[] = $user;
+
+        return $this;
+    }
+
+    /**
+     * Remove user
+     *
+     * @param User $user
+     */
+    public function removeUser(User $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users
+     *
+     * @return ArrayCollection
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

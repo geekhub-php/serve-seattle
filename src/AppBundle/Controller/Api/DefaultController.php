@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\DTO\DtoUser;
+use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\LoginType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -31,14 +32,14 @@ class DefaultController extends JsonController
             ->findOneBy(['email' => $userCredentials->getEmail()]);
 
         if (!$user) {
-            return $this->json(['message' => 'Bad credentials'], 401);
+            throw new JsonHttpException(400, 'Bad credentials');
         }
 
         $result = $this->get('security.encoder_factory')
             ->getEncoder($user)
             ->isPasswordValid($user->getPassword(), $userCredentials->getPassword(), null);
         if (!$result) {
-            return $this->json(['message' => 'Bad credentials'], 401);
+            throw new JsonHttpException(400, 'Bad credentials');
         }
 
         $token = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
