@@ -10,6 +10,7 @@ AppBundle\Entity\User:
         lastName: <lastName()>
         email: <email()>
         plainPassword: intern2
+        apiToken: 2
     intern3:
         firstName: <firstName()>
         lastName: <lastName()>
@@ -25,23 +26,50 @@ AppBundle\Entity\Admin:
 AppBundle\Entity\SurveyType:
     survey_type1:
         name: internship
+        description: The purpose of this survey is to collect feedback about Serve Seattle's team members internship experience. Please be honest about your experience because this feedback will be used to help improve the program.
     survey_type2:
         name: speaker
+        description: A quick survey to find out who were your favorite speakers so far at Serve Seattle. Your opinion really helps us craft the curriculum for future years so be honest!
+                     1 star = bad.
+                     5 stars = awesome
     survey_type3:
         name: exit
     survey_type4:
         name: supervisor
 
-AppBundle\Entity\SurveyQuestion:
-    survey_quest1:
-        title: How many hours do you work?
+AppBundle\Entity\SurveyTypeSection:
+    survey_type_section1:
+        orderNumber: 1
         surveyType: '@survey_type1'
-    survey_quest2:
-        title: How well did internship meet your expectation?
+    survey_type_section2:
+        orderNumber: 1
         surveyType: '@survey_type2'
-    survey_quest3:
-        title: What do you think about your internship?
-        surveyType: '@survey_type3'
+
+
+AppBundle\Entity\SurveyQuestion:
+    survey_quest_text1:
+        title: Full Name
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 1
+    survey_quest_text2:
+        title: Internship Title
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 2
+    survey_quest_text3:
+        title: Internship Site
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 3
+    survey_quest_choice1:
+        title: How well did your internship meet your expectations?
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 4
+        variants: ['1','2','3','4','5','6','7','8','9','10']
+    survey_quest_choice2:
+        title: Did you feel equipped by what your Supervisor gave you?
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 5
+        variants: ['1','2','3','4','5','6','7','8','9','10']
+
 
 AppBundle\Entity\Survey:
     survey1:
@@ -49,24 +77,30 @@ AppBundle\Entity\Survey:
         status: 'submited'
         user: '@intern1'
     survey2:
-        type: '@survey_type2'
-        status: 'submited'
-        user: '@intern1'
-    survey3:
-        type: '@survey_type3'
+        type: '@survey_type1'
         user: '@intern2'
 
 AppBundle\Entity\SurveyAnswer:
-    answer1:
-        type: 'plain text'
-        question: '@survey_quest1'
+    survey_answer1:
+        question: '@survey_quest_text1'
         survey: '@survey1'
-        content: 3 hour per day
-    answer2:
-        type: 'plain text'
-        question: '@survey_quest2'
-        survey: '@survey2'
-        content: Well enough
+        content: John
+    survey_answer2:
+        question: '@survey_quest_text2'
+        survey: '@survey1'
+        content: Title
+    survey_answer3:
+        question: '@survey_quest_text3'
+        survey: '@survey1'
+        content: Site
+    survey_answer4:
+        question: '@survey_quest_choice1'
+        survey: '@survey1'
+        content: 10
+    survey_answer5:
+        question: '@survey_quest_choice2'
+        survey: '@survey1'
+        content: 5
 
 AppBundle\Entity\FormRequestType:
     request_type1:

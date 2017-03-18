@@ -5,13 +5,13 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyQuestion;
+use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class SurveyController extends Controller
+class SurveyController extends JsonController
 {
     /**
      * @Route("/surveys", name="api_surveys")
@@ -36,12 +36,12 @@ class SurveyController extends Controller
             array('groups' => array('group1'))
         );
 
-        return $this->json($json);
+        return $this->json(['surveys' => $json], 200);
     }
 
     /**
      * @param Survey $survey
-     * @Route("/survey/{id}", name="api_survey_byid")
+     * @Route("/survey/{id}", name="api_survey")
      * @Method("GET")
      * @ParamConverter("survey", class="AppBundle:Survey")
      */
@@ -57,22 +57,23 @@ class SurveyController extends Controller
         }
         $serializer = $this->get('serializer');
         $json = null;
+        $json_survey = $serializer->normalize(
+            $survey,
+            null,
+            array('groups' => array('group1', 'group2'))
+        );
         if ($survey->getStatus() == 'submited') {
-            $json = $serializer->normalize(
-                $survey,
+            $answers = $survey->getAnswers();
+            $json_answers = $serializer->normalize(
+                $answers,
                 null,
-                array('groups' => array('group1', 'group2'))
+                array('groups' => array('group3'))
             );
-        }
-        if ($survey->getStatus() == 'current') {
-            $json = $serializer->normalize(
-                $survey,
-                null,
-                array('groups' => array('group1', 'group3'))
-            );
+
+            return $this->json(['survey' => $json_survey, 'answers' => $json_answers], 200);
         }
 
-        return $this->json($json);
+        return $this->json(['survey' => $json_survey], 200);
     }
 
     /**
@@ -91,19 +92,26 @@ class SurveyController extends Controller
             return $this->json(['message' => 'No survey'], 404);
         }
         $questKey = array();
-        foreach ($survey->getType()->getQuestions() as $question) {
-            $questKey[] = $question->getId();
+        foreach ($survey->getType()->getSections() as $section) {
+            foreach ($section->getQuestions() as $question) {
+                $questKey[] = $question->getId();
+            }
         }
         $data = json_decode($request->getContent(), true);
         $em = $this->getDoctrine()->getManager();
         foreach ($questKey as $key) {
             $answer = $data[$key];
             if ($answer == null) {
-                return $this->json(['message' => 'Wrong question id'], 400);
+                return $this->json(['message' => 'Survey is not filled out'], 400);
+            }
+            $question = $em->getRepository(SurveyQuestion::class)->find($key);
+            $variants = $question->getVariants();
+            if (count($variants) > 0 & !in_array($answer, $variants)) {
+                return $this->json(['message' => 'Wrong answer variant.'], 400);
             }
             $newAnswer = new SurveyAnswer();
             $newAnswer->setSurvey($survey);
-            $newAnswer->setQuestion($em->getRepository(SurveyQuestion::class)->find($key));
+            $newAnswer->setQuestion($question);
             $newAnswer->setContent($answer);
             $em->persist($newAnswer);
         }

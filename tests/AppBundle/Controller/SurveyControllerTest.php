@@ -53,7 +53,7 @@ class SurveyControllerTest extends WebTestCase
         $client->followRedirects();
 
         $this->assertTrue(
-            $client->getResponse()->isRedirect('/'),
+            $client->getResponse()->isRedirect('/surveys'),
             'response is a redirect to homepage'
         );
     }
@@ -62,7 +62,7 @@ class SurveyControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/survey/delete/4', array(), array(), array(
+        $crawler = $client->request('GET', '/survey/delete/1', array(), array(), array(
             'PHP_AUTH_USER' => 'admin@serve-seattle.com',
             'PHP_AUTH_PW' => 'admin',
         ));
@@ -75,7 +75,7 @@ class SurveyControllerTest extends WebTestCase
         $client->followRedirects();
 
         $this->assertTrue(
-            $client->getResponse()->isRedirect('/'),
+            $client->getResponse()->isRedirect('/surveys'),
             'response is a redirect to homepage'
         );
     }

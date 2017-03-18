@@ -32,17 +32,25 @@ class SurveyController extends Controller
 
     /**
      * @param Survey $survey
-     * @Route("/survey/{id}", name="survey_get")
+     * @Route("/survey/{id}", name="survey")
      * @Template("@App/survey.html.twig")
      * @ParamConverter("survey", class="AppBundle:Survey")
      */
     public function surveyAction(Survey $survey)
     {
         $em = $this->getDoctrine()->getManager();
-        $fields = $em->getRepository(SurveyAnswer::class)->findAnswersBySurvey($survey);
+        $answers = $em->getRepository(SurveyAnswer::class)->findAnswersBySurvey($survey);
+        foreach ($answers as $answer) {
+            $questions[] = $answer->getQuestion()->getId();
+            $contents[] = $answer->getContent();
+        }
+        $questionAnswer = array_combine($questions, $contents);
+        if (!$answers) {
+            $questionAnswer = null;
+        }
 
         return [
-            'survey' => $survey, 'fields' => $fields,
+            'survey' => $survey, 'question_answers' => $questionAnswer,
         ];
     }
 
@@ -63,11 +71,11 @@ class SurveyController extends Controller
             $em->persist($survey);
             $em->flush();
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('surveys');
         }
 
         return $this->render('@App/surveyform.html.twig', array(
-            'form' => $form->createView(), 'type' => $surveyType,
+            'form' => $form->createView(),
         ));
     }
 
@@ -79,7 +87,16 @@ class SurveyController extends Controller
     public function surveyDeleteAction(Request $request, Survey $survey)
     {
         $surveyType = $survey->getType();
-
+        $em = $this->getDoctrine()->getManager();
+        $answers = $em->getRepository(SurveyAnswer::class)->findAnswersBySurvey($survey);
+        foreach ($answers as $answer) {
+            $questions[] = $answer->getQuestion()->getId();
+            $contents[] = $answer->getContent();
+        }
+        $questionAnswer = array_combine($questions, $contents);
+        if (!$answers) {
+            $questionAnswer = null;
+        }
         $form = $this->createForm(\AppBundle\Form\SurveyType::class, $survey);
         $form->handleRequest($request);
 
@@ -88,11 +105,11 @@ class SurveyController extends Controller
             $em->remove($survey);
             $em->flush();
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('surveys');
         }
 
-        return $this->render('@App/surveyform.html.twig', array(
-            'form' => $form->createView(), 'type' => $surveyType,
+        return $this->render('@App/survey.html.twig', array(
+            'form' => $form->createView(), 'survey' => $survey, 'question_answers' => $questionAnswer,
         ));
     }
 }

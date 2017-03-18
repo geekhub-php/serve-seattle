@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -30,20 +29,10 @@ class SurveyType extends AbstractType
                 'label' => 'Choose intern',
                 'choice_label' => 'firstName',
             ))
-            ->add('created_at', DateTimeType::class, array(
-                'disabled' => true,
-            ))
-            ->add('updated_at', DateTimeType::class, array(
-                'disabled' => true,
-            ))
         ;
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $survey = $event->getData();
             $form = $event->getForm();
-            if ($survey->getUser() === null) {
-                $form->remove('created_at');
-                $form->remove('updated_at');
-            }
             if ($survey->getUser() !== null) {
                 $form->remove('user');
             }

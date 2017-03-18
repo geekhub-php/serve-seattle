@@ -57,21 +57,13 @@ class Survey
     private $user;
 
     /**
-     * @var ArrayCollection[SurveyQuestion]
-     * @ORM\ManyToMany(targetEntity="SurveyQuestion", mappedBy="surveys")
-     */
-    private $questions;
-
-    /**
      * @var ArrayCollection[SurveyAnswer]
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey")
-     * @Groups({"group2"})
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey", cascade={"persist", "remove"})
      */
     private $answers;
 
     public function __construct()
     {
-        $this->questions = new ArrayCollection();
         $this->answers = new ArrayCollection();
     }
 
@@ -95,10 +87,6 @@ class Survey
     public function setType(SurveyType $type)
     {
         $this->type = $type;
-        $questions = $type->getQuestions();
-        foreach ($questions as $question) {
-            $this->addQuestion($question);
-        }
 
         return $this;
     }
@@ -162,32 +150,7 @@ class Survey
     }
 
     /**
-     * @param SurveyQuestion $question
-     *
-     * @return Survey
-     */
-    public function addQuestion(SurveyQuestion $question)
-    {
-        if (!$this->questions->contains($question)) {
-            $this->questions->add($question);
-            $question->addSurvey($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get Questions.
-     *
-     * @return ArrayCollection
-     */
-    public function getQuestions()
-    {
-        return $this->questions;
-    }
-
-    /**
-     * Get Questions.
+     * Get answers.
      *
      * @return ArrayCollection
      */

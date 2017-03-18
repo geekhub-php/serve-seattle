@@ -62,18 +62,18 @@ class SurveyControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('POST', '/api/survey/update/3');
+        $client->request('POST', '/api/survey/update/1');
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode());
 
         $client->request(
             'POST',
-            '/api/survey/update/3',
+            '/api/survey/update/2',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json',
-                  'HTTP_X-AUTH-TOKEN' => '1', ),
-            $content = '{"3":"yes"}'
+                  'HTTP_X-AUTH-TOKEN' => '2', ),
+            $content = '{"1":"yes","2":"yes","3":"yes","4":"5","5":"7"}'
         );
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());

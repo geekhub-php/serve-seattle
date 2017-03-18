@@ -9,11 +9,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * SurveyType.
+ * SurveyTypeSection.
  *
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SurveyTypeRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SurveyTypeSectionRepository")
  */
-class SurveyType
+class SurveyTypeSection
 {
     use ORMBehaviors\Timestampable\Timestampable;
 
@@ -23,6 +23,7 @@ class SurveyType
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"group2"})
      */
     private $id;
 
@@ -34,8 +35,8 @@ class SurveyType
      *      min = 2,
      *      max = 190
      * )
-     * @ORM\Column(type="string", length=190, unique=true)
-     * @Groups({"group1"})
+     * @ORM\Column(type="string", length=190, nullable=true)
+     * @Groups({"group2"})
      */
     private $name;
 
@@ -53,22 +54,32 @@ class SurveyType
     private $description;
 
     /**
-     * @var ArrayCollection[SurveyTypeSection]
-     * @ORM\OneToMany(targetEntity="SurveyTypeSection", mappedBy="surveyType", cascade={"persist", "remove"})
+     * @var int
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @ORM\Column(type="integer")
      * @Groups({"group2"})
      */
-    private $sections;
+    private $orderNumber;
 
     /**
-     * @var ArrayCollection[Survey]
-     * @ORM\OneToMany(targetEntity="Survey", mappedBy="type", cascade={"persist", "remove"})
+     * @var SurveyType
+     * @Assert\Type("object")
+     * @Assert\Valid
+     * @ORM\ManyToOne(targetEntity="SurveyType", inversedBy="sections")
      */
-    private $surveys;
+    private $surveyType;
+
+    /**
+     * @var ArrayCollection[SurveyQuestion]
+     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="surveyTypeSection", cascade={"persist", "remove"})
+     * @Groups({"group2"})
+     */
+    private $questions;
 
     public function __construct()
     {
-        $this->sections = new ArrayCollection();
-        $this->surveys = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     /**
@@ -86,7 +97,7 @@ class SurveyType
      *
      * @param string $name
      *
-     * @return SurveyType
+     * @return SurveyTypeSection
      */
     public function setName($name)
     {
@@ -110,7 +121,7 @@ class SurveyType
      *
      * @param string $description
      *
-     * @return SurveyType
+     * @return SurveyTypeSection
      */
     public function setDescription($description)
     {
@@ -130,22 +141,60 @@ class SurveyType
     }
 
     /**
-     * Get SurveysTypeSection.
+     * Set order number.
      *
-     * @return ArrayCollection
+     * @param int $number
+     *
+     * @return SurveyTypeSection
      */
-    public function getSections()
+    public function setOrderNumber($number)
     {
-        return $this->sections;
+        $this->orderNumber = $number;
+
+        return $this;
     }
 
     /**
-     * Get Surveys.
+     * Get order number.
+     *
+     * @return int
+     */
+    public function getOrderNumber()
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * Set survey type.
+     *
+     * @param SurveyType $type
+     *
+     * @return SurveyTypeSection
+     */
+    public function setSurveyType(SurveyType $type)
+    {
+        $this->surveyType = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type.
+     *
+     * @return SurveyType
+     */
+    public function getSurveyType()
+    {
+        return $this->surveyType;
+    }
+
+    /**
+     * Get Questions.
      *
      * @return ArrayCollection
      */
-    public function getSurveys()
+    public function getQuestions()
     {
-        return $this->surveys;
+        return $this->questions;
     }
 }

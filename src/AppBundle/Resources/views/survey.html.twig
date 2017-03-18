@@ -11,12 +11,37 @@
             <div class="well">
                 <h3>{{ survey.getType.getName|capitalize }} survey</h3>
                 <h5>Intern name: {{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</h5>
-                <ul>
-                    {% for field in fields %}
-                      <li>{{ field.getQuestion.getTitle }}<br/>
-                      {{ field.getContent }}</li>
+                {% if survey.getType.getDescription() %}
+                    <p>{{ survey.getType.getDescription() }}</p>
+                {% endif %}
+                {% for section in survey.getType().getSections() %}
+                    {% if section.getName() %}
+                        <p>{{ section.getName() }}</p>
+                    {% endif %}
+                    {% if section.getDescription() %}
+                        <p>{{ section.getDescription() }}</p>
+                    {% endif %}
+                    {% for question in section.getQuestions() %}
+                        <p><b>{{ question.getTitle() }}</b></p>
+                        {% if question.getVariants() %}
+                            {% for variant in question.getVariants() %}
+                                {% if question_answers and question_answers[question.getId] == variant %}
+                                     <input type="checkbox" checked disabled>{{ variant }}
+                                {% else %}
+                                    <input type="checkbox"  disabled>{{ variant }}
+                                {% endif %}
+                            {% endfor %}
+                        {% elseif question_answers %}
+                            <p>{{ question_answers[question.getId] }}</p>
+                        {% endif %}
                     {% endfor %}
-                </ul>
+
+                {% endfor %}
+                {% if app.request.attributes.get('_route') == 'survey_delete' %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <input type="submit" value="Delete survey"/>
+                {% endif %}
 
             </div>
         </div>

@@ -3,10 +3,9 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Knp\DoctrineBehaviors\Model as ORMBehaviors;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * SurveyQuestion.
@@ -15,8 +14,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class SurveyQuestion
 {
-    use ORMBehaviors\Timestampable\Timestampable;
-
     /**
      * @var int
      *
@@ -35,34 +32,46 @@ class SurveyQuestion
      *      max = 500
      * )
      * @ORM\Column(type="string")
-     * @Groups({"group2", "group3"})
+     * @Groups({"group2"})
      */
     private $title;
 
     /**
-     * @var SurveyType
+     * @var SurveyTypeSection
      * @Assert\Type("object")
      * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="SurveyType", inversedBy="questions")
+     * @ORM\ManyToOne(targetEntity="SurveyTypeSection", inversedBy="questions")
      */
-    private $surveyType;
+    private $surveyTypeSection;
 
     /**
-     * @var ArrayCollection[Survey]
-     * @ORM\ManyToMany(targetEntity="Survey", inversedBy="questions")
+     * @var int
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     * @ORM\Column(type="integer")
+     * @Groups({"group2"})
      */
-    private $surveys;
+    private $orderNumber;
+
+    /**
+     * @var array
+     * @Assert\NotBlank()
+     * @Assert\Type("array")
+     * @ORM\Column(type="array")
+     * @Groups({"group2"})
+     */
+    private $variants;
 
     /**
      * @var ArrayCollection[SurveyAnswer]
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="question", cascade={"persist", "remove"})
      */
     private $answers;
 
     public function __construct()
     {
-        $this->surveys = new ArrayCollection();
         $this->answers = new ArrayCollection();
+        $this->variants = array();
     }
 
     /**
@@ -100,56 +109,95 @@ class SurveyQuestion
     }
 
     /**
-     * Set type.
+     * Set Survey Type Section.
      *
-     * @param SurveyType $type
+     * @param SurveyTypeSection $section
      *
      * @return SurveyQuestion
      */
-    public function setSurveyType(SurveyType $type)
+    public function setSurveyTypeSection(SurveyTypeSection $section)
     {
-        $this->surveyType = $type;
+        $this->surveyTypeSection = $section;
 
         return $this;
     }
 
     /**
-     * Get type.
+     * Get Survey Type.
      *
-     * @return SurveyType
+     * @return SurveyTypeSection
      */
-    public function getSurveyType()
+    public function getSurveyTypeSection()
     {
-        return $this->surveyType;
+        return $this->surveyTypeSection;
     }
 
     /**
-     * @param Survey $survey
+     * Set order number.
+     *
+     * @param int $number
      *
      * @return SurveyQuestion
      */
-    public function addSurvey(Survey $survey)
+    public function setOrderNumber($number)
     {
-        if (!$this->surveys->contains($survey)) {
-            $this->surveys->add($survey);
-            $survey->addQuestion($this);
+        $this->orderNumber = $number;
+
+        return $this;
+    }
+
+    /**
+     * Get order number.
+     *
+     * @return int
+     */
+    public function getOrderNumber()
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * Set variants.
+     *
+     * @param array $variants
+     *
+     * @return SurveyQuestion
+     */
+    public function setVariants($variants)
+    {
+        $this->variants = $variants;
+
+        return $this;
+    }
+
+    /**
+     * Add variant.
+     *
+     * @param string $variant
+     *
+     * @return SurveyQuestion
+     */
+    public function addVariant($variant)
+    {
+        if (!in_array($variant, $this->variants)) {
+            $this->variants[] = $variant;
         }
 
         return $this;
     }
 
     /**
-     * Get Surveys.
+     * Get variants.
      *
-     * @return ArrayCollection
+     * @return array
      */
-    public function getSurveys()
+    public function getVariants()
     {
-        return $this->surveys;
+        return $this->variants;
     }
 
     /**
-     * Get Answers.
+     * Get answers.
      *
      * @return ArrayCollection
      */

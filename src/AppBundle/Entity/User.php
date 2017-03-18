@@ -67,7 +67,6 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var string
      * @Assert\Email(
-     *     checkMX = true
      * )
      * @Assert\Type("string")
      * @Assert\Length(

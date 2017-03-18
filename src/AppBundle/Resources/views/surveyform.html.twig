@@ -9,37 +9,34 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="well">
-                <h3>{{ type.getName|capitalize }} survey</h3>
-                <p>Status: {{ form.vars.data.getStatus }}</p>
-
-                {% if form.vars.data.getStatus == 'submited' %}
-                    <p>Intern: {{ form.vars.data.getUser.getFirstName }} {{ form.vars.data.getUser.getLastName }}</p>
-                    <p>Questions:</p>
-                    <ul>
-                        {% for field in form.vars.data.getAnswers %}
-                         <li>{{ field.getQuestion.getTitle }}<br/>
-                         {{ field.getContent }}</li>
-                         {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>Questions:</p>
-                    <ul>
-                        {% for field in type.getQuestions %}
-                            <li>{{ field.getTitle }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-
-                <p>
+                <h3>{{ form.vars.data.getType.getName|capitalize }} survey</h3>
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
-                    {% if app.request.attributes.get('_route') == 'survey_delete' %}
-                    <input type="submit" value="Delete survey"/>
-                    {% else %}
-                    <input type="submit" value="Create survey"/>
+                {% if form.vars.data.getType.getDescription() %}
+                <p>{{ form.vars.data.getType.getDescription() }}</p>
+                {% endif %}
+                {% for section in form.vars.data.getType().getSections() %}
+                    {% if section.getName() %}
+                        <p>{{ section.getName() }}</p>
                     {% endif %}
-                    {{ form_end(form) }}
-                </p>
+                    {% if section.getDescription() %}
+                        <p>{{ section.getDescription() }}</p>
+                    {% endif %}
+                    <ol>
+                    {% for question in section.getQuestions() %}
+                        <li><b>{{ question.getTitle() }}</b></li>
+                        {% if question.variants is defined %}
+                            {% for variant in question.getVariants() %}
+                                <input type="checkbox"  disabled>{{ variant }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    </ol>
+                {% endfor %}
+                <br/>
+                 <input type="submit" value="Create survey"/>
+                 {{ form_end(form) }}
+
             </div>
         </div>
 
