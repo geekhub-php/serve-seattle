@@ -17,6 +17,7 @@ class FormRequestRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder('f')
             ->leftJoin('f.type', 't')
             ->leftJoin('f.user', 'u')
+            ->orderBy('f.createdAt', 'DESC')
         ;
         if ($filter->type && $filter->type != 'All') {
             $query->andWhere('t.name = ?1')

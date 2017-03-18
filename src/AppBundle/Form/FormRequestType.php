@@ -7,12 +7,10 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\FormRequest;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Class UserType
  * @package AppBundle\Form
-
  */
 class FormRequestType extends AbstractType
 {
@@ -28,15 +26,13 @@ class FormRequestType extends AbstractType
         $builder
             ->add('status', ChoiceType::class, [
                 'choices' => [
-                    'approve'    => 'approved',
-                    'reject'    => 'rejected',
+                    'Approve'    => 'approved',
+                    'Reject'    => 'rejected',
                 ],
                 'label' => false,
                 'multiple' => false,
                 'expanded' => true,
-            ])
-            ->add('Submit', SubmitType::class)
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

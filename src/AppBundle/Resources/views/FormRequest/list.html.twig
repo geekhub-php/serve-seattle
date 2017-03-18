@@ -21,11 +21,9 @@
                     </th>
                     <th>
                         Request Type
-                        {#{{ knp_pagination_sortable(users, 'Last Name', 'u.lastName') }}#}
                     </th>
                     <th>
                         Action
-                        {#{{ knp_pagination_sortable(users, 'Registration date', 'u.createdAt') }}#}
                     </th>
                 </tr>
                 {% for formRequest in formRequests %}
@@ -63,3 +61,16 @@
     </div>
 {% endblock %}
 
+{% block javascripts %}
+    <script>
+        $('document').ready(function () {
+            $('input[type=radio]').click(function() {
+                if (confirm("Are you really want to approve/reject?")){
+                    this.parentNode.parentNode.parentNode.parentNode.submit();
+                } else {
+                    return false;
+                }
+            })
+        });
+    </script>
+{% endblock %}

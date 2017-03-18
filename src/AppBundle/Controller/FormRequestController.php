@@ -18,10 +18,15 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class FormRequestController
+ * @package AppBundle\Controller
+ * @Route("/form_request", name="form_requests")
+ */
 class FormRequestController extends Controller
 {
     /**
-     * @Route("/list", name="form_request_list")
+     * @Route("", name="form_request_list")
      * @Template("@App/FormRequest/list.html.twig")
      *
      * @param Request $request
