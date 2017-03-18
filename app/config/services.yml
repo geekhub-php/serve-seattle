@@ -4,9 +4,24 @@ parameters:
 #    parameter_name: value
 
 services:
+
+      app.json_exception_listener:
+          class: AppBundle\Listener\JsonExceptionListener
+          arguments:
+              - "@logger"
+          tags:
+              - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
+
+      app.google_calendar_factory:
+          class: AppBundle\Services\GoogleClientFactory
+          arguments: ['%google_credentials_path%']
+
+      app.google_calendar:
+          class: AppBundle\Services\GoogleCalendarManager
+          autowire: true
+
       app.api_token_authenticator:
           class: AppBundle\Security\ApiTokenAuthenticator
-
 
       app.doctrine_listener:
           class: AppBundle\Security\PasswordListener

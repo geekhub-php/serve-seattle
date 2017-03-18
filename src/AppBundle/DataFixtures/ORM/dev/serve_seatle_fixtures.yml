@@ -1,0 +1,80 @@
+AppBundle\Entity\Admin:
+    admin:
+      username: admin
+      email: admin@serve-seattle.com
+      plainPassword: admin
+
+AppBundle\Entity\User:
+    intern1:
+        firstName: <firstName()>
+        email: intern1\@seattle.com
+        lastName: <lastName()>
+        plainPassword: intern1
+    intern2:
+        firstName: <firstName()>
+        lastName: <lastName()>
+        email: <email()>
+        plainPassword: intern2
+    intern3:
+        firstName: <firstName()>
+        lastName: <lastName()>
+        email: <email()>
+        plainPassword: intern3
+
+AppBundle\Entity\SurveyType:
+    survey_type1:
+        name: Internship Survey
+    survey_type2:
+        name: Speaker Survey
+    survey_type3:
+        name: End of year Survey
+    survey_type4:
+        name: Supervisor Survey
+
+AppBundle\Entity\SurveyQuestion:
+    survey_quest1:
+        title: How many hours do you work?
+        surveyType: '@survey_type1'
+    survey_quest2:
+        title: How well did internship meet your expectation?
+        surveyType: '@survey_type2'
+
+AppBundle\Entity\Survey:
+    survey1:
+        type: '@survey_type1'
+        user: '@intern1'
+        questions: '@survey_quest1'
+    survey2:
+        type: '@survey_type2'
+        user: '@intern1'
+        questions: '@survey_quest2'
+
+AppBundle\Entity\SurveyAnswer:
+    answer1:
+        type: 'plain text'
+        question: '@survey_quest1'
+        user: '@intern1'
+        survey: '@survey1'
+        content: 3 hour per day
+    answer2:
+        type: 'plain text'
+        question: '@survey_quest2'
+        user: '@intern1'
+        survey: '@survey2'
+        content: Well enough
+
+AppBundle\Entity\FormRequestType:
+    request_type1:
+        name: Personal Day Request
+    request_type2:
+        name: Overnight Guest Request
+    request_type3:
+        name: Sick Day Request
+
+AppBundle\Entity\FormRequest:
+    request{1..10}:
+        type: '@request_type*'
+        user: '@intern*'
+        status: 'new'
+        date: <dateTime()>
+

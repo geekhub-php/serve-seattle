@@ -2,10 +2,9 @@
 
 namespace AppBundle\Security;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\Exception\JsonHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -29,7 +28,7 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         $user = $userProvider->loadUserByUsername($credentials);
 
         if (!$user) {
-            throw new AuthenticationCredentialsNotFoundException();
+            throw new JsonHttpException(400, 'Bad credentials.');
         }
 
         return $user;
@@ -54,10 +53,7 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return new JsonResponse(
-            array('message' => $exception->getMessageKey()),
-            403
-        );
+        throw new JsonHttpException(400, 'Bad credentials.');
     }
 
     /**
@@ -84,9 +80,6 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return new JsonResponse(
-            array('message' => 'Authentication required'),
-            401
-        );
+        throw new JsonHttpException(401, 'Authentication required.');
     }
 }

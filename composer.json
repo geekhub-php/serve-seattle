@@ -13,7 +13,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests"
         }
     },
     "require": {
@@ -31,6 +31,7 @@
         "knplabs/doctrine-behaviors": "^1.4",
         "doctrine/doctrine-migrations-bundle": "^1.2",
         "knplabs/knp-paginator-bundle": "^2.5",
+        "google/apiclient": "^2.1",
         "mcfedr/json-form": "^3.2"
     },
     "require-dev": {

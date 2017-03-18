@@ -15,5 +15,19 @@ web_profiler:
 swiftmailer:
     disable_delivery: true
 
+hautelook_alice:
+    fixtures_path: 'DataFixtures/ORM/test'
 
-
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver:   pdo_sqlite
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   test
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8
+                path:    '%kernel.cache_dir%/test.db'

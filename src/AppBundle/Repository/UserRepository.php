@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\Query;
+use AppBundle\Entity\DTO\Filter;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
@@ -19,5 +21,28 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->setParameter('username', $username)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param Filter $filter
+     * @return Query
+     */
+    public function selectUsersByParams(Filter $filter):Query
+    {
+        $postsQuery = $this->createQueryBuilder('u');
+        if ($filter->name) {
+            $postsQuery->where(
+                $postsQuery->expr()->like('u.firstName', ':name')
+            )
+                ->orWhere(
+                    $postsQuery->expr()->like('u.lastName', ':name')
+                )
+                ->orWhere(
+                    $postsQuery->expr()->like('u.email', ':name')
+                )
+                ->setParameter('name', '%' . $filter->name . '%');
+        }
+
+        return $postsQuery->getQuery();
     }
 }

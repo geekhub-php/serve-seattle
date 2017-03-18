@@ -1,0 +1,168 @@
+<?php
+
+namespace AppBundle\Controller;
+
+use AppBundle\Entity\DTO\DtoEvent;
+use AppBundle\Entity\Event;
+use AppBundle\Entity\User;
+use AppBundle\Exception\JsonHttpException;
+use AppBundle\Form\EventType;
+use Mcfedr\JsonFormBundle\Controller\JsonController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/schedule/events")
+ */
+class CalendarController extends JsonController
+{
+    /**
+     * @Route("/")
+     * @Method("GET")
+     *
+     * @return JsonResponse
+     */
+    public function eventsListAction(Request $request)
+    {
+        return new JsonResponse($this->get('app.google_calendar')
+            ->getEventList($request->query->all()));
+    }
+
+    /**
+     * @param Request $request
+     * @Route("")
+     * @Method("POST")
+     *
+     * @return JsonResponse
+     */
+    public function newEventAction(Request $request)
+    {
+        $dtoEvent = new DtoEvent();
+        $form = $this->createForm(EventType::class, $dtoEvent);
+        $this->handleJsonForm($form, $request);
+        $result = $this->get('app.google_calendar')
+            ->createEvent($dtoEvent, $request->query->all());
+        if (!$result) {
+            throw new JsonHttpException(412, 'Event has not been created');
+        }
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
+        $user = $em->getRepository('AppBundle:User')
+            ->find($dtoEvent->getUser());
+
+        if (!$user) {
+            throw new JsonHttpException(404, 'User not found.');
+        }
+        $event = new Event();
+        $event->setGoogleId($result->id);
+        $event->addUser($user);
+        $user->setEvent($event);
+
+        $em->persist($user);
+        $em->flush();
+
+        return $this->json(['success' => 'Event Created']);
+    }
+
+    /**
+     * @param $id
+     * @Route("/{id}")
+     * @Method("GET")
+     *
+     * @return JsonResponse
+     */
+    public function singleEventAction($id)
+    {
+        /** @var Event $event */
+        $event = $this->getDoctrine()->getRepository('AppBundle:Event')
+            ->findByGoogleId($id);
+        $user = $event->getUsers()->first();
+        if (!$user) {
+            throw new JsonHttpException(404, 'User not found.');
+        }
+        $googleEvent = $this->get('app.google_calendar')
+            ->getEventById($id);
+        if (!$googleEvent) {
+            throw new JsonHttpException(404, 'Event not found');
+        }
+        $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
+        return new JsonResponse(['user' => $user, 'event' => $googleEvent]);
+    }
+
+    /**
+     * @Route("/user/{id}")
+     * @Method("GET")
+     *
+     * @return JsonResponse
+     */
+    public function userEventsAction($id)
+    {
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
+        $events = $user->getEvents();
+        $googleEvents = [];
+        $calendar = $this->get('app.google_calendar');
+
+        foreach ($events as $event) {
+            $googleEvents[] = $calendar
+                ->getEventById($event->getGoogleId());
+        }
+        if (!$googleEvents) {
+            throw new JsonHttpException(404, 'Events not found');
+        }
+
+        $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
+
+        return new JsonResponse(['user' => $user, 'events' => $googleEvents]);
+    }
+
+    /**
+     * @param $id
+     * @Route("/{id}")
+     * @Method("DELETE")
+     * @return JsonResponse
+     */
+    public function removeEventAction($id)
+    {
+        $this->get('app.google_calendar')
+            ->deleteEvent($id);
+        $em = $this->getDoctrine()->getManager();
+        /** @var Event $event */
+        $event = $em->getRepository('AppBundle:Event')->findByGoogleId($id);
+        $em->remove($event);
+        $em->flush();
+
+        return $this->json(['success' => 'Event was removed']);
+    }
+
+    /**
+     * @param Request $request
+     * @Method("PATCH")
+     * @Route("/{id}")
+     *
+     * @return JsonResponse
+     */
+    public function editEventAction(Request $request, $id)
+    {
+        $dtoEvent = new DtoEvent();
+        $form = $this->createForm(EventType::class, $dtoEvent);
+        $this->handleJsonForm($form, $request);
+        $this->get('app.google_calendar')
+            ->editEvent($dtoEvent, $id, $request->query->all());
+
+        return $this->json(['success' => 'Event edited']);
+    }
+
+    /**
+     * FOR DEV ONLY.
+     * @Method("PUT")
+     * @Route("/clear")
+     */
+    public function clearAction()
+    {
+        $result = $this->get('app.google_calendar')->clear();
+
+        return $this->json($result);
+    }
+}

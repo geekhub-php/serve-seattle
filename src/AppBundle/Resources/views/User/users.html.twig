@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Users
+{% endblock %}
+
+{% block content %}
+    <h1>
+        Users
+    </h1>
+    <div>
+        {{ form(filterForm) }}
+        <a href="{{ path('add_user') }}" class="pull-right">
+            <i class="fa fa-plus"></i>
+            Add
+        </a>
+    </div>
+    <div class="row">
+    {% if users|length %}
+        <table class="table">
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    E-mail
+                </th>
+                <th>
+                    {{ knp_pagination_sortable(users, 'Last Name', 'u.lastName') }}
+                </th>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    {{ knp_pagination_sortable(users, 'Registration date', 'u.createdAt') }}
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>
+                        {{ user.id }}
+                    </td>
+                    <td>
+                        {{ user.email }}
+                    </td>
+                    <td>
+                        {{ user.lastName | capitalize }}
+                    </td>
+                    <td>
+                        {{ user.firstName | capitalize }}
+                    </td>
+                    <td>
+                        {{ user.createdAt | date('m/d/Y') }}
+                    </td>
+                    <td>
+                        {% if activationForm[user.id] is defined %}
+                            {{ form(activationForm[user.id]) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('edit_user', {'id': user.id}) }}">
+                            <i class="fa fa-pencil"></i>edit
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <ul class="pager">
+            {{ knp_pagination_render(users) }}
+        </ul>
+    {% else %}
+        <h1>
+            Nothing found
+        </h1>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('document').ready(function () {
+            $('input[type=checkbox]').click(function() {
+               if (confirm("Are you really want to activate/deactivate user?"))
+                   this.parentNode.parentNode.parentNode.submit();
+                else
+                    return false;
+            })
+        });
+    </script>
+{% endblock %}

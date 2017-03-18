@@ -3,17 +3,20 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User.
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @UniqueEntity("email")
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements UserInterface, \Serializable
 {
     use ORMBehaviors\Timestampable\Timestampable;
     /**
@@ -22,6 +25,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"Short"})
      */
     private $id;
 
@@ -39,11 +43,13 @@ class User implements AdvancedUserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190)
+     * @Groups({"Short"})
      */
     private $firstName;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
@@ -54,6 +60,7 @@ class User implements AdvancedUserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, nullable=true)
+     * @Groups({"Short"})
      */
     private $lastName;
 
@@ -66,6 +73,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var string
+     * @Assert\NotBlank()
      * @Assert\Email(
      * )
      * @Assert\Type("string")
@@ -73,29 +81,32 @@ class User implements AdvancedUserInterface, \Serializable
      *      max = 250
      * )
      * @ORM\Column(type="string", length=250, unique=true)
+     * @Groups({"Short"})
      */
     private $email;
 
     /**
      * @var string
-     * @Assert\NotBlank()
-     * @Assert\Type("string")
-     * @Assert\Length(
-     *      max = 255
-     * )
      * @ORM\Column(type="string", length=255)
      */
     private $password;
 
     /**
      * @var string
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      max = 255
+     * )
+     * @Assert\NotBlank(groups={"registration"})
      */
     private $plainPassword;
 
     /**
+     * @var bool
      * @ORM\Column(type="boolean")
+     * @Groups({"Short"})
      */
-    private $isActive = true;
+    private $enabled = true;
 
     /**
      * @var
@@ -112,7 +123,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @var ArrayCollection[Event]
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="users", cascade={"persist", "remove"})
      */
     private $events;
 
@@ -293,26 +304,6 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @param bool $status
-     *
-     * @return $this
-     */
-    public function setIsEnabled($status)
-    {
-        $this->isActive = $status;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEnabled()
-    {
-        return $this->isActive;
-    }
-
-    /**
      * @param mixed $roles
      */
     public function setRoles($roles)
@@ -359,7 +350,7 @@ class User implements AdvancedUserInterface, \Serializable
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            $event->setUsers($this);
+            $event->addUser($this);
         }
 
         return $this;
@@ -389,19 +380,28 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->surveys;
     }
 
-    public function isAccountNonExpired()
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     *
+     * @return User
+     */
+    public function setEnabled(bool $enabled)
     {
-        return true;
+        $this->enabled = $enabled;
+
+        return $this;
     }
 
-    public function isAccountNonLocked()
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function isEnabled()
     {
-        return true;
-    }
-
-    public function isCredentialsNonExpired()
-    {
-        return true;
+        return $this->enabled;
     }
 
     public function getSalt()
@@ -422,7 +422,7 @@ class User implements AdvancedUserInterface, \Serializable
             $this->firstName,
             $this->lastName,
             $this->email,
-            $this->isActive,
+            $this->enabled,
         ));
     }
 
@@ -434,6 +434,6 @@ class User implements AdvancedUserInterface, \Serializable
             $this->firstName,
             $this->lastName,
             $this->email,
-            $this->isActive) = unserialize($serialized);
+            $this->enabled) = unserialize($serialized);
     }
 }
