@@ -90,7 +90,6 @@ class SurveyController extends JsonController
         if (!$survey || $survey->getStatus() == 'submited') {
             return $this->json(['message' => 'No survey'], 404);
         }
-        $questKey = array();
         foreach ($survey->getType()->getSections() as $section) {
             foreach ($section->getQuestions() as $question) {
                 $questKey[] = $question->getId();
