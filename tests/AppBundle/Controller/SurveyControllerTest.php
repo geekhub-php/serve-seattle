@@ -22,7 +22,7 @@ class SurveyControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/survey/1', array(), array(), array(
+        $crawler = $client->request('GET', '/surveys/1', array(), array(), array(
             'PHP_AUTH_USER' => 'admin@serve-seattle.com',
             'PHP_AUTH_PW' => 'admin',
         ));

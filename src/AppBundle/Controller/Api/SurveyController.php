@@ -41,7 +41,7 @@ class SurveyController extends JsonController
 
     /**
      * @param Survey $survey
-     * @Route("/survey/{id}", name="api_survey")
+     * @Route("/surveys/{id}", name="api_survey")
      * @Method("GET")
      * @ParamConverter("survey", class="AppBundle:Survey")
      */
@@ -56,30 +56,29 @@ class SurveyController extends JsonController
             return $this->json(['message' => 'No surveys'], 404);
         }
         $serializer = $this->get('serializer');
-        $json = null;
-        $json_survey = $serializer->normalize(
+        $jsonSurvey = $serializer->normalize(
             $survey,
             null,
             array('groups' => array('group1', 'group2'))
         );
         if ($survey->getStatus() == 'submited') {
             $answers = $survey->getAnswers();
-            $json_answers = $serializer->normalize(
+            $jsonAnswers = $serializer->normalize(
                 $answers,
                 null,
                 array('groups' => array('group3'))
             );
 
-            return $this->json(['survey' => $json_survey, 'answers' => $json_answers], 200);
+            return $this->json(['survey' => $jsonSurvey, 'answers' => $jsonAnswers], 200);
         }
 
-        return $this->json(['survey' => $json_survey], 200);
+        return $this->json(['survey' => $jsonSurvey], 200);
     }
 
     /**
      * @param Request $request, Survey $survey
-     * @Route("/survey/update/{id}", name="api_survey_update")
-     * @Method("POST")
+     * @Route("/surveys/{id}", name="api_survey_update")
+     * @Method("PUT")
      * @ParamConverter("survey", class="AppBundle:Survey")
      */
     public function apiSurveyUpdateAction(Request $request, Survey $survey)

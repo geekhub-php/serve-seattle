@@ -36,7 +36,7 @@ class SurveyControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/api/survey/1');
+        $client->request('GET', '/api/surveys/1');
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode());
 
@@ -62,13 +62,13 @@ class SurveyControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('POST', '/api/survey/update/1');
+        $client->request('PUT', '/api/surveys/1');
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode());
 
         $client->request(
-            'POST',
-            '/api/survey/update/2',
+            'PUT',
+            '/api/surveys/2',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json',

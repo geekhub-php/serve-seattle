@@ -40,9 +40,6 @@ class Survey
      * @var string
      * @Assert\NotBlank()
      * @Assert\Type("string")
-     * @Assert\Length(
-     *      max = 500
-     * )
      * @ORM\Column(type="string")
      * @Groups({"group1"})
      */

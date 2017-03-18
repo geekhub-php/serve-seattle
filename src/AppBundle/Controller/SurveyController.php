@@ -32,7 +32,7 @@ class SurveyController extends Controller
 
     /**
      * @param Survey $survey
-     * @Route("/survey/{id}", name="survey")
+     * @Route("/surveys/{id}", name="survey")
      * @Template("@App/survey.html.twig")
      * @ParamConverter("survey", class="AppBundle:Survey")
      */
@@ -86,7 +86,6 @@ class SurveyController extends Controller
      */
     public function surveyDeleteAction(Request $request, Survey $survey)
     {
-        $surveyType = $survey->getType();
         $em = $this->getDoctrine()->getManager();
         $answers = $em->getRepository(SurveyAnswer::class)->findAnswersBySurvey($survey);
         foreach ($answers as $answer) {
