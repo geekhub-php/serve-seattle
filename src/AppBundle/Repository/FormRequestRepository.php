@@ -19,6 +19,7 @@ class FormRequestRepository extends \Doctrine\ORM\EntityRepository
             ->leftJoin('f.user', 'u')
             ->orderBy('f.createdAt', 'DESC')
         ;
+
         if ($filter->type && $filter->type != 'All') {
             $query->andWhere('t.name = ?1')
                 ->setParameter('1', $filter->type)
@@ -29,6 +30,14 @@ class FormRequestRepository extends \Doctrine\ORM\EntityRepository
             $query->andWhere('f.status = ?2')
                 ->setParameter('2', $filter->decision)
             ;
+        }
+
+        if ($filter->start && $filter->end) {
+                $query->andWhere('f.createdAt >= ?3')
+                    ->andWhere('f.createdAt <= ?4')
+                    ->setParameter('3', $filter->getStart())
+                    ->setParameter('4', $filter->getEnd())
+                ;
         }
 
         return $query->getQuery();

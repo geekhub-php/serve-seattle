@@ -4,11 +4,21 @@
     Request Forms
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css" />
+{% endblock %}
+
 {% block content %}
     <h1>
         Request Forms
     </h1>
-    {{ form(filterForm) }}
+    {{ form_start(filterForm) }}
+        <div class="input-daterange input-group" id="datepicker">
+            {{ form_widget(filterForm.start) }}
+            <span class="input-group-addon">to</span>
+            {{ form_widget(filterForm.end) }}
+        </div>
+    {{ form_end(filterForm) }}
     <div class="row">
         {% if formRequests|length %}
             <table class="table">
@@ -62,7 +72,10 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script type="text/javascript" src="/js/bootstrap-datepicker.min.js"></script>
     <script>
+        $('.input-daterange').datepicker({
+        });
         $('document').ready(function () {
             $('input[type=radio]').click(function() {
                 if (confirm("Are you really want to approve/reject?")){

@@ -16,6 +16,7 @@ gulp.task('css', function() {
     return gulp.src([
         'bower_components/bootstrap/dist/css/bootstrap.css',
         'bower_components/font-awesome/css/font-awesome.css',
+        'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
         'web-src/css/**/*.css'
     ])
         .pipe(less({compress: true}))
@@ -42,6 +43,7 @@ gulp.task('pages-js', function() {
     return gulp.src([
         'bower_components/jquery/dist/jquery.js',
         'bower_components/bootstrap/dist/js/bootstrap.js',
+        'bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
         'web-src/js/**/*.js'
     ])
         .pipe(minifyJs())
