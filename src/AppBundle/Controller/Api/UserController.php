@@ -15,6 +15,7 @@ class UserController extends Controller
      * @Route("/users")
      *
      * @Method("GET")
+     *
      * @return JsonResponse
      */
     public function listAction()
@@ -25,6 +26,7 @@ class UserController extends Controller
         if (!$users) {
             throw new JsonHttpException(404, 'User not found.');
         }
+
         return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Short']]);
     }
 }

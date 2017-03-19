@@ -88,6 +88,7 @@ class CalendarController extends JsonController
             throw new JsonHttpException(404, 'Event not found');
         }
         $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
+
         return new JsonResponse(['user' => $user, 'event' => $googleEvent]);
     }
 
@@ -121,6 +122,7 @@ class CalendarController extends JsonController
      * @param $id
      * @Route("/{id}")
      * @Method("DELETE")
+     *
      * @return JsonResponse
      */
     public function removeEventAction($id)
@@ -156,6 +158,7 @@ class CalendarController extends JsonController
 
     /**
      * FOR DEV ONLY.
+     *
      * @Method("PUT")
      * @Route("/clear")
      */

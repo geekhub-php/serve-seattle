@@ -381,9 +381,9 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set enabled
+     * Set enabled.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      *
      * @return User
      */
@@ -395,9 +395,9 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Get enabled
+     * Get enabled.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEnabled()
     {

@@ -44,9 +44,9 @@ class Event
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -54,7 +54,7 @@ class Event
     }
 
     /**
-     * Set googleId
+     * Set googleId.
      *
      * @param string $googleId
      *
@@ -68,7 +68,7 @@ class Event
     }
 
     /**
-     * Get googleId
+     * Get googleId.
      *
      * @return string
      */
@@ -78,7 +78,7 @@ class Event
     }
 
     /**
-     * Add user
+     * Add user.
      *
      * @param User $user
      *
@@ -92,7 +92,7 @@ class Event
     }
 
     /**
-     * Remove user
+     * Remove user.
      *
      * @param User $user
      */
@@ -102,7 +102,7 @@ class Event
     }
 
     /**
-     * Get users
+     * Get users.
      *
      * @return ArrayCollection
      */

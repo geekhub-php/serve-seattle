@@ -1,4 +1,4 @@
-{% extends 'default/index.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
     Surveys
@@ -37,8 +37,8 @@
     {% for survey in surveys %}
         {%  if survey.getType.getName == 'exit' %}
             <ul>
-                <li><a href="{{ path('survey_get', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                <li><a href="{{ path('survey_get', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
             </ul>
         {% endif %}
     {% endfor %}
@@ -47,8 +47,8 @@
     {% for survey in surveys %}
         {%  if survey.getType.getName == 'supervisor' %}
             <ul>
-                <li><a href="{{ path('survey_get', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                <li><a href="{{ path('survey_get', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
             </ul>
         {% endif %}
     {% endfor %}

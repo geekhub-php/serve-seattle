@@ -8,6 +8,10 @@ class SurveyControllerTest extends WebTestCase
 {
     public function testSurveys()
     {
+        exec('./bin/console d:d:c --env=test');
+        exec('./bin/console d:s:c --env=test');
+        exec('./bin/console h:f:l -n --env=test');
+
         $client = static::createClient();
 
         $client->request('GET', '/surveys', array(), array(), array(
@@ -38,7 +42,7 @@ class SurveyControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/survey/create/internship', array(), array(), array(
+        $crawler = $client->request('GET', '/surveys/create/internship', array(), array(), array(
             'PHP_AUTH_USER' => 'admin@serve-seattle.com',
             'PHP_AUTH_PW' => 'admin',
         ));
@@ -47,22 +51,19 @@ class SurveyControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Create survey')->form();
 
-        $form['survey[user]']->select('3');
+        $form['survey[user]']->select('2');
 
-        $client->submit($form);
         $client->followRedirects();
+        $client->submit($form);
 
-        $this->assertTrue(
-            $client->getResponse()->isRedirect('/surveys'),
-            'response is a redirect to homepage'
-        );
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
     public function testSurveyDelete()
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/survey/delete/1', array(), array(), array(
+        $crawler = $client->request('GET', '/surveys/delete/1', array(), array(), array(
             'PHP_AUTH_USER' => 'admin@serve-seattle.com',
             'PHP_AUTH_PW' => 'admin',
         ));
@@ -71,12 +72,10 @@ class SurveyControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Delete survey')->form();
 
-        $client->submit($form);
         $client->followRedirects();
+        $client->submit($form);
 
-        $this->assertTrue(
-            $client->getResponse()->isRedirect('/surveys'),
-            'response is a redirect to homepage'
-        );
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        exec('./bin/console d:d:d --force --env=test');
     }
 }

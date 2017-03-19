@@ -40,11 +40,13 @@ class SurveyController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $answers = $em->getRepository(SurveyAnswer::class)->findAnswersBySurvey($survey);
-        foreach ($answers as $answer) {
-            $questions[] = $answer->getQuestion()->getId();
-            $contents[] = $answer->getContent();
+        if ($answers) {
+            foreach ($answers as $answer) {
+                $questions[] = $answer->getQuestion()->getId();
+                $contents[] = $answer->getContent();
+            }
+            $questionAnswer = array_combine($questions, $contents);
         }
-        $questionAnswer = array_combine($questions, $contents);
         if (!$answers) {
             $questionAnswer = null;
         }
@@ -56,7 +58,7 @@ class SurveyController extends Controller
 
     /**
      * @param Request $request, SurveyType $surveyType
-     * @Route("/survey/create/{survey_type}", name="survey_create")
+     * @Route("/surveys/create/{survey_type}", name="survey_create")
      * @ParamConverter("surveyType", options={"mapping": {"survey_type": "name"}})
      */
     public function surveyCreateAction(Request $request, SurveyType $surveyType)
@@ -81,18 +83,20 @@ class SurveyController extends Controller
 
     /**
      * @param Request $request, Survey $survey
-     * @Route("/survey/delete/{id}", name="survey_delete")
+     * @Route("/surveys/delete/{id}", name="survey_delete")
      * @ParamConverter("survey", class="AppBundle:Survey")
      */
     public function surveyDeleteAction(Request $request, Survey $survey)
     {
         $em = $this->getDoctrine()->getManager();
         $answers = $em->getRepository(SurveyAnswer::class)->findAnswersBySurvey($survey);
-        foreach ($answers as $answer) {
-            $questions[] = $answer->getQuestion()->getId();
-            $contents[] = $answer->getContent();
+        if ($answers) {
+            foreach ($answers as $answer) {
+                $questions[] = $answer->getQuestion()->getId();
+                $contents[] = $answer->getContent();
+            }
+            $questionAnswer = array_combine($questions, $contents);
         }
-        $questionAnswer = array_combine($questions, $contents);
         if (!$answers) {
             $questionAnswer = null;
         }
@@ -104,7 +108,7 @@ class SurveyController extends Controller
             $em->remove($survey);
             $em->flush();
 
-            return $this->redirectToRoute('surveys');
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('@App/survey.html.twig', array(

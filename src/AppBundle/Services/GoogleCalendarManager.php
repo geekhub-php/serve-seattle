@@ -35,9 +35,10 @@ class GoogleCalendarManager
         $events = $this->calendar
             ->events
             ->listEvents('primary', $query);
+
         return [
             'nextPageToken' => $events->getNextPageToken(),
-            'events' => $events->getItems()
+            'events' => $events->getItems(),
         ];
     }
 
@@ -47,6 +48,7 @@ class GoogleCalendarManager
         if ($event->status == 'cancelled') {
             return;
         }
+
         return $event;
     }
 

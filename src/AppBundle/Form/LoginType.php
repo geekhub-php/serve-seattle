@@ -31,7 +31,7 @@ class LoginType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => DtoUser::class
+            'data_class' => DtoUser::class,
         ]);
     }
 }

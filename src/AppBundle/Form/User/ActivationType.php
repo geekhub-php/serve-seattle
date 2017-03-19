@@ -9,15 +9,14 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use AppBundle\Entity\User;
 
 /**
- * Class UserType
- * @package AppBundle\Form
+ * Class UserType.
 
  */
 class ActivationType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      * @SuppressWarnings("UnusedFormalParameter")
      * After add new field in UserType need create
      * offsetUnset() method from this field in Security controller
@@ -26,8 +25,8 @@ class ActivationType extends AbstractType
     {
         $builder
             ->add('enabled', CheckboxType::class, [
-                'required'    => false,
-                'label'    => false,
+                'required' => false,
+                'label' => false,
             ])
         ;
     }
@@ -36,7 +35,7 @@ class ActivationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'validation_groups' => ['registration','edit'],
+            'validation_groups' => ['registration', 'edit'],
         ]);
     }
 }

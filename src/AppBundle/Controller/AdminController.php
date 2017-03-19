@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
- * Class DefaultController
+ * Class DefaultController.
+ *
  * @Route("/admin", name="admin")
- * @package AppBundle\Controller
  */
 class AdminController extends Controller
 {
@@ -22,6 +22,7 @@ class AdminController extends Controller
      * @Template("@App/Admin/index.html.twig")
      *
      * @param Request $request
+     *
      * @return array
      */
     public function indexAction(Request $request)
@@ -30,7 +31,7 @@ class AdminController extends Controller
         $admin = $em->getRepository(Admin::class)->findOneBy(['id' => $this->getUser()->getId()]);
         $editForm = $this->createForm(AdminType::class, $admin)
             ->add('Save', SubmitType::class, array(
-                'attr' => array('class' => 'btn btn-primary')
+                'attr' => array('class' => 'btn btn-primary'),
             ));
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted()) {
@@ -39,9 +40,10 @@ class AdminController extends Controller
                 $em->flush();
             }
         }
+
         return [
-            "admin" => $admin,
-            "editForm" => $editForm->createView(),
+            'admin' => $admin,
+            'editForm' => $editForm->createView(),
         ];
     }
 }
