@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyType;
+use AppBundle\Entity\DTO\SurveyFilter;
+use AppBundle\Form\SurveyFilterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -20,13 +22,26 @@ class SurveyController extends Controller
     public function surveysAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $surveys = $em->getRepository(Survey::class)->findSurveyByStatus('submited');
         $surveyTypes = $em->getRepository(SurveyType::class)->findAll();
         $paginator = $this->get('knp_paginator');
+        $surveys = $em->getRepository(Survey::class)->findSurveyByStatus('submited');
+        $filter = new SurveyFilter();
+        $filter->setStart($surveys[0]->getUpdatedAt());
+        $filter->setEnd($surveys[count($surveys) - 1]->getUpdatedAt());
+        $form = $this->createForm(SurveyFilterType::class, $filter);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $surveys = $em->getRepository(Survey::class)->findSurveyByParams($filter);
+            $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
+
+            return [
+                'surveys' => $pagination, 'survey_types' => $surveyTypes, 'form' => $form->createView(), 'filter_type' => $filter->getType(),
+            ];
+        }
         $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
 
         return [
-            'surveys' => $pagination, 'survey_types' => $surveyTypes,
+            'surveys' => $pagination, 'survey_types' => $surveyTypes, 'form' => $form->createView(),
         ];
     }
 
@@ -108,7 +123,7 @@ class SurveyController extends Controller
             $em->remove($survey);
             $em->flush();
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('surveys');
         }
 
         return $this->render('@App/survey.html.twig', array(

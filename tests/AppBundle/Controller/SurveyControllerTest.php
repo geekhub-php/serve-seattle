@@ -14,12 +14,18 @@ class SurveyControllerTest extends WebTestCase
 
         $client = static::createClient();
 
-        $client->request('GET', '/surveys', array(), array(), array(
+        $crawler = $client->request('GET', '/surveys', array(), array(), array(
             'PHP_AUTH_USER' => 'admin@serve-seattle.com',
             'PHP_AUTH_PW' => 'admin',
         ));
 
+        $form = $crawler->selectButton('Filter')->form();
+        $form['survey_filter[type]']->select('1');
+
+        $client->followRedirects();
+        $crawler = $client->submit($form);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('ul.survey_item'));
     }
 
     public function testSurvey()
