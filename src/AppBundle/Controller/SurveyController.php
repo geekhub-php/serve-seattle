@@ -35,7 +35,8 @@ class SurveyController extends Controller
             $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
 
             return [
-                'surveys' => $pagination, 'survey_types' => $surveyTypes, 'form' => $form->createView(), 'filter_type' => $filter->getType(),
+                'surveys' => $pagination, 'survey_types' => $surveyTypes,
+                'form' => $form->createView(), 'filter_type' => $filter->getType(),
             ];
         }
         $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
