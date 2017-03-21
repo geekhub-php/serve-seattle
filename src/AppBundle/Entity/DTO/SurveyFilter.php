@@ -3,7 +3,7 @@
 namespace AppBundle\Entity\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Entity\SurveyType;
+use AppBundle\Entity\Survey\SurveyType;
 
 class SurveyFilter
 {

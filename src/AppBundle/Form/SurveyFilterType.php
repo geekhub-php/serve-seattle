@@ -32,7 +32,7 @@ class SurveyFilterType extends AbstractType
                 'input' => 'datetime',
             ))
             ->add('type', EntityType::class, array(
-                'class' => 'AppBundle:SurveyType',
+                'class' => 'AppBundle\Entity\Survey\SurveyType',
                 'label' => 'Survey type',
                 'choice_label' => 'name',
             ))

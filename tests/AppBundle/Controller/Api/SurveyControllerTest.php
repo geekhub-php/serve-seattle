@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SurveyControllerTest extends WebTestCase
 {
-    public function testApiSurveys()
+    public function testList()
     {
         exec('./bin/console d:d:c --env=test');
         exec('./bin/console d:s:c --env=test');
@@ -36,7 +36,7 @@ class SurveyControllerTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful(), 'response status is 2xx');
     }
 
-    public function testApiSurvey()
+    public function testShow()
     {
         $client = static::createClient();
 
@@ -62,7 +62,7 @@ class SurveyControllerTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful(), 'response status is 2xx');
     }
 
-    public function testApiSurveyUpdate()
+    public function testEdit()
     {
         $client = static::createClient();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Survey;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,7 +20,7 @@ class SurveyQuestion
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"group2", "group3"})
+     * @Groups({"group2", "group3", "group4"})
      */
     private $id;
 
@@ -41,6 +41,7 @@ class SurveyQuestion
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="SurveyTypeSection", inversedBy="questions")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $surveyTypeSection;
 

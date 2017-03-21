@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Survey;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
@@ -66,7 +66,8 @@ class SurveyTypeSection
      * @var SurveyType
      * @Assert\Type("object")
      * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="SurveyType", inversedBy="sections")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Survey\SurveyType", inversedBy="sections")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $surveyType;
 

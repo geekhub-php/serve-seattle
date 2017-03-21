@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\SurveyAnswer;
-use AppBundle\Entity\Survey;
-use AppBundle\Entity\SurveyType;
+use AppBundle\Entity\Survey\SurveyAnswer;
+use AppBundle\Entity\Survey\SurveyType;
+use AppBundle\Entity\Survey\Survey;
 use AppBundle\Entity\DTO\SurveyFilter;
 use AppBundle\Form\SurveyFilterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -18,6 +18,8 @@ class SurveyController extends Controller
     /**
      * @Route("/surveys", name="surveys")
      * @Template("@App/surveys.html.twig")
+     *
+     * @return array
      */
     public function surveysAction(Request $request)
     {
@@ -50,7 +52,9 @@ class SurveyController extends Controller
      * @param Survey $survey
      * @Route("/surveys/{id}", name="survey")
      * @Template("@App/survey.html.twig")
-     * @ParamConverter("survey", class="AppBundle:Survey")
+     * @ParamConverter("survey", class="AppBundle\Entity\Survey\Survey")
+     *
+     * @return array
      */
     public function surveyAction(Survey $survey)
     {
@@ -100,7 +104,7 @@ class SurveyController extends Controller
     /**
      * @param Request $request, Survey $survey
      * @Route("/surveys/delete/{id}", name="survey_delete")
-     * @ParamConverter("survey", class="AppBundle:Survey")
+     * @ParamConverter("survey", class="AppBundle\Entity\Survey\Survey")
      */
     public function surveyDeleteAction(Request $request, Survey $survey)
     {

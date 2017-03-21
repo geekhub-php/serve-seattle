@@ -20,7 +20,7 @@ AppBundle\Entity\Admin:
         email: admin@serve-seattle.com
         plainPassword: admin
 
-AppBundle\Entity\SurveyType:
+AppBundle\Entity\Survey\SurveyType:
     survey_type1:
         name: internship
         description: The purpose of this survey is to collect feedback about Serve Seattle's team members internship experience. Please be honest about your experience because this feedback will be used to help improve the program.
@@ -34,7 +34,7 @@ AppBundle\Entity\SurveyType:
     survey_type4:
         name: supervisor
 
-AppBundle\Entity\SurveyTypeSection:
+AppBundle\Entity\Survey\SurveyTypeSection:
     survey_type_section1:
         orderNumber: 1
         surveyType: '@survey_type1'
@@ -43,7 +43,7 @@ AppBundle\Entity\SurveyTypeSection:
         surveyType: '@survey_type2'
 
 
-AppBundle\Entity\SurveyQuestion:
+AppBundle\Entity\Survey\SurveyQuestion:
     survey_quest_text1:
         title: Full Name
         surveyTypeSection: '@survey_type_section1'
@@ -68,7 +68,7 @@ AppBundle\Entity\SurveyQuestion:
         variants: ['1','2','3','4','5','6','7','8','9','10']
 
 
-AppBundle\Entity\Survey:
+AppBundle\Entity\Survey\Survey:
     survey1:
         type: '@survey_type1'
         status: 'submited'
@@ -77,7 +77,7 @@ AppBundle\Entity\Survey:
         type: '@survey_type1'
         user: '@intern2'
 
-AppBundle\Entity\SurveyAnswer:
+AppBundle\Entity\Survey\SurveyAnswer:
     survey_answer1:
         question: '@survey_quest_text1'
         survey: '@survey1'

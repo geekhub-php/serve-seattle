@@ -1,7 +1,8 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Survey;
 
+use AppBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -31,7 +32,8 @@ class Survey
      * @var SurveyType
      * @Assert\Type("object")
      * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="SurveyType", inversedBy="surveys")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Survey\SurveyType", inversedBy="surveys")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Groups({"group1"})
      */
     private $type;
@@ -41,27 +43,30 @@ class Survey
      * @Assert\NotBlank()
      * @Assert\Type("string")
      * @ORM\Column(type="string")
-     * @Groups({"group1"})
+     * @Groups({"group1", "group5"})
      */
-    private $status = 'current';
+    private $status;
 
     /**
      * @var User
      * @Assert\Type("object")
      * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="surveys")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="surveys")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
 
     /**
      * @var ArrayCollection[SurveyAnswer]
      * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey", cascade={"persist", "remove"})
+     * @Groups({"group4"})
      */
     private $answers;
 
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->status = 'current';
     }
 
     /**
@@ -144,6 +149,21 @@ class Survey
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @param SurveyAnswer $answer
+     *
+     * @return Survey
+     */
+    public function setSurveyAnswers(SurveyAnswer $answer)
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setSurvey($this);
+        }
+
+        return $this;
     }
 
     /**

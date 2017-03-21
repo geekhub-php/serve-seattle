@@ -2,11 +2,12 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\SurveyAnswer;
-use AppBundle\Entity\Survey;
-use AppBundle\Entity\SurveyQuestion;
+use AppBundle\Entity\Survey\SurveyAnswer;
+use AppBundle\Entity\Survey\Survey;
+use AppBundle\Entity\Survey\SurveyQuestion;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\Exception\JsonHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,22 +15,17 @@ use Symfony\Component\HttpFoundation\Request;
 class SurveyController extends JsonController
 {
     /**
-     * @Route("/surveys", name="api_surveys")
+     * @Route("/surveys", name="list_surveys")
      * @Method("GET")
+     *
+     * @return JsonResponse
      */
-    public function apiSurveysAction()
+    public function listAction()
     {
         $user = $this->getUser();
-        if (!$user) {
-            return $this->json(['message' => 'User is not authorized'], 401);
-        }
         $em = $this->getDoctrine()->getManager();
         $surveys = $em->getRepository(Survey::class)->findSurveyByUser($user);
-        if (!$surveys) {
-            return $this->json(['message' => 'No surveys'], 404);
-        }
         $serializer = $this->get('serializer');
-
         $json = $serializer->normalize(
             $surveys,
             null,
@@ -40,20 +36,19 @@ class SurveyController extends JsonController
     }
 
     /**
-     * @param Survey $survey
-     * @Route("/surveys/{id}", name="api_survey")
+     * @param int $id
+     * @Route("/surveys/{id}", name="show_survey")
      * @Method("GET")
-     * @ParamConverter("survey", class="AppBundle:Survey")
+     *
+     * @return JsonResponse
      */
-    public function apiSurveyAction(Survey $survey)
+    public function showAction($id)
     {
         $user = $this->getUser();
-        if (!$user) {
-            return $this->json(['message' => 'User is not authorized'], 401);
-        }
-
-        if (!$survey) {
-            return $this->json(['message' => 'No surveys'], 404);
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository(Survey::class)->find($id);
+        if ($user !== $survey->getUser()) {
+            throw new JsonHttpException(403, "Current user doesn't have accesses to this resource");
         }
         $serializer = $this->get('serializer');
         $jsonSurvey = $serializer->normalize(
@@ -72,23 +67,23 @@ class SurveyController extends JsonController
             return $this->json(['survey' => $jsonSurvey, 'answers' => $jsonAnswers], 200);
         }
 
-        return $this->json(['survey' => $jsonSurvey], 200);
+        return $this->json($jsonSurvey);
     }
 
     /**
-     * @param Request $request, Survey $survey
-     * @Route("/surveys/{id}", name="api_survey_update")
+     * @param Request $request, int $id
+     * @Route("/surveys/{id}", name="edit_survey")
      * @Method("PUT")
-     * @ParamConverter("survey", class="AppBundle:Survey")
+     *
+     * @return JsonResponse
      */
-    public function apiSurveyUpdateAction(Request $request, Survey $survey)
+    public function editAction(Request $request, $id)
     {
         $user = $this->getUser();
-        if (!$user) {
-            return $this->json(['message' => 'User is not authorized'], 401);
-        }
-        if (!$survey || $survey->getStatus() == 'submited') {
-            return $this->json(['message' => 'No survey'], 404);
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository(Survey::class)->find($id);
+        if ($user !== $survey->getUser() || $survey->getStatus() === 'submited') {
+            throw new JsonHttpException(403, "Current user can't change this resource");
         }
         foreach ($survey->getType()->getSections() as $section) {
             foreach ($section->getQuestions() as $question) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Survey;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
@@ -37,7 +37,8 @@ class SurveyAnswer
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="answers")
-     * @Groups({"group3"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Groups({"group3", "group4"})
      */
     private $question;
 
@@ -46,6 +47,7 @@ class SurveyAnswer
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="Survey", inversedBy="answers")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $survey;
 
@@ -57,7 +59,7 @@ class SurveyAnswer
      *      max = 1000
      * )
      * @ORM\Column(name="body", type="text")
-     * @Groups({"group3"})
+     * @Groups({"group3", "group4"})
      */
     private $content;
 

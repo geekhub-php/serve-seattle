@@ -135,7 +135,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var ArrayCollection[Survey]
-     * @ORM\OneToMany(targetEntity="Survey", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Survey\Survey", mappedBy="user")
      */
     private $surveys;
 
