@@ -25,12 +25,12 @@ class Filter
     /**
      * @var string
      */
-    public $start;
+    public $start = null;
 
     /**
      * @var string
      */
-    public $end;
+    public $end = null;
 
     public function getStart()
     {
