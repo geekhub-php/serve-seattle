@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * FormRequest.
  *
- *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\FormRequestRepository")
  */
 class FormRequest

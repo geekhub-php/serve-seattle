@@ -57,5 +57,4 @@
 /web/js
 /web/images
 /web/fonts
-
-/app/config/credentials/
+/app/config/credentials/credentials.json

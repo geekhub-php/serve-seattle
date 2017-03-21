@@ -30,27 +30,13 @@ class Event
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="start", type="datetime")
-     */
-    private $start;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end", type="datetime")
-     */
-    private $end;
+    private $googleId;
 
     /**
      * @var ArrayCollection|$users[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="events")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="events", cascade={"persist"})
      */
-    private $users;
+    private $users = [];
 
     public function __construct()
     {
@@ -58,9 +44,9 @@ class Event
     }
 
     /**
-     * Get id.
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -68,94 +54,60 @@ class Event
     }
 
     /**
-     * Set name.
+     * Set googleId
      *
-     * @param string $name
+     * @param string $googleId
      *
      * @return Event
      */
-    public function setName($name)
+    public function setGoogleId($googleId)
     {
-        $this->name = $name;
+        $this->googleId = $googleId;
 
         return $this;
     }
 
     /**
-     * Get name.
+     * Get googleId
      *
      * @return string
      */
-    public function getName()
+    public function getGoogleId()
     {
-        return $this->name;
+        return $this->googleId;
     }
 
     /**
-     * Set start.
+     * Add user
      *
-     * @param \DateTime $start
+     * @param User $user
      *
      * @return Event
      */
-    public function setStart($start)
+    public function addUser(User $user)
     {
-        $this->start = $start;
+        $this->users[] = $user;
 
         return $this;
     }
 
     /**
-     * Get start.
+     * Remove user
      *
-     * @return \DateTime
+     * @param User $user
      */
-    public function getStart()
+    public function removeUser(User $user)
     {
-        return $this->start;
+        $this->users->removeElement($user);
     }
 
     /**
-     * Set end.
+     * Get users
      *
-     * @param \DateTime $end
-     *
-     * @return Event
-     */
-    public function setEnd($end)
-    {
-        $this->end = $end;
-
-        return $this;
-    }
-
-    /**
-     * Get end.
-     *
-     * @return \DateTime
-     */
-    public function getEnd()
-    {
-        return $this->end;
-    }
-
-    /**
      * @return ArrayCollection
      */
     public function getUsers()
     {
         return $this->users;
-    }
-
-    /**
-     * @param UserIntern $user
-     *
-     * @return Event
-     */
-    public function setUsers($users)
-    {
-        $this->users = $users;
-
-        return $this;
     }
 }

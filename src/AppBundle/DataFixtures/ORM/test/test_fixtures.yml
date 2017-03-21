@@ -1,7 +1,7 @@
 AppBundle\Entity\User:
     intern1:
         firstName: intern1
-        email: <email()>
+        email: intern1\@seattle.com
         plainPassword: intern1
     intern2:
         firstName: intern2
