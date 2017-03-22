@@ -2,11 +2,14 @@
 
 namespace AppBundle\Entity\DTO;
 
+use AppBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class DtoEvent
+class DtoEvent implements \JsonSerializable
 {
     /**
+     * @var User $user
+     *
      * @var Assert\NotBlank
      */
     private $user;
@@ -18,15 +21,43 @@ class DtoEvent
     private $location;
 
     /**
-     * @var
-     * @Assert\NotBlank()
+     * @var Assert\NotBlank
      */
     private $start;
+
     /**
-     * @var
-     * @Assert\NotBlank()
+     * @var Assert\NotBlank
      */
     private $end;
+
+    private $googleEventId;
+
+    public function __construct(\Google_Service_Calendar_Event $event = null)
+    {
+        if ($event && $event instanceof \Google_Service_Calendar_Event) {
+            $this->summary = $event->getSummary();
+            $this->description = $event->getDescription();
+            $this->summary = $event->getSummary();
+            $this->location = $event->getLocation();
+            $this->start = $event->getStart();
+            $this->end = $event->getEnd();
+            $this->googleEventId = $event->getId();
+        }
+    }
+
+    public function jsonSerialize()
+    {
+        $description = json_decode($this->description, true);
+        return [
+            'user' => (int)$description['user'],
+            'summary' => $this->summary,
+            'description' => $description['description'],
+            'location' => $this->location,
+            'start' => $this->start->dateTime,
+            'end' => $this->end->dateTime,
+            'googleEventId' => $this->googleEventId
+        ];
+    }
 
     /**
      * @return mixed
@@ -109,7 +140,7 @@ class DtoEvent
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {
@@ -117,13 +148,33 @@ class DtoEvent
     }
 
     /**
-     * @param mixed $user
+     * @param User $user
      *
      * @return $this
      */
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGoogleEventId()
+    {
+        return $this->googleEventId;
+    }
+
+    /**
+     * @param mixed $googleEventId
+     *
+     * @return $this
+     */
+    public function setGoogleEventId($googleEventId)
+    {
+        $this->googleEventId = $googleEventId;
 
         return $this;
     }
