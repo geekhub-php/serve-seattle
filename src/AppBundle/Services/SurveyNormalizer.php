@@ -22,37 +22,33 @@ class SurveyNormalizer implements DenormalizerInterface
     {
         if (isset($context['object_to_populate'])) {
             $survey = $context['object_to_populate'];
-            if ($survey instanceof Survey) {
-                $survey->setStatus('submited');
-                if (isset($data['answers']) && is_array($data['answers'])) {
-                    foreach ($survey->getQuestions() as $question) {
-                        $questionsId[] = $question->getId();
-                    }
-                    foreach ($data['answers'] as $answer) {
-                        $dataId[] = $answer['question']['id'];
-                    }
-                    if (array_diff($questionsId, $dataId)) {
-                        return null;
-                    }
-                    foreach ($data['answers'] as $answer) {
-                        if (isset($answer['question'])) {
-                            $newAnswer = new SurveyAnswer();
-                            $question = $this->em->getRepository(SurveyQuestion::class)
+            $survey->setStatus('submited');
+            if (isset($data['answers']) && is_array($data['answers'])) {
+                foreach ($survey->getQuestions() as $question) {
+                    $questionsId[] = $question->getId();
+                }
+                foreach ($data['answers'] as $answer) {
+                    $dataId[] = $answer['question']['id'];
+                }
+                if (array_diff($questionsId, $dataId)) {
+                    return null;
+                }
+                foreach ($data['answers'] as $answer) {
+                    $newAnswer = new SurveyAnswer();
+                    $question = $this->em->getRepository(SurveyQuestion::class)
                                 ->find($answer['question']['id']);
-                            if ($question->getVariants()) {
-                                if (!in_array($answer['content'], $question->getVariants())) {
-                                    return null;
-                                }
-                            }
-                            $content = $answer['content'];
-                            $newAnswer->setSurvey($survey);
-                            $newAnswer->setQuestion($question);
-                            $newAnswer->setContent($content);
-                            $this->em->persist($newAnswer);
+                    if ($question->getVariants()) {
+                        if (!in_array($answer['content'], $question->getVariants())) {
+                            return null;
                         }
                     }
-                    $this->em->flush();
+                    $content = $answer['content'];
+                    $newAnswer->setSurvey($survey);
+                    $newAnswer->setQuestion($question);
+                    $newAnswer->setContent($content);
+                    $this->em->persist($newAnswer);
                 }
+                $this->em->flush();
             }
 
             return $survey;
