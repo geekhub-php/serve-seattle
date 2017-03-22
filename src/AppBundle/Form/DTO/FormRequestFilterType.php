@@ -23,13 +23,13 @@ class FormRequestFilterType extends AbstractType
                 'attr' => ['class' =>  'input-sm form-control'],
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'MM/dd/YYYY',
+                'format' => 'MM/dd/yyyy',
             ])
             ->add('end', DateTimeType::class, [
                 'attr' => ['class' =>  'input-sm form-control'],
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'MM/dd/YYYY',
+                'format' => 'MM/dd/yyyy',
             ])
             ->add('type', ChoiceType::class, [
                 'choices' => [

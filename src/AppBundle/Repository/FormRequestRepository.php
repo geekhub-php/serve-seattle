@@ -33,8 +33,7 @@ class FormRequestRepository extends \Doctrine\ORM\EntityRepository
         }
 
         if ($filter->start && $filter->end) {
-                $query->andWhere('f.createdAt >= ?3')
-                    ->andWhere('f.createdAt <= ?4')
+                $query->andWhere('f.createdAt BETWEEN ?3 AND ?4')
                     ->setParameter('3', $filter->getStart())
                     ->setParameter('4', $filter->getEnd())
                 ;
