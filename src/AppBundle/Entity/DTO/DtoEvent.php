@@ -34,7 +34,6 @@ class DtoEvent implements \JsonSerializable
 
     public function __construct(\Google_Service_Calendar_Event $event = null)
     {
-
         if ($event && $event instanceof \Google_Service_Calendar_Event) {
             $this->summary = $event->getSummary();
             $this->description = $event->getDescription();
@@ -46,7 +45,7 @@ class DtoEvent implements \JsonSerializable
         }
     }
 
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         $description = json_decode($this->description, true);
         return [
@@ -179,6 +178,4 @@ class DtoEvent implements \JsonSerializable
 
         return $this;
     }
-
-
 }
