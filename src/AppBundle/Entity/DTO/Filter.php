@@ -23,24 +23,92 @@ class Filter
     public $decision;
 
     /**
-     * @var string
+     * @var DateTime
      */
-    public $start = null;
+    public $start;
 
     /**
-     * @var string
+     * @var DateTime
      */
-    public $end = null;
-
-    public function getStart()
+    public $end;
+    
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
-        $date = new DateTime($this->start);
-        return $this->start = $date->format('Y-m-d H:i:s');
+        return $this->name;
     }
 
-    public function getEnd()
+    /**
+     * @param string $name
+     */
+    public function setName(string $name)
     {
-        $date = new DateTime($this->end);
-        return $this->end = $date->format('Y-m-d H:i:s');
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDecision(): string
+    {
+        return $this->decision;
+    }
+
+    /**
+     * @param string $decision
+     */
+    public function setDecision(string $decision)
+    {
+        $this->decision = $decision;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getStart(): DateTime
+    {
+        return $this->start;
+    }
+
+    /**
+     * @param DateTime $start
+     */
+    public function setStart(DateTime $start)
+    {
+        $this->start = $start;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getEnd(): DateTime
+    {
+        return $this->end;
+    }
+
+    /**
+     * @param DateTime $end
+     */
+    public function setEnd(DateTime $end)
+    {
+        $this->end = $end;
     }
 }
