@@ -4,23 +4,26 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\DTO\Filter;
+use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\FilterType;
 use AppBundle\Form\User\EditType;
+use AppBundle\Form\User\RegistrationType;
 use AppBundle\Form\User\ActivationType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class UserController extends Controller
 {
     /**
      * @Route("/users", name="users_list")
-     * @Template("@App/User/users.html.twig")
+     * @Template("@App/users.html.twig")
      *
      * @param Request $request
      * @return array
@@ -30,9 +33,9 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $filter = new Filter;
         $filterForm = $this->createForm(FilterType::class, $filter)
-            ->add("Search", SubmitType::class, [
-                "attr" => ["class" => "fa fa-search"]
-            ]);
+            ->add("Search", SubmitType::class, array(
+                "attr" => array("class" => "fa fa-search")
+            ));
         $filterForm->handleRequest($request);
         $users = $this->get('knp_paginator')->paginate(
             $em->getRepository(User::class)->selectUsersByParams($filter),
@@ -43,8 +46,8 @@ class UserController extends Controller
         foreach ($users as $user) {
             $activationForm[$user->getId()] = $this->createForm(ActivationType::class, $user, [
                 'method' => "PUT",
-                'action' => $this->generateUrl('activate_user', ['id' => $user->getId()]),
-                'validation_groups' => 'edit',
+                'action' => $this->generateUrl('activate_user', array('id' => $user->getId())),
+                'validation_groups' => array('edit'),
             ])
                 ->createView();
         }
@@ -58,6 +61,7 @@ class UserController extends Controller
 
     /**
      * @Route("/user/activate/{id}", name="activate_user")
+     * @Template("@App/add.html.twig")
      *
      * @Method("PUT")
      * @param  Request $request
@@ -69,8 +73,8 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(ActivationType::class, $user, [
             'method' => "PUT",
-            'action' => $this->generateUrl('activate_user', ['id' => $user->getId()]),
-            'validation_groups' => 'edit',
+            'action' => $this->generateUrl('activate_user', array('id' => $user->getId())),
+            'validation_groups' => array('edit'),
         ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -83,7 +87,7 @@ class UserController extends Controller
 
     /**
      * @Route("/user/add", name="add_user")
-     * @Template("@App/User/add.html.twig")
+     * @Template("@App/add.html.twig")
      *
      * @param Request $request
      * @return array|RedirectResponse
@@ -92,13 +96,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $user = new User();
-        $form = $this->createForm(EditType::class, $user, [
+        $form = $this->createForm(RegistrationType::class, $user, [
             'action' => $this->generateUrl('add_user'),
-            'validation_groups' => 'registration',
-        ])
-            ->add('Register', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary']
-            ]);
+            'validation_groups' => array('registration'),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -114,7 +115,7 @@ class UserController extends Controller
 
     /**
      * @Route("/user/edit/{id}", name="edit_user")
-     * @Template("@App/User/add.html.twig")
+     * @Template("@App/add.html.twig")
      *
      * @param Request $request
      * @param User $user
@@ -124,21 +125,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(EditType::class, $user, [
-            'action' => $this->generateUrl('edit_user', ['id' => $user->getId()]),
+            'action' => $this->generateUrl('edit_user', array('id' => $user->getId())),
             'method' => 'POST',
-            'validation_groups' => 'edit',
-        ])
-            ->add('image', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'image',
-                    'class' => 'form-control'
-                ],
-                'label' => false,
-                'required' => false,
-            ])
-            ->add('Save', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary']
-            ]);
+            'validation_groups' => array('edit'),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -150,5 +140,21 @@ class UserController extends Controller
         }
 
         return ['form' => $form->createView()];
+    }
+
+    /**
+     * @Route("/users-list")
+     * @Method("GET")
+     * @return JsonResponse
+     */
+    public function usersListAction()
+    {
+        $users = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->findAll();
+        if (!$users) {
+            throw new JsonHttpException(404, 'User not found.');
+        }
+        return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Short']]);
     }
 }
