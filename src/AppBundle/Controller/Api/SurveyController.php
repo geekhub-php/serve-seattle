@@ -2,9 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\Survey\SurveyAnswer;
 use AppBundle\Entity\Survey\Survey;
-use AppBundle\Entity\Survey\SurveyQuestion;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Exception\JsonHttpException;
@@ -81,34 +79,26 @@ class SurveyController extends JsonController
     {
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
+        $data = $request->getContent();
         $survey = $em->getRepository(Survey::class)->find($id);
-        if ($user !== $survey->getUser() || $survey->getStatus() === 'submited') {
+
+        if ($user !== $survey->getUser()) {
             throw new JsonHttpException(403, "Current user can't change this resource");
         }
-        foreach ($survey->getType()->getSections() as $section) {
-            foreach ($section->getQuestions() as $question) {
-                $questKey[] = $question->getId();
-            }
+        if ('current' !== $survey->getStatus()) {
+            throw new JsonHttpException(404, 'Survey was already submited');
         }
-        $data = json_decode($request->getContent(), true);
-        $em = $this->getDoctrine()->getManager();
-        foreach ($questKey as $key) {
-            $answer = $data[$key];
-            if ($answer == null) {
-                return $this->json(['message' => 'Survey is not filled out'], 400);
-            }
-            $question = $em->getRepository(SurveyQuestion::class)->find($key);
-            $variants = $question->getVariants();
-            if (count($variants) > 0 & !in_array($answer, $variants)) {
-                return $this->json(['message' => 'Wrong answer variant.'], 400);
-            }
-            $newAnswer = new SurveyAnswer();
-            $newAnswer->setSurvey($survey);
-            $newAnswer->setQuestion($question);
-            $newAnswer->setContent($answer);
-            $em->persist($newAnswer);
+        $serializer = $this->get('serializer');
+
+        $survey = $serializer->deserialize(
+            $data,
+            Survey::class,
+            'json', array('object_to_populate' => $survey, 'groups' => array('group4'))
+        );
+        if (!$survey) {
+            throw new JsonHttpException(404, 'Not valid Survey');
         }
-        $survey->setStatus('submited');
+        $em->persist($survey);
         $em->flush();
 
         return $this->json(['message' => 'Survey updated'], 200);

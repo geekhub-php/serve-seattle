@@ -80,24 +80,24 @@ AppBundle\Entity\Survey\Survey:
 
 AppBundle\Entity\Survey\SurveyAnswer:
     survey_answer1:
-        question: '@survey_quest_text1'
         survey: '@survey1'
+        question: '@survey_quest_text1'
         content: John
     survey_answer2:
-        question: '@survey_quest_text2'
         survey: '@survey1'
+        question: '@survey_quest_text2'
         content: Title
     survey_answer3:
-        question: '@survey_quest_text3'
         survey: '@survey1'
+        question: '@survey_quest_text3'
         content: Site
     survey_answer4:
-        question: '@survey_quest_choice1'
         survey: '@survey1'
+        question: '@survey_quest_choice1'
         content: 10
     survey_answer5:
-        question: '@survey_quest_choice2'
         survey: '@survey1'
+        question: '@survey_quest_choice2'
         content: 5
 
 AppBundle\Entity\FormRequestType:

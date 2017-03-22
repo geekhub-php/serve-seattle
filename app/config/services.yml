@@ -28,3 +28,8 @@ services:
           arguments: ['@security.password_encoder']
           tags:
               - { name: doctrine.event_subscriber }
+      app.answer.normalizer:
+          class: AppBundle\Services\SurveyNormalizer
+          arguments: ["@doctrine.orm.entity_manager"]
+          tags:
+              -  { name: serializer.normalizer }

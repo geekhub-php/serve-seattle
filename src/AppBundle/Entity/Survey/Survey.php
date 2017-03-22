@@ -156,7 +156,7 @@ class Survey
      *
      * @return Survey
      */
-    public function setSurveyAnswers(SurveyAnswer $answer)
+    public function addSurveyAnswer(SurveyAnswer $answer)
     {
         if (!$this->answers->contains($answer)) {
             $this->answers->add($answer);
@@ -174,6 +174,23 @@ class Survey
     public function getAnswers()
     {
         return $this->answers;
+    }
+
+    /**
+     * Get questions.
+     *
+     * @return array
+     */
+    public function getQuestions()
+    {
+        $sections = $this->getType()->getSections();
+        foreach ($sections as $section) {
+            foreach ($section->getQuestions() as $quest) {
+                $questions[] = $quest;
+            }
+        }
+
+        return $questions;
     }
 
     /**
