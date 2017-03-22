@@ -93,7 +93,8 @@ class SurveyController extends JsonController
         $survey = $serializer->deserialize(
             $data,
             Survey::class,
-            'json', array('object_to_populate' => $survey, 'groups' => array('group4'))
+            'json',
+            array('object_to_populate' => $survey, 'groups' => array('group4'))
         );
         if (!$survey) {
             throw new JsonHttpException(404, 'Not valid Survey');

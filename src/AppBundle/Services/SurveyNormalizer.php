@@ -37,7 +37,8 @@ class SurveyNormalizer implements DenormalizerInterface
                     foreach ($data['answers'] as $answer) {
                         if (isset($answer['question'])) {
                             $newAnswer = new SurveyAnswer();
-                            $question = $this->em->getRepository(SurveyQuestion::class)->find($answer['question']['id']);
+                            $question = $this->em->getRepository(SurveyQuestion::class)
+                                ->find($answer['question']['id']);
                             if ($question->getVariants()) {
                                 if (!in_array($answer['content'], $question->getVariants())) {
                                     return null;
