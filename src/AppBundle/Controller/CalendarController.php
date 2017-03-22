@@ -32,7 +32,7 @@ class CalendarController extends JsonController
         foreach ($googleEvents['events'] as $event) {
             $events[] = new DtoEvent($event);
         }
-        return $this->json(['nextPageToken'=> $googleEvents['nextPageToken'], 'events' => $events]);
+        return $this->json(['pageToken'=> $googleEvents['pageToken'], 'events' => $events]);
     }
 
     /**
