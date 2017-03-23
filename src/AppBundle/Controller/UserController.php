@@ -141,20 +141,4 @@ class UserController extends Controller
 
         return ['form' => $form->createView()];
     }
-
-    /**
-     * @Route("/users-list")
-     * @Method("GET")
-     * @return JsonResponse
-     */
-    public function usersListAction()
-    {
-        $users = $this->getDoctrine()
-            ->getRepository('AppBundle:User')
-            ->findAll();
-        if (!$users) {
-            throw new JsonHttpException(404, 'User not found.');
-        }
-        return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Short']]);
-    }
 }

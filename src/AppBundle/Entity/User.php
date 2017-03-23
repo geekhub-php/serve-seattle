@@ -25,7 +25,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"Short"})
+     * @Groups({"Short", "Detail"})
      */
     private $id;
 
@@ -43,7 +43,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190)
-     * @Groups({"Short"})
+     * @Groups({"Short", "Detail"})
      */
     private $firstName;
 
@@ -60,7 +60,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, nullable=true)
-     * @Groups({"Short"})
+     * @Groups({"Short", "Detail"})
      */
     private $lastName;
 
@@ -68,6 +68,7 @@ class User implements UserInterface, \Serializable
      * @var string
      * @Assert\Image()
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"Detail"})
      */
     private $image;
 
@@ -82,7 +83,7 @@ class User implements UserInterface, \Serializable
      *      max = 250
      * )
      * @ORM\Column(type="string", length=250, unique=true)
-     * @Groups({"Short"})
+     * @Groups({"Short", "Detail"})
      */
     private $email;
 
@@ -105,7 +106,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var bool
      * @ORM\Column(type="boolean")
-     * @Groups({"Short"})
+     * @Groups({"Short", "Detail"})
      */
     private $enabled = true;
 
