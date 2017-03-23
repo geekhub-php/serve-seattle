@@ -25,7 +25,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"Short", "Detail"})
+     * @Groups({"Default", "Short", "Detail"})
      */
     private $id;
 
@@ -43,7 +43,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190)
-     * @Groups({"Short", "Detail"})
+     * @Groups({"Default", "Short", "Detail"})
      */
     private $firstName;
 
@@ -60,7 +60,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, nullable=true)
-     * @Groups({"Short", "Detail"})
+     * @Groups({"Default", "Short", "Detail"})
      */
     private $lastName;
 

@@ -45,4 +45,12 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
 
         return $postsQuery->getQuery();
     }
+
+    public function selectNotBlocked()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.enabled = TRUE')
+            ->getQuery()
+            ->getResult();
+    }
 }

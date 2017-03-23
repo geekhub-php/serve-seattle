@@ -156,7 +156,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/users")
+     * @Route("/users-list")
      *
      * @Method("GET")
      * @return JsonResponse
@@ -165,10 +165,10 @@ class UserController extends Controller
     {
         $users = $this->getDoctrine()
             ->getRepository('AppBundle:User')
-            ->findAll();
+            ->selectNotBlocked();
         if (!$users) {
             throw new JsonHttpException(404, 'User not found.');
         }
-        return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Short']]);
+        return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Default']]);
     }
 }
