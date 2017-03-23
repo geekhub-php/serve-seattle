@@ -50,6 +50,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.enabled = TRUE')
+            ->orderBy('u.lastName')
             ->getQuery()
             ->getResult();
     }
