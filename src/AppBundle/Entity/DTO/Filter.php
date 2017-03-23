@@ -51,7 +51,7 @@ class Filter
     /**
      * @return string
      */
-    public function getType(): string
+    public function getType()
     {
         return $this->type;
     }
@@ -67,7 +67,7 @@ class Filter
     /**
      * @return string
      */
-    public function getDecision(): string
+    public function getDecision()
     {
         return $this->decision;
     }
@@ -83,7 +83,7 @@ class Filter
     /**
      * @return DateTime
      */
-    public function getStart(): DateTime
+    public function getStart()
     {
         return $this->start;
     }
@@ -91,7 +91,7 @@ class Filter
     /**
      * @param DateTime $start
      */
-    public function setStart(DateTime $start)
+    public function setStart($start)
     {
         $this->start = $start;
     }
@@ -99,7 +99,7 @@ class Filter
     /**
      * @return DateTime
      */
-    public function getEnd(): DateTime
+    public function getEnd()
     {
         return $this->end;
     }
@@ -107,7 +107,7 @@ class Filter
     /**
      * @param DateTime $end
      */
-    public function setEnd(DateTime $end)
+    public function setEnd($end)
     {
         $this->end = $end;
     }

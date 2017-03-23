@@ -17,24 +17,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class FormRequestController extends JsonController
 {
     /**
-     * @Route("")
+     * @Route("/{status}", requirements={"status": "pending|past"})
      * @Method("GET")
      *
      * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request, $status)
     {
         $em = $this->getDoctrine()->getManager();
-        $pending = $this->get('knp_paginator')
+        $requestForms = $this->get('knp_paginator')
             ->paginate(
                 $em->getRepository(FormRequest::class)->findBy([
                     'user' => $this->getUser(),
-                    'status' => $request->query->get('status'),
+                    'status' => $status ? "pending" : ["approved","rejected"],
                 ]),
                 $request->query->getInt('page', 1),
                 10
             );
-        return $this->json($pending);
+        return $this->json($requestForms);
     }
 
     /**
