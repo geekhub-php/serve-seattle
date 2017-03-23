@@ -45,7 +45,7 @@ class Event implements \JsonSerializable
         $this->users = new ArrayCollection();
     }
 
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return [
             'event' => $this->getGoogleId()
