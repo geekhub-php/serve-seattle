@@ -38,27 +38,26 @@ class FormRequestController extends JsonController
     }
 
     /**
-     * @Route("/new")
+     * @Route("/{formRequestType}/new")
      * @Method("POST")
      *
+     * @param FormRequestType $formRequestType
      * @return JsonResponse
      */
-    public function AddAction(Request $request)
+    public function AddAction(FormRequestType $formRequestType)
     {
-//        $formRequest = json_decode($request->getContent());
-//        dump($formRequest);
-//        $em = $this->getDoctrine()->getManager();
-//        $pending = $this->get('knp_paginator')
-//            ->paginate(
-//                $em->getRepository(FormRequest::class)->findBy([
-//                    'user' => $this->getUser(),
-//                    'status' => $request->query->get('status'),
-//                ]),
-//                $request->query->getInt('page', 1),
-//                10
-//            );
+        $date = new \DateTime("2017-12-12 12:25:23");
+        $em = $this->getDoctrine()->getManager();
+        $formRequest = new FormRequest();
+        $formRequest->setDate($date)
+            ->setType($formRequestType)
+            ->setUser($this->getUser());
+
+        $em->persist($formRequest);
+        $em->flush();
+
         //TODO send email to admin
-//        return $this->json($formRequest);
+        return $this->json(true);
     }
 
 }

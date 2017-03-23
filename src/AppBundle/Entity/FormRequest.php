@@ -60,6 +60,11 @@ class FormRequest
      */
     private $date;
 
+    function __construct()
+    {
+        $this->setStatus("pending");
+    }
+
     /**
      * Get id.
      *
