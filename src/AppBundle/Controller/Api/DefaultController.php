@@ -56,7 +56,7 @@ class DefaultController extends JsonController
         $json = $serializer->normalize(
             $user,
             null,
-            array('groups' => array('Short'))
+            array('groups' => array('Detail'))
         );
 
         return $this->json(

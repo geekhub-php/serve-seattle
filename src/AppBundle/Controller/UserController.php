@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\DTO\Filter;
+use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\FilterType;
 use AppBundle\Form\User\EditType;
 use AppBundle\Form\User\ActivationType;
@@ -13,8 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class UserController extends Controller
 {
@@ -150,5 +153,22 @@ class UserController extends Controller
         }
 
         return ['form' => $form->createView()];
+    }
+
+    /**
+     * @Route("/users-list")
+     *
+     * @Method("GET")
+     * @return JsonResponse
+     */
+    public function jsonListAction()
+    {
+        $users = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->selectNotBlocked();
+        if (!$users) {
+            throw new JsonHttpException(404, 'User not found.');
+        }
+        return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Default']]);
     }
 }
