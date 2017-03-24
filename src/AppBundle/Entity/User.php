@@ -66,7 +66,12 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var string
-     * @ORM\OneToOne(targetEntity="Image", cascade={"persist", "remove"}, fetch="EAGER", orphanRemoval=true)
+     * @ORM\OneToOne(
+     *     targetEntity="AppBundle\Entity\S3\Image",
+     *      cascade={"persist", "remove"},
+     *      fetch="EAGER",
+     *      orphanRemoval=true
+     *     )
      * @Groups({"Short", "Detail"})
      */
     private $image;
