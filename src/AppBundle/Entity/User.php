@@ -66,11 +66,11 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var string
-     * @Assert\Image()
-     * @ORM\Column(type="string", nullable=true)
-     * @Groups({"Detail"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\S3\Image", cascade={"persist", "remove"}, fetch="EAGER", orphanRemoval=true)
+     * @Groups({"Short", "Detail"})
      */
     private $image;
+
 
     /**
      * @var string
@@ -106,7 +106,6 @@ class User implements UserInterface, \Serializable
     /**
      * @var bool
      * @ORM\Column(type="boolean")
-     * @Groups({"Short", "Detail"})
      */
     private $enabled = true;
 
@@ -126,12 +125,14 @@ class User implements UserInterface, \Serializable
     /**
      * @var ArrayCollection[Event]
      * @ORM\ManyToMany(targetEntity="Event", inversedBy="users", cascade={"persist", "remove"})
+     * @Groups({"Detail"})
      */
     private $events;
 
     /**
      * @var ArrayCollection[FormRequest]
      * @ORM\OneToMany(targetEntity="FormRequest", mappedBy="user")
+     * @Groups({"Detail"})
      */
     private $formRequests;
 

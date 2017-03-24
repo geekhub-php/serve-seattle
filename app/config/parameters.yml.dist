@@ -7,6 +7,11 @@ parameters:
     database_name:     symfony
     database_user:     root
     database_password: ~
+    aws_secret: fake-aws-secret
+    aws_key: fake-aws-key
+    aws_region: us-west-2
+    aws_s3_bucket: serve-seattle-bucket
+    aws_s3_prefix: dev-prefix
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 

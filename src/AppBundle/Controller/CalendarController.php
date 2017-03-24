@@ -7,6 +7,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
 use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\EventType;
+use Aws\S3\S3Client;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -95,9 +96,6 @@ class CalendarController extends JsonController
         }
         $googleEvent = $this->get('app.google_calendar')
             ->getEventById($id);
-        if (!$googleEvent) {
-            throw new JsonHttpException(404, 'Event not found');
-        }
         $event = new DtoEvent($googleEvent);
         $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
         return new JsonResponse(['user' => $user, 'event' => $event]);
@@ -119,11 +117,6 @@ class CalendarController extends JsonController
             $googleEvents[] = $calendar
                 ->getEventById($event->getGoogleId());
         }
-        if (!$googleEvents) {
-            throw new JsonHttpException(404, 'Events not found');
-        }
-
-
         $events = [];
         foreach ($googleEvents as $event) {
             if ($event) {
