@@ -35,6 +35,7 @@ class SurveyRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('s.updatedAt <= :end')
             ->andWhere('s.status = :status')
             ->setParameters(array('type' => $type, 'start' => $start, 'end' => $end, 'status' => 'submited'))
+            ->orderBy('s.updatedAt', 'DESC')
             ->getQuery();
 
         return $query->getResult();

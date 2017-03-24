@@ -28,8 +28,8 @@ class SurveyController extends Controller
         $paginator = $this->get('knp_paginator');
         $surveys = $em->getRepository(Survey::class)->findSurveyByStatus('submited');
         $filter = new SurveyFilter();
-        $filter->setStart($surveys[0]->getUpdatedAt());
-        $filter->setEnd($surveys[count($surveys) - 1]->getUpdatedAt());
+        $filter->setStart($surveys[count($surveys) - 1]->getUpdatedAt());
+        $filter->setEnd($surveys[0]->getUpdatedAt());
         $form = $this->createForm(SurveyFilterType::class, $filter);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

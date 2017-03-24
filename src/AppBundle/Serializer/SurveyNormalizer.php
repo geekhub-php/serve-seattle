@@ -1,0 +1,94 @@
+<?php
+
+namespace AppBundle\Serializer;
+
+use AppBundle\Entity\Survey\Survey;
+use AppBundle\Entity\Survey\SurveyAnswer;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
+use Symfony\Component\Serializer\Exception\LogicException;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
+use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
+class SurveyNormalizer extends ObjectNormalizer
+{
+    /**
+     * @var Registry
+     */
+    protected $doctrine;
+
+    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory = null,
+                                NameConverterInterface $nameConverter = null,
+                                PropertyAccessorInterface $propertyAccessor = null,
+                                PropertyTypeExtractorInterface $propertyTypeExtractor = null,
+                                Registry $doctrine)
+    {
+        parent::__construct($classMetadataFactory, $nameConverter, $propertyAccessor, $propertyTypeExtractor);
+        $this->doctrine = $doctrine;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function denormalize($data, $class, $format = null, array $context = array())
+    {
+        if (!$this->serializer instanceof DenormalizerInterface) {
+            throw new LogicException('Cannot normalize attributes because injected serializer is not a normalizer');
+        }
+        if (!isset($context[ObjectNormalizer::OBJECT_TO_POPULATE])) {
+            throw new LogicException('Not found object_to_populate');
+        }
+        /** @var Survey $survey */
+        $survey = $context[ObjectNormalizer::OBJECT_TO_POPULATE];
+
+        $fields = $this->getAllowedAttributes($survey, $context);
+        foreach ($fields as $field) {
+            $properties[] = $field->getName();
+        }
+
+        foreach ($data as $key => $val) {
+            if (!in_array($key, $properties)) {
+                throw new LogicException('Wrong json consruction');
+            }
+            switch ($key) {
+                    case 'answers':
+                        foreach ($val as $item) {
+                            $answer = $this->serializer->denormalize($item, SurveyAnswer::class, $format, $context);
+                            $answer->setSurvey($survey);
+                            $answers[] = $answer;
+                            $this->doctrine->getManager()->persist($answer);
+                        }
+                        break;
+                }
+        }
+        foreach ($answers as $answer) {
+            $questions[] = $answer->getQuestion()->getId();
+        }
+        foreach ($survey->getQuestions() as $question) {
+            $surveyQuestions[] = $question->getId();
+        }
+        if ($surveyQuestions !== $questions) {
+            throw new LogicException('Wrong json content');
+        }
+        $survey->setStatus('submited');
+        $this->doctrine->getManager()->persist($survey);
+        $this->doctrine->getManager()->flush();
+
+        return $survey;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsDenormalization($data, $type, $format = null)
+    {
+        if ($type != Survey::class) {
+            return false;
+        }
+
+        return true;
+    }
+}

@@ -27,44 +27,12 @@
             {% endif %}
         {% endfor %}
     {% else %}
-    <h3>Internship surveys</h3>
     {% for survey in surveys %}
-        {%  if survey.getType.getName == 'internship' %}
         <ul>
         <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
         <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
+        <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
         </ul>
-        {% endif %}
-    {% endfor %}
-
-    <h3>Speaker surveys</h3>
-    {% for survey in surveys %}
-        {%  if survey.getType.getName == 'speaker' %}
-            <ul>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
-            </ul>
-        {% endif %}
-    {% endfor %}
-
-    <h3>Exit surveys</h3>
-    {% for survey in surveys %}
-        {%  if survey.getType.getName == 'exit' %}
-            <ul>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
-            </ul>
-        {% endif %}
-    {% endfor %}
-
-    <h3>Supervisor surveys</h3>
-    {% for survey in surveys %}
-        {%  if survey.getType.getName == 'supervisor' %}
-            <ul>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
-            </ul>
-        {% endif %}
     {% endfor %}
     {% endif %}
     <ul class="pager">
