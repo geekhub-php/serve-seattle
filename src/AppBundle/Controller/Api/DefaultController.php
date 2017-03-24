@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Entity\DTO\DtoUser;
 use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\LoginType;
+use Aws\AwsClient;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;

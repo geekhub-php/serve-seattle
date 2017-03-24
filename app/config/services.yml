@@ -55,3 +55,11 @@ services:
               - "@app.s3_manager"
           tags:
               - { name: doctrine.event_subscriber, connection: default }
+
+# Swift_Mailer
+      app.email_notification:
+          class: AppBundle\Notification\EmailNotification
+          arguments:
+              - "@mailer"
+              - "@twig"
+              - "%mailer_from%"
