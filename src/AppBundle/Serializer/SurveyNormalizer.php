@@ -20,11 +20,7 @@ class SurveyNormalizer extends ObjectNormalizer
      */
     protected $doctrine;
 
-    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory = null,
-                                NameConverterInterface $nameConverter = null,
-                                PropertyAccessorInterface $propertyAccessor = null,
-                                PropertyTypeExtractorInterface $propertyTypeExtractor = null,
-                                Registry $doctrine)
+    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory = null, NameConverterInterface $nameConverter = null, PropertyAccessorInterface $propertyAccessor = null, PropertyTypeExtractorInterface $propertyTypeExtractor = null, Registry $doctrine)
     {
         parent::__construct($classMetadataFactory, $nameConverter, $propertyAccessor, $propertyTypeExtractor);
         $this->doctrine = $doctrine;
@@ -44,25 +40,14 @@ class SurveyNormalizer extends ObjectNormalizer
         /** @var Survey $survey */
         $survey = $context[ObjectNormalizer::OBJECT_TO_POPULATE];
 
-        $fields = $this->getAllowedAttributes($survey, $context);
-        foreach ($fields as $field) {
-            $properties[] = $field->getName();
+        if (!array_key_exists('answers', $data)) {
+            throw new LogicException('Wrong json consruction');
         }
-
-        foreach ($data as $key => $val) {
-            if (!in_array($key, $properties)) {
-                throw new LogicException('Wrong json consruction');
-            }
-            switch ($key) {
-                    case 'answers':
-                        foreach ($val as $item) {
-                            $answer = $this->serializer->denormalize($item, SurveyAnswer::class, $format, $context);
-                            $answer->setSurvey($survey);
-                            $answers[] = $answer;
-                            $this->doctrine->getManager()->persist($answer);
-                        }
-                        break;
-                }
+        foreach ($data['answers'] as $item) {
+            $answer = $this->serializer->denormalize($item, SurveyAnswer::class, $format, $context);
+            $answer->setSurvey($survey);
+            $answers[] = $answer;
+            $this->doctrine->getManager()->persist($answer);
         }
         foreach ($answers as $answer) {
             $questions[] = $answer->getQuestion()->getId();

@@ -21,11 +21,7 @@ class SurveyAnswerNormalizer extends ObjectNormalizer
      */
     protected $doctrine;
 
-    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory = null,
-                                NameConverterInterface $nameConverter = null,
-                                PropertyAccessorInterface $propertyAccessor = null,
-                                PropertyTypeExtractorInterface $propertyTypeExtractor = null,
-                                Registry $doctrine)
+    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory = null, NameConverterInterface $nameConverter = null, PropertyAccessorInterface $propertyAccessor = null, PropertyTypeExtractorInterface $propertyTypeExtractor = null, Registry $doctrine)
     {
         parent::__construct($classMetadataFactory, $nameConverter, $propertyAccessor, $propertyTypeExtractor);
         $this->doctrine = $doctrine;
@@ -39,18 +35,13 @@ class SurveyAnswerNormalizer extends ObjectNormalizer
         if (!$this->serializer instanceof DenormalizerInterface) {
             throw new LogicException('Cannot normalize attributes because injected serializer is not a normalizer');
         }
-        if (!isset($context[ObjectNormalizer::OBJECT_TO_POPULATE])) {
-            throw new LogicException('Not found object_to_populate');
-        }
-        /** @var Survey $answer */
+        /** @var Survey $survey */
         $survey = $context[ObjectNormalizer::OBJECT_TO_POPULATE];
 
         $fields = $this->getAllowedAttributes(SurveyAnswer::class, $context);
         foreach ($fields as $field) {
-            foreach ($field as $item) {
-                if (!in_array($field->getName(), array_keys($data)) || !array_key_exists('id', $data['question'])) {
-                    throw new LogicException('Wrong json consruction');
-                }
+            if (!in_array($field->getName(), array_keys($data)) || !array_key_exists('id', $data['question'])) {
+                throw new LogicException('Wrong json consruction');
             }
         }
 
