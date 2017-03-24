@@ -20,9 +20,18 @@ class SurveyNormalizer extends ObjectNormalizer
      */
     protected $doctrine;
 
-    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory = null, NameConverterInterface $nameConverter = null, PropertyAccessorInterface $propertyAccessor = null, PropertyTypeExtractorInterface $propertyTypeExtractor = null, Registry $doctrine)
+    /**
+     * SurveyNormalizer constructor.
+     *
+     * @param ClassMetadataFactoryInterface|null  $classMDF
+     * @param NameConverterInterface|null         $nameCv
+     * @param PropertyAccessorInterface|null      $propertyAs
+     * @param PropertyTypeExtractorInterface|null $propTE
+     * @param Registry                            $doctrine
+     */
+    public function __construct($classMDF, $nameCv, $propAs, $propTE, Registry $doctrine)
     {
-        parent::__construct($classMetadataFactory, $nameConverter, $propertyAccessor, $propertyTypeExtractor);
+        parent::__construct($classMDF, $nameCv, $propAs, $propTE);
         $this->doctrine = $doctrine;
     }
 

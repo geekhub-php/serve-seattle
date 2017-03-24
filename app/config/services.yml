@@ -30,11 +30,13 @@ services:
               - { name: doctrine.event_subscriber }
       app.answer.normalizer:
           class: AppBundle\Serializer\SurveyAnswerNormalizer
-          autowire: true
+          parent: serializer.normalizer.object
+          arguments: ['@doctrine']
           tags:
               -  { name: serializer.normalizer }
       app.survey.normalizer:
           class: AppBundle\Serializer\SurveyNormalizer
-          autowire: true
+          parent: serializer.normalizer.object
+          arguments: ['@doctrine']
           tags:
               -  { name: serializer.normalizer }
