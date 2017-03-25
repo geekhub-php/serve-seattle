@@ -5,7 +5,10 @@ namespace AppBundle\Services;
 use AppBundle\Entity\Survey\Survey;
 use AppBundle\Entity\Survey\SurveyAnswer;
 use AppBundle\Entity\Survey\SurveyQuestion;
+use Symfony\Component\Form\Exception\LogicException;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class SurveyNormalizer implements DenormalizerInterface
 {
@@ -15,6 +18,37 @@ class SurveyNormalizer implements DenormalizerInterface
     {
         $this->em = $em;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof Survey;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = [])
+    {
+        if (!$this->serializer instanceof NormalizerInterface) {
+            throw new LogicException('Cannot normalize attributes because injected serializer is not a normalizer');
+        }
+
+        /** @var Survey $survey */
+        $survey = &$object;
+
+        return $this->serializer->normalize(new \ArrayObject([
+            'id' => $survey->getId(),
+            'type' => $survey->getType(),
+            'status' => $survey->getStatus(),
+            'answers' => $survey->getAnswers(),
+            'createdAt' => $survey->getCreatedAt(),
+            'updatedAt' => $survey->getUpdatedAt()
+        ]), $format, $context);
+    }
+
     /**
      * {@inheritdoc}
      */
