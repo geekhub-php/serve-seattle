@@ -43,11 +43,19 @@ class TypeNormalizer extends ObjectNormalizer
         }
         /** @var SurveyType $type */
         $type = &$object;
+        if (isset($context[ObjectNormalizer::GROUPS])) {
+            if ($context[ObjectNormalizer::GROUPS][0] == 'list') {
+                return $this->serializer->normalize(new \ArrayObject([
+                    'name' => $type->getName(),
+                ]), $format, $context);
+            }
+        }
+
         return $this->serializer->normalize(new \ArrayObject([
             'id' => $type->getId(),
             'name' => $type->getName(),
             'description' => $type->getDescription(),
-            'section' => $type->getSections()
+            'section' => $type->getSections(),
         ]), $format, $context);
     }
 }

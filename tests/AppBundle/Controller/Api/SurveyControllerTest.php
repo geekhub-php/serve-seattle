@@ -77,9 +77,9 @@ class SurveyControllerTest extends WebTestCase
             array(),
             array('CONTENT_TYPE' => 'application/json',
                   'HTTP_X-AUTH-TOKEN' => '2', ),
-            $content = '{"answers":[{"question":{"id":1},"content": "John"},{"question":{"id": 2},"content": "Title"},
-                        {"question": {"id":3},"content": "Site"},{"question":{"id":4},"content": "10"},{"question":{
-                        "id": 5},"content": "2"}]}'
+            $content = '{"answers":[{"questionId": 1,"content": "John"},{"questionId": 2,"content": "Title"
+                         },{"questionId": 3,"content": "Site"},{"questionId": 4,"content": "10"},{"questionId": 5,
+                         "content": "5"}]}'
         );
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());

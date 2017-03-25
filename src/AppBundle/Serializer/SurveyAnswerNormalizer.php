@@ -54,10 +54,10 @@ class SurveyAnswerNormalizer extends ObjectNormalizer
         }
         /** @var SurveyAnswer $answer */
         $answer = &$object;
+
         return $this->serializer->normalize(new \ArrayObject([
-            'id' => $answer->getId(),
             'questionId' => $answer->getQuestion()->getId(),
-            'content' => $answer->getContent()
+            'content' => $answer->getContent(),
         ]), $format, $context);
     }
 
@@ -72,16 +72,13 @@ class SurveyAnswerNormalizer extends ObjectNormalizer
         /** @var Survey $survey */
         $survey = $context[ObjectNormalizer::OBJECT_TO_POPULATE];
 
-        $fields = $this->getAllowedAttributes(SurveyAnswer::class, $context);
-        foreach ($fields as $field) {
-            if (!in_array($field->getName(), array_keys($data)) || !array_key_exists('id', $data['question'])) {
-                throw new LogicException('Wrong json consruction');
-            }
+        if (!array_key_exists('questionId', $data) || !array_key_exists('content', $data)) {
+            throw new LogicException('Wrong json consruction');
         }
 
         $newAnswer = new SurveyAnswer();
         $question = $this->doctrine->getManager()->getRepository(SurveyQuestion::class)
-            ->find($data['question']['id']);
+            ->find($data['questionId']);
         if (!in_array($question, $survey->getQuestions())) {
             throw new LogicException('Wrong question id');
         }

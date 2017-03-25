@@ -53,13 +53,25 @@ class SurveyNormalizer extends ObjectNormalizer
         }
         /** @var Survey $survey */
         $survey = &$object;
+        if (isset($context[ObjectNormalizer::GROUPS])) {
+            if ($context[ObjectNormalizer::GROUPS][0] == 'list') {
+                return $this->serializer->normalize(new \ArrayObject([
+                    'id' => $survey->getId(),
+                    'type' => $survey->getType(),
+                    'status' => $survey->getStatus(),
+                    'createdAt' => $survey->getCreatedAt(),
+                    'updatedAt' => $survey->getUpdatedAt(),
+                ]), $format, $context);
+            }
+        }
+
         return $this->serializer->normalize(new \ArrayObject([
             'id' => $survey->getId(),
             'type' => $survey->getType(),
             'status' => $survey->getStatus(),
             'answers' => $survey->getAnswers(),
             'createdAt' => $survey->getCreatedAt(),
-            'updatedAt' => $survey->getUpdatedAt()
+            'updatedAt' => $survey->getUpdatedAt(),
         ]), $format, $context);
     }
 

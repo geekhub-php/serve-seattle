@@ -43,12 +43,13 @@ class SurveyTypeSectionNormalizer extends ObjectNormalizer
         }
         /** @var SurveyTypeSection $typeSection */
         $typeSection = &$object;
+
         return $this->serializer->normalize(new \ArrayObject([
             'id' => $typeSection->getId(),
             'name' => $typeSection->getName(),
             'description' => $typeSection->getDescription(),
             'orderNumber' => $typeSection->getOrderNumber(),
-            'questions' => $typeSection->getQuestions()
+            'questions' => $typeSection->getQuestions(),
         ]), $format, $context);
     }
 }

@@ -43,11 +43,12 @@ class QuestionNormalizer extends ObjectNormalizer
         }
         /** @var SurveyQuestion $question */
         $question = &$object;
+
         return $this->serializer->normalize(new \ArrayObject([
             'id' => $question->getId(),
             'title' => $question->getTitle(),
             'orderNumber' => $question->getOrderNumber(),
-            'variants' => $question->getVariants()
+            'variants' => $question->getVariants(),
         ]), $format, $context);
     }
 }

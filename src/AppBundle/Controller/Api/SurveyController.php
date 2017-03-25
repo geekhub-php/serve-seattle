@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class SurveyController extends Controller
 {
@@ -21,9 +20,12 @@ class SurveyController extends Controller
      */
     public function listAction()
     {
-        return $this->json(['surveys' => $this->getDoctrine()
+        $surveys = $this->getDoctrine()
             ->getRepository(Survey::class)
-            ->findSurveyByUser($this->getUser())], 200);
+            ->findSurveyByUser($this->getUser());
+        $json = $this->get('serializer')->normalize($surveys, null, array('groups' => array('list')));
+
+        return $this->json(['surveys' => $json], 200);
     }
 
     /**
@@ -41,10 +43,8 @@ class SurveyController extends Controller
         if ($user !== $survey->getUser()) {
             throw new JsonHttpException(403, "Current user doesn't have accesses to this resource");
         }
-        if ($survey->getStatus() == 'submited') {
-            return $this->json(['survey' => $survey, 'answers' => $survey->getAnswers()]);
-        }
-        return $this->json($survey);
+
+        return $this->json(['survey' => $survey], 200);
     }
 
     /**
@@ -73,7 +73,7 @@ class SurveyController extends Controller
             $data,
             Survey::class,
             'json',
-            array('object_to_populate' => $survey, 'groups' => array('group4'))
+            array('object_to_populate' => $survey)
         );
         if (!$survey) {
             throw new JsonHttpException(404, 'Not valid Survey');
