@@ -21,9 +21,9 @@ class SurveyController extends Controller
      */
     public function listAction()
     {
-        return $this->json(
-            ['surveys' => $this->getDoctrine()->getRepository(Survey::class)->findSurveyByUser($this->getUser())], 200
-        );
+        return $this->json(['surveys' => $this->getDoctrine()
+            ->getRepository(Survey::class)
+            ->findSurveyByUser($this->getUser())], 200);
     }
 
     /**
