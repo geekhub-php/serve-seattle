@@ -166,9 +166,6 @@ class UserController extends Controller
         $users = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->selectNotBlocked();
-        if (!$users) {
-            throw new JsonHttpException(404, 'User not found.');
-        }
         return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Default']]);
     }
 }

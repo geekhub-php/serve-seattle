@@ -28,3 +28,38 @@ services:
           arguments: ['@security.password_encoder']
           tags:
               - { name: doctrine.event_subscriber }
+
+#Aws
+      s3_client:
+          class: Aws\S3\S3Client
+          arguments:
+              -
+                  region: "%aws_region%"
+                  version: "2006-03-01"
+                  signature_version: v4
+                  credentials:
+                      key: "%aws_key%"
+                      secret: "%aws_secret%"
+
+      app.s3_manager:
+          class: AppBundle\Aws\S3Manager
+          arguments:
+              - "@s3_client"
+              - "%aws_s3_bucket%"
+              - "@logger"
+              - "%aws_s3_prefix%"
+
+      app.file.subscriber:
+          class: AppBundle\Listener\ImageSubscriber
+          arguments:
+              - "@app.s3_manager"
+          tags:
+              - { name: doctrine.event_subscriber, connection: default }
+
+# Swift_Mailer
+      app.email_notification:
+          class: AppBundle\Notification\EmailNotification
+          arguments:
+              - "@mailer"
+              - "@twig"
+              - "%mailer_from%"
