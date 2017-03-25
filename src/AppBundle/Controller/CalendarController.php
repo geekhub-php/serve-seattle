@@ -7,6 +7,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
 use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\EventType;
+use Aws\S3\S3Client;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,8 +27,13 @@ class CalendarController extends JsonController
      */
     public function eventsListAction(Request $request)
     {
-        return new JsonResponse($this->get('app.google_calendar')
-            ->getEventList($request->query->all()));
+        $googleEvents = $this->get('app.google_calendar')
+            ->getEventList($request->query->all());
+        $events = [];
+        foreach ($googleEvents['events'] as $event) {
+            $events[] = new DtoEvent($event);
+        }
+        return $this->json(['pageToken'=> $googleEvents['pageToken'], 'events' => $events]);
     }
 
     /**
@@ -39,6 +45,12 @@ class CalendarController extends JsonController
      */
     public function newEventAction(Request $request)
     {
+        $data = json_decode($request->getContent(), true);
+
+        if (!$data['event']['start'] || !$data['event']['end'] || !$data['event']['user']) {
+            throw new JsonHttpException(400, 'Bad request.');
+        }
+
         $dtoEvent = new DtoEvent();
         $form = $this->createForm(EventType::class, $dtoEvent);
         $this->handleJsonForm($form, $request);
@@ -84,11 +96,8 @@ class CalendarController extends JsonController
         }
         $googleEvent = $this->get('app.google_calendar')
             ->getEventById($id);
-        if (!$googleEvent) {
-            throw new JsonHttpException(404, 'Event not found');
-        }
+        $event = new DtoEvent($googleEvent);
         $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
-
         return new JsonResponse(['user' => $user, 'event' => $event]);
     }
 
@@ -102,20 +111,21 @@ class CalendarController extends JsonController
     {
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
         $events = $user->getEvents();
-        $googleEvents = [];
         $calendar = $this->get('app.google_calendar');
-
+        $googleEvents = [];
         foreach ($events as $event) {
             $googleEvents[] = $calendar
                 ->getEventById($event->getGoogleId());
         }
-        if (!$googleEvents) {
-            throw new JsonHttpException(404, 'Events not found');
+        $events = [];
+        foreach ($googleEvents as $event) {
+            if ($event) {
+                $events[] = new DtoEvent($event);
+            }
         }
-
         $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
 
-        return new JsonResponse(['user' => $user, 'events' => $googleEvents]);
+        return new JsonResponse(['user' => $user, 'events' => $events]);
     }
 
     /**
@@ -147,6 +157,12 @@ class CalendarController extends JsonController
      */
     public function editEventAction(Request $request, $id)
     {
+        $data = json_decode($request->getContent(), true);
+
+        if (!$data['event']['start'] || !$data['event']['end'] || !$data['event']['user']) {
+            throw new JsonHttpException(400, 'Bad request.');
+        }
+
         $dtoEvent = new DtoEvent();
         $form = $this->createForm(EventType::class, $dtoEvent);
         $this->handleJsonForm($form, $request);

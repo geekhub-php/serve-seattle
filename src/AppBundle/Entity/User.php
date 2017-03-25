@@ -25,7 +25,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"Short"})
+     * @Groups({"Default", "Short", "Detail"})
      */
     private $id;
 
@@ -43,7 +43,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190)
-     * @Groups({"Short"})
+     * @Groups({"Default", "Short", "Detail"})
      */
     private $firstName;
 
@@ -60,16 +60,22 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, nullable=true)
-     * @Groups({"Short"})
+     * @Groups({"Default", "Short", "Detail"})
      */
     private $lastName;
 
     /**
      * @var string
-     * @Assert\Image()
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\OneToOne(
+     *     targetEntity="AppBundle\Entity\S3\Image",
+     *      cascade={"persist", "remove"},
+     *      fetch="EAGER",
+     *      orphanRemoval=true
+     *     )
+     * @Groups({"Short", "Detail"})
      */
     private $image;
+
 
     /**
      * @var string
@@ -81,7 +87,7 @@ class User implements UserInterface, \Serializable
      *      max = 250
      * )
      * @ORM\Column(type="string", length=250, unique=true)
-     * @Groups({"Short"})
+     * @Groups({"Short", "Detail"})
      */
     private $email;
 
@@ -104,7 +110,6 @@ class User implements UserInterface, \Serializable
     /**
      * @var bool
      * @ORM\Column(type="boolean")
-     * @Groups({"Short"})
      */
     private $enabled = true;
 
@@ -124,12 +129,14 @@ class User implements UserInterface, \Serializable
     /**
      * @var ArrayCollection[Event]
      * @ORM\ManyToMany(targetEntity="Event", inversedBy="users", cascade={"persist", "remove"})
+     * @Groups({"Detail"})
      */
     private $events;
 
     /**
      * @var ArrayCollection[FormRequest]
      * @ORM\OneToMany(targetEntity="FormRequest", mappedBy="user")
+     * @Groups({"Detail"})
      */
     private $formRequests;
 

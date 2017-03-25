@@ -15,9 +15,10 @@ class GoogleCalendarManager
 
     public function createEvent(DtoEvent $dtoEvent, $data = [])
     {
+        $description = ['user' => $dtoEvent->getUser(), 'description' => $dtoEvent->getDescription()];
         $event = new \Google_Service_Calendar_Event();
         $event->setSummary($dtoEvent->getSummary());
-        $event->setDescription($dtoEvent->getDescription());
+        $event->setDescription(json_encode($description));
         $event->setLocation($dtoEvent->getLocation());
         $event->setVisibility('public');
         $start = new \Google_Service_Calendar_EventDateTime();
@@ -26,6 +27,7 @@ class GoogleCalendarManager
         $end = new \Google_Service_Calendar_EventDateTime();
         $end->setDateTime($dtoEvent->getEnd());
         $event->setEnd($end);
+
 
         return $this->calendar->events->insert('primary', $event, $data);
     }
@@ -38,7 +40,7 @@ class GoogleCalendarManager
 
         return [
             'pageToken' => $events->getNextPageToken(),
-            'events' => $events->getItems(),
+            'events' => $events->getItems()
         ];
     }
 
@@ -59,9 +61,10 @@ class GoogleCalendarManager
 
     public function editEvent(DtoEvent $dtoEvent, $id, $data = [])
     {
+        $description = ['user' => $dtoEvent->getUser(), 'description' => $dtoEvent->getDescription()];
         $event = $this->getEventById($id);
         $event->setSummary($dtoEvent->getSummary());
-        $event->setDescription($dtoEvent->getDescription());
+        $event->setDescription(json_encode($description));
         $event->setLocation($dtoEvent->getLocation());
         $event->setVisibility('public');
 
