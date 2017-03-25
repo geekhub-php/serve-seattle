@@ -21,17 +21,7 @@ class SurveyController extends Controller
      */
     public function listAction()
     {
-        $user = $this->getUser();
-        $em = $this->getDoctrine()->getManager();
-        $surveys = $em->getRepository(Survey::class)->findSurveyByUser($user);
-        $serializer = $this->get('serializer');
-        $json = $serializer->normalize(
-            $surveys,
-            null,
-            array('groups' => array('group1'))
-        );
-
-        return $this->json(['surveys' => $json], 200);
+        return $this->json(['surveys' => $this->getDoctrine()->getRepository(Survey::class)->findSurveyByUser($this->getUser())], 200);
     }
 
     /**
