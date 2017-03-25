@@ -24,7 +24,6 @@ class Survey
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"group1"})
      */
     private $id;
 
@@ -34,7 +33,6 @@ class Survey
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Survey\SurveyType", inversedBy="surveys")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Groups({"group1"})
      */
     private $type;
 
@@ -43,7 +41,6 @@ class Survey
      * @Assert\NotBlank()
      * @Assert\Type("string")
      * @ORM\Column(type="string")
-     * @Groups({"group1"})
      */
     private $status;
 
@@ -59,7 +56,6 @@ class Survey
     /**
      * @var ArrayCollection[SurveyAnswer]
      * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey", cascade={"persist", "remove"})
-     * @Groups({"group4"})
      */
     private $answers;
 
@@ -191,27 +187,5 @@ class Survey
         }
 
         return $questions;
-    }
-
-    /**
-     * Get DateTime.
-     *
-     * @return \DateTime
-     * @Groups({"group1", "group2"})
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Get DateTime.
-     *
-     * @return \DateTime
-     * @Groups({"group1", "group2"})
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 }

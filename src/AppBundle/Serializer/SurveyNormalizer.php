@@ -39,6 +39,33 @@ class SurveyNormalizer extends ObjectNormalizer
     /**
      * {@inheritdoc}
      */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof Survey;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = [])
+    {
+        if (!$this->serializer instanceof NormalizerInterface) {
+            throw new LogicException('Cannot normalize attributes because injected serializer is not a normalizer');
+        }
+        /** @var Survey $survey */
+        $survey = &$object;
+        return $this->serializer->normalize(new \ArrayObject([
+            'id' => $survey->getId(),
+            'type' => $survey->getType(),
+            'status' => $survey->getStatus(),
+            'answers' => $survey->getAnswers(),
+            'createdAt' => $survey->getCreatedAt(),
+            'updatedAt' => $survey->getUpdatedAt()
+        ]), $format, $context);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (!$this->serializer instanceof DenormalizerInterface) {
