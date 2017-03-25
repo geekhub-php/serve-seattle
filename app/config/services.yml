@@ -28,7 +28,33 @@ services:
           arguments: ['@security.password_encoder']
           tags:
               - { name: doctrine.event_subscriber }
-
+      app.answer.normalizer:
+          class: AppBundle\Serializer\SurveyAnswerNormalizer
+          parent: serializer.normalizer.object
+          arguments: ['@doctrine']
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey.normalizer:
+          class: AppBundle\Serializer\SurveyNormalizer
+          parent: serializer.normalizer.object
+          arguments: ['@doctrine']
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey_type.normalizer:
+          class: AppBundle\Serializer\TypeNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey_type_section.normalizer:
+          class: AppBundle\Serializer\SurveyTypeSectionNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey_question.normalizer:
+          class: AppBundle\Serializer\QuestionNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
 #Aws
       s3_client:
           class: Aws\S3\S3Client
@@ -63,3 +89,4 @@ services:
               - "@mailer"
               - "@twig"
               - "%mailer_from%"
+

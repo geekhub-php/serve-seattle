@@ -3,7 +3,6 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\DTO\DtoEvent;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -37,7 +36,7 @@ class EventType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'data_class' => DtoEvent::class
+                'data_class' => DtoEvent::class,
             ]);
     }
 }

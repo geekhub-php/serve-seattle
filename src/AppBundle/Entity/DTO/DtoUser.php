@@ -34,6 +34,7 @@ class DtoUser
     public function setEmail($email)
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -53,6 +54,7 @@ class DtoUser
     public function setPassword($password)
     {
         $this->password = $password;
+
         return $this;
     }
 }

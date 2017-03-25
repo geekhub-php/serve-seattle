@@ -54,9 +54,9 @@ class Event implements \JsonSerializable
 
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -64,7 +64,7 @@ class Event implements \JsonSerializable
     }
 
     /**
-     * Set googleId
+     * Set googleId.
      *
      * @param string $googleId
      *
@@ -78,7 +78,7 @@ class Event implements \JsonSerializable
     }
 
     /**
-     * Get googleId
+     * Get googleId.
      *
      * @return string
      */
@@ -88,7 +88,7 @@ class Event implements \JsonSerializable
     }
 
     /**
-     * Add user
+     * Add user.
      *
      * @param User $user
      *
@@ -102,7 +102,7 @@ class Event implements \JsonSerializable
     }
 
     /**
-     * Remove user
+     * Remove user.
      *
      * @param User $user
      */
@@ -112,7 +112,7 @@ class Event implements \JsonSerializable
     }
 
     /**
-     * Get users
+     * Get users.
      *
      * @return ArrayCollection
      */

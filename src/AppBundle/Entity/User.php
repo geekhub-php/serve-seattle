@@ -81,7 +81,6 @@ class User implements UserInterface, \Serializable
      * @var string
      * @Assert\NotBlank()
      * @Assert\Email(
-     *     checkMX = true
      * )
      * @Assert\Type("string")
      * @Assert\Length(
@@ -143,22 +142,15 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var ArrayCollection[Survey]
-     * @ORM\OneToMany(targetEntity="Survey", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Survey\Survey", mappedBy="user")
      */
     private $surveys;
-
-    /**
-     * @var ArrayCollection[SurveyAnswer]
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="user")
-     */
-    private $answers;
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->formRequests = new ArrayCollection();
         $this->surveys = new ArrayCollection();
-        $this->answers = new ArrayCollection();
         $this->roles = array('ROLE_USER');
     }
 
@@ -394,18 +386,11 @@ class User implements UserInterface, \Serializable
     {
         return $this->surveys;
     }
-    /**
-     * @return ArrayCollection
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
 
     /**
-     * Set enabled
+     * Set enabled.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      *
      * @return User
      */
@@ -417,9 +402,9 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Get enabled
+     * Get enabled.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEnabled()
     {

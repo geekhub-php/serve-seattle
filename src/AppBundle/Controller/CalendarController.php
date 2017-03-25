@@ -132,6 +132,7 @@ class CalendarController extends JsonController
      * @param $id
      * @Route("/{id}")
      * @Method("DELETE")
+     *
      * @return JsonResponse
      */
     public function removeEventAction($id)
@@ -173,6 +174,7 @@ class CalendarController extends JsonController
 
     /**
      * FOR DEV ONLY.
+     *
      * @Method("PUT")
      * @Route("/clear")
      */

@@ -4,9 +4,8 @@ namespace AppBundle\Entity\DTO;
 
 class Filter
 {
-
     /**
-     * @var string $name
+     * @var string
      */
     public $name;
 }

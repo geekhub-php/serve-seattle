@@ -38,6 +38,7 @@ security:
             logout:
                 path:   /logout
                 target: /login
+            http_basic: ~
 
     access_control:
           - { path: ^/api/login$, role:  IS_AUTHENTICATED_ANONYMOUSLY }

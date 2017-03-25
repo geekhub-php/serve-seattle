@@ -71,10 +71,10 @@ class UserControllerTest extends WebTestCase
 
         $form = $crawler->filter('table td form')->form();
         $url_params = explode('/', $form->getUri());
-        $userid = $url_params[count($url_params)-1];
+        $userid = $url_params[count($url_params) - 1];
 
         $client->submit($form, ['activation[enabled]' => false]);
-        $user = $em->getRepository('AppBundle:User')->findOneBy(array("id" => $userid));
+        $user = $em->getRepository('AppBundle:User')->findOneBy(array('id' => $userid));
 
         $this->assertEquals(false, $user->isEnabled());
     }
@@ -96,7 +96,7 @@ class UserControllerTest extends WebTestCase
 
         $form = $crawler->filter('table td form')->form();
         $url_params = explode('/', $form->getUri());
-        $userid = $url_params[count($url_params)-1];
+        $userid = $url_params[count($url_params) - 1];
         $crawler = $client->request('GET', '/user/edit/'.$userid);
         $form = $crawler->selectButton('Save')->form();
         $client->submit($form, [

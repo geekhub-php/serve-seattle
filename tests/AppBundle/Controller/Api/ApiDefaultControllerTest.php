@@ -43,5 +43,7 @@ class ApiDefaultControllerTest extends WebTestCase
         $client->request('GET', '/api/user', [], [], $headers);
 
         $this->assertEquals(401, $client->getResponse()->getStatusCode());
+
+        exec('./bin/console d:d:d --force --env=test');
     }
 }

@@ -27,7 +27,7 @@ class JsonExceptionListener
                 'error' => [
                     'code' => $exception->getStatusCode(),
                     'message' => $exception->getMessage(),
-                ]
+                ],
             ];
             if (($data = $exception->getData())) {
                 $errorData['error']['fields'] = $data;

@@ -43,7 +43,6 @@ class UserController extends Controller
 
             throw new JsonHttpException(400, 'Bad Request', $outErrors);
         }
-
         $user->setImage($image);
         $this->getDoctrine()->getManager()->flush();
 

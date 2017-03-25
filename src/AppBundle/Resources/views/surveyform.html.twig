@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Dashboards
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="well">
+                <h3>{{ form.vars.data.getType.getName|capitalize }} survey</h3>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                {% if form.vars.data.getType.getDescription() %}
+                <p>{{ form.vars.data.getType.getDescription() }}</p>
+                {% endif %}
+                {% for section in form.vars.data.getType().getSections() %}
+                    {% if section.getName() %}
+                        <p>{{ section.getName() }}</p>
+                    {% endif %}
+                    {% if section.getDescription() %}
+                        <p>{{ section.getDescription() }}</p>
+                    {% endif %}
+                    <ol>
+                    {% for question in section.getQuestions() %}
+                        <li><b>{{ question.getTitle() }}</b></li>
+                        {% if question.variants is defined %}
+                            {% for variant in question.getVariants() %}
+                                <input type="checkbox"  disabled>{{ variant }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    </ol>
+                {% endfor %}
+                <br/>
+                 <input type="submit" value="Create survey"/>
+                 {{ form_end(form) }}
+
+            </div>
+        </div>
+
+{% endblock %}
