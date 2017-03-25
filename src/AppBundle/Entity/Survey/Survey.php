@@ -43,7 +43,7 @@ class Survey
      * @Assert\NotBlank()
      * @Assert\Type("string")
      * @ORM\Column(type="string")
-     * @Groups({"group1", "group5"})
+     * @Groups({"group1"})
      */
     private $status;
 

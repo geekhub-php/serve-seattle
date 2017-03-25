@@ -37,7 +37,7 @@ class GoogleCalendarManager
             ->listEvents('primary', $query);
 
         return [
-            'nextPageToken' => $events->getNextPageToken(),
+            'pageToken' => $events->getNextPageToken(),
             'events' => $events->getItems(),
         ];
     }

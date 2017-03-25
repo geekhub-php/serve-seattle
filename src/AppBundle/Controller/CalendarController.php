@@ -89,7 +89,7 @@ class CalendarController extends JsonController
         }
         $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
 
-        return new JsonResponse(['user' => $user, 'event' => $googleEvent]);
+        return new JsonResponse(['user' => $user, 'event' => $event]);
     }
 
     /**

@@ -3,14 +3,14 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Survey\Survey;
-use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Exception\JsonHttpException;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 
-class SurveyController extends JsonController
+class SurveyController extends Controller
 {
     /**
      * @Route("/surveys", name="list_surveys")
@@ -102,6 +102,6 @@ class SurveyController extends JsonController
         $em->persist($survey);
         $em->flush();
 
-        return $this->json(['message' => 'Survey updated'], 200);
+        return $this->json(['message' => 'Survey is updated'], 200);
     }
 }

@@ -29,7 +29,14 @@ services:
           tags:
               - { name: doctrine.event_subscriber }
       app.answer.normalizer:
-          class: AppBundle\Services\SurveyNormalizer
-          arguments: ["@doctrine.orm.entity_manager"]
+          class: AppBundle\Serializer\SurveyAnswerNormalizer
+          parent: serializer.normalizer.object
+          arguments: ['@doctrine']
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey.normalizer:
+          class: AppBundle\Serializer\SurveyNormalizer
+          parent: serializer.normalizer.object
+          arguments: ['@doctrine']
           tags:
               -  { name: serializer.normalizer }

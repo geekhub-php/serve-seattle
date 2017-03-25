@@ -6,7 +6,6 @@ use AppBundle\Entity\Survey\Survey;
 use AppBundle\Entity\Survey\SurveyAnswer;
 use AppBundle\Entity\Survey\SurveyQuestion;
 use Symfony\Component\Form\Exception\LogicException;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

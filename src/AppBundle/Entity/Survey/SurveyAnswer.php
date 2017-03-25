@@ -26,13 +26,6 @@ class SurveyAnswer
     private $id;
 
     /**
-     * @var string
-     * @Assert\Type("string")
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $type;
-
-    /**
      * @var SurveyQuestion
      * @Assert\Type("object")
      * @Assert\Valid
@@ -71,30 +64,6 @@ class SurveyAnswer
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set type.
-     *
-     * @param string $type
-     *
-     * @return SurveyAnswer
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type.
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**
