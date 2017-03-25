@@ -40,3 +40,18 @@ services:
           arguments: ['@doctrine']
           tags:
               -  { name: serializer.normalizer }
+      app.survey_type.normalizer:
+          class: AppBundle\Serializer\TypeNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey_type_section.normalizer:
+          class: AppBundle\Serializer\SurveyTypeSectionNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey_question.normalizer:
+          class: AppBundle\Serializer\QuestionNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }

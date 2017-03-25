@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class SurveyAnswerNormalizer extends ObjectNormalizer
@@ -34,6 +35,30 @@ class SurveyAnswerNormalizer extends ObjectNormalizer
     {
         parent::__construct($classMDF, $nameCv, $propAs, $propTE);
         $this->doctrine = $doctrine;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof SurveyAnswer;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = [])
+    {
+        if (!$this->serializer instanceof NormalizerInterface) {
+            throw new LogicException('Cannot normalize attributes because injected serializer is not a normalizer');
+        }
+        /** @var SurveyAnswer $answer */
+        $answer = &$object;
+        return $this->serializer->normalize(new \ArrayObject([
+            'id' => $answer->getId(),
+            'questionId' => $answer->getQuestion()->getId(),
+            'content' => $answer->getContent()
+        ]), $format, $context);
     }
 
     /**

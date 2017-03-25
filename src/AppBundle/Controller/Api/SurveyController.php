@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class SurveyController extends Controller
 {
@@ -48,24 +49,10 @@ class SurveyController extends Controller
         if ($user !== $survey->getUser()) {
             throw new JsonHttpException(403, "Current user doesn't have accesses to this resource");
         }
-        $serializer = $this->get('serializer');
-        $jsonSurvey = $serializer->normalize(
-            $survey,
-            null,
-            array('groups' => array('group1', 'group2'))
-        );
         if ($survey->getStatus() == 'submited') {
-            $answers = $survey->getAnswers();
-            $jsonAnswers = $serializer->normalize(
-                $answers,
-                null,
-                array('groups' => array('group3'))
-            );
-
-            return $this->json(['survey' => $jsonSurvey, 'answers' => $jsonAnswers], 200);
+            return $this->json(['survey' => $survey, 'answers' => $survey->getAnswers()]);
         }
-
-        return $this->json($jsonSurvey);
+        return $this->json($survey);
     }
 
     /**

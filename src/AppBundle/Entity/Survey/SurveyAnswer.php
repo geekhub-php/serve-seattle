@@ -31,7 +31,6 @@ class SurveyAnswer
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="answers")
      * @ORM\JoinColumn(onDelete="CASCADE")
-     * @Groups({"group3", "group4"})
      */
     private $question;
 
@@ -52,7 +51,6 @@ class SurveyAnswer
      *      max = 1000
      * )
      * @ORM\Column(name="body", type="text")
-     * @Groups({"group3", "group4"})
      */
     private $content;
 
