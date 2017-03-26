@@ -28,7 +28,6 @@ class GoogleCalendarManager
         $end->setDateTime($dtoEvent->getEnd());
         $event->setEnd($end);
 
-
         return $this->calendar->events->insert('primary', $event, $data);
     }
 
@@ -40,7 +39,7 @@ class GoogleCalendarManager
 
         return [
             'pageToken' => $events->getNextPageToken(),
-            'events' => $events->getItems()
+            'events' => $events->getItems(),
         ];
     }
 

@@ -15,7 +15,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 class UserController extends Controller
 {
-
     /**
      * @Route("/avatar", name="api_avatar")
      * @Method({"PUT"})
