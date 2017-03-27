@@ -32,6 +32,7 @@ class CalendarController extends Controller
                 $events[] = new DtoEvent($event);
             }
         }
+
         return new JsonResponse(['events' => $events]);
     }
 
@@ -51,6 +52,7 @@ class CalendarController extends Controller
         $googleEvent = $this->get('app.google_calendar')
             ->getEventById($id);
         $event = new DtoEvent($googleEvent);
+
         return new JsonResponse(['event' => $event]);
     }
 }
