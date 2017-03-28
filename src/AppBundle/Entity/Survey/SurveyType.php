@@ -41,7 +41,6 @@ class SurveyType
 
     /**
      * @var string
-     * @Assert\NotBlank()
      * @Assert\Type("string")
      * @Assert\Length(
      *      min = 2,

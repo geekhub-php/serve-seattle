@@ -76,7 +76,6 @@ class User implements UserInterface, \Serializable
      */
     private $image;
 
-
     /**
      * @var string
      * @Assert\NotBlank()

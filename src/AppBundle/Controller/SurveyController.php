@@ -42,9 +42,24 @@ class SurveyController extends Controller
             ];
         }
         $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
+        $types = array_fill_keys(['int', 'sp', 'ex', 'sr'], false);
+        foreach ($pagination as $item) {
+            if ($item->getType()->getName() == 'internship') {
+                $types['int'] = true;
+            }
+            if ($item->getType()->getName() == 'speaker') {
+                $types['sp'] = true;
+            }
+            if ($item->getType()->getName() == 'exit') {
+                $types['ex'] = true;
+            }
+            if ($item->getType()->getName() == 'supervisor') {
+                $types['sr'] = true;
+            }
+        }
 
         return [
-            'surveys' => $pagination, 'survey_types' => $surveyTypes, 'form' => $form->createView(),
+            'surveys' => $pagination, 'survey_types' => $surveyTypes, 'types' => $types, 'form' => $form->createView(),
         ];
     }
 

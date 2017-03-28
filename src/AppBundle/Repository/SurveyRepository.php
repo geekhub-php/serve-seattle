@@ -17,7 +17,8 @@ class SurveyRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder('s')
             ->where('s.status = :status')
             ->setParameter('status', $status)
-            ->orderBy('s.updatedAt', 'DESC')
+            ->orderBy('s.type', 'ASC')
+            ->addOrderBy('s.updatedAt', 'DESC')
             ->getQuery();
 
         return $query->getResult();
