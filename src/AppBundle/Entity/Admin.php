@@ -37,9 +37,7 @@ class Admin implements UserInterface
 
     /**
      * @var string
-     * @Assert\Email(
-     *     checkMX = true
-     * )
+     * @Assert\Email()
      * @Assert\Type("string")
      * @Assert\Length(
      *      max = 250

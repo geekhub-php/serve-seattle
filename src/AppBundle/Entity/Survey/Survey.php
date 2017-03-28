@@ -1,7 +1,8 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Survey;
 
+use AppBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,34 +30,38 @@ class Survey
      * @var SurveyType
      * @Assert\Type("object")
      * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="SurveyType", inversedBy="surveys")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Survey\SurveyType", inversedBy="surveys")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $type;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Type("string")
+     * @ORM\Column(type="string")
+     */
+    private $status;
 
     /**
      * @var User
      * @Assert\Type("object")
      * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="surveys")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="surveys")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
 
     /**
-     * @var ArrayCollection[SurveyQuestion]
-     * @ORM\ManyToMany(targetEntity="SurveyQuestion", mappedBy="surveys")
-     */
-    private $questions;
-
-    /**
      * @var ArrayCollection[SurveyAnswer]
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey")
+     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="survey", cascade={"persist", "remove"})
      */
     private $answers;
 
     public function __construct()
     {
-        $this->questions = new ArrayCollection();
         $this->answers = new ArrayCollection();
+        $this->status = 'current';
     }
 
     /**
@@ -94,6 +99,30 @@ class Survey
     }
 
     /**
+     * Set status.
+     *
+     * @param string $status
+     *
+     * @return Survey
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * Set user.
      *
      * @param User $user
@@ -118,37 +147,44 @@ class Survey
     }
 
     /**
-     * @param SurveyQuestion $question
+     * @param SurveyAnswer $answer
      *
      * @return Survey
      */
-    public function setQuestions(SurveyQuestion $question)
+    public function addSurveyAnswer(SurveyAnswer $answer)
     {
-        if (!$this->questions->contains($question)) {
-            $this->questions->add($question);
-            $question->setSurveys($this);
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setSurvey($this);
         }
 
         return $this;
     }
 
     /**
-     * Get Questions.
-     *
-     * @return ArrayCollection
-     */
-    public function getQuestions()
-    {
-        return $this->questions;
-    }
-
-    /**
-     * Get Questions.
+     * Get answers.
      *
      * @return ArrayCollection
      */
     public function getAnswers()
     {
         return $this->answers;
+    }
+
+    /**
+     * Get questions.
+     *
+     * @return array
+     */
+    public function getQuestions()
+    {
+        $sections = $this->getType()->getSections();
+        foreach ($sections as $section) {
+            foreach ($section->getQuestions() as $quest) {
+                $questions[] = $quest;
+            }
+        }
+
+        return $questions;
     }
 }

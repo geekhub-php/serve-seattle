@@ -25,6 +25,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
 
     /**
      * @param Filter $filter
+     *
      * @return Query
      */
     public function selectUsersByParams(Filter $filter):Query
@@ -40,9 +41,18 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
                 ->orWhere(
                     $postsQuery->expr()->like('u.email', ':name')
                 )
-                ->setParameter('name', '%' . $filter->name . '%');
+                ->setParameter('name', '%'.$filter->name.'%');
         }
 
         return $postsQuery->getQuery();
+    }
+
+    public function selectNotBlocked()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.enabled = TRUE')
+            ->orderBy('u.lastName')
+            ->getQuery()
+            ->getResult();
     }
 }

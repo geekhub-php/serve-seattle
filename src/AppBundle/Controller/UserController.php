@@ -13,8 +13,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class UserController extends Controller
 {
@@ -42,7 +44,7 @@ class UserController extends Controller
         $activationForm = [];
         foreach ($users as $user) {
             $activationForm[$user->getId()] = $this->createForm(ActivationType::class, $user, [
-                'method' => "PUT",
+                'method' => 'PUT',
                 'action' => $this->generateUrl('activate_user', ['id' => $user->getId()]),
                 'validation_groups' => 'edit',
             ])
@@ -50,9 +52,9 @@ class UserController extends Controller
         }
 
         return [
-            "users" => $users,
-            "filterForm" => $filterForm->createView(),
-            "activationForm" => $activationForm
+            'users' => $users,
+            'filterForm' => $filterForm->createView(),
+            'activationForm' => $activationForm,
         ];
     }
 
@@ -60,15 +62,17 @@ class UserController extends Controller
      * @Route("/user/activate/{id}", name="activate_user")
      *
      * @Method("PUT")
-     * @param  Request $request
-     * @param  User $user
+     *
+     * @param Request $request
+     * @param User $user
+     *
      * @return RedirectResponse
      */
     public function activationAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(ActivationType::class, $user, [
-            'method' => "PUT",
+            'method' => 'PUT',
             'action' => $this->generateUrl('activate_user', ['id' => $user->getId()]),
             'validation_groups' => 'edit',
         ]);
@@ -78,7 +82,7 @@ class UserController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl("users_list"));
+        return $this->redirect($this->generateUrl('users_list'));
     }
 
     /**
@@ -86,6 +90,7 @@ class UserController extends Controller
      * @Template("@App/User/add.html.twig")
      *
      * @param Request $request
+     *
      * @return array|RedirectResponse
      */
     public function addAction(Request $request)
@@ -97,7 +102,7 @@ class UserController extends Controller
             'validation_groups' => 'registration',
         ])
             ->add('Register', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary']
+                'attr' => ['class' => 'btn btn-primary'],
             ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -105,7 +110,7 @@ class UserController extends Controller
                 $em->persist($user);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl("users_list"));
+                return $this->redirect($this->generateUrl('users_list'));
             }
         }
 
@@ -118,6 +123,7 @@ class UserController extends Controller
      *
      * @param Request $request
      * @param User $user
+     *
      * @return array|RedirectResponse
      */
     public function editAction(Request $request, User $user)
@@ -131,13 +137,13 @@ class UserController extends Controller
             ->add('image', TextType::class, [
                 'attr' => [
                     'placeholder' => 'image',
-                    'class' => 'form-control'
+                    'class' => 'form-control',
                 ],
                 'label' => false,
                 'required' => false,
             ])
             ->add('Save', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-primary']
+                'attr' => ['class' => 'btn btn-primary'],
             ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -145,10 +151,26 @@ class UserController extends Controller
                 $em->persist($user);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl("users_list"));
+                return $this->redirect($this->generateUrl('users_list'));
             }
         }
 
         return ['form' => $form->createView()];
+    }
+
+    /**
+     * @Route("/users-list")
+     *
+     * @Method("GET")
+     *
+     * @return JsonResponse
+     */
+    public function jsonListAction()
+    {
+        $users = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->selectNotBlocked();
+
+        return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Default']]);
     }
 }

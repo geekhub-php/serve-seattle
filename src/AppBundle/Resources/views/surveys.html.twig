@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Surveys
+{% endblock %}
+
+{% block content %}
+
+    <h3>New survey</h3>
+    <ul>
+        {% for type in survey_types %}
+            <li><a href="{{ path('survey_create', {'survey_type': type.getName }) }}">{{ type.getName|capitalize }} Survey</a></li>
+        {% endfor %}
+    </ul>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value="Filter"/>
+    {{ form_end(form) }}
+    {% if filter_type is defined %}
+        <h3>{{ filter_type.getName|capitalize }} surveys</h3>
+        {% for survey in surveys %}
+            {%  if survey.getType.getName == 'internship' %}
+                <ul class="survey_item">
+                    <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
+                    <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
+                </ul>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+    {% if types.int %}
+       <h3>Internship surveys</h3>
+    {% endif %}
+    {% for survey in surveys %}
+        {% if survey.getType.getName == 'internship' %}
+             <ul>
+                 <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
+                 <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
+                 <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
+             </ul>
+        {% endif %}
+    {% endfor %}
+    {% if types.sp %}
+        <h3>Speaker surveys</h3>
+    {% endif %}
+        {% for survey in surveys %}
+            {% if survey.getType.getName == 'speaker' %}
+                <ul>
+                    <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
+                    <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
+                    <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
+                </ul>
+            {% endif %}
+        {% endfor %}
+    {% if types.ex %}
+        <h3>Exit surveys</h3>
+    {% endif %}
+    {% for survey in surveys %}
+        {% if survey.getType.getName == 'exit' %}
+            <ul>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
+            </ul>
+        {% endif %}
+    {% endfor %}
+    {% if types.sr %}
+        <h3>Supervisor surveys</h3>
+    {% endif %}
+    {% for survey in surveys %}
+        {% if survey.getType.getName == 'supervisor' %}
+            <ul>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
+                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
+            </ul>
+        {% endif %}
+    {% endfor %}
+    {% endif %}
+    <ul class="pager">
+        {{ knp_pagination_render(surveys) }}
+    </ul>
+
+{% endblock %}

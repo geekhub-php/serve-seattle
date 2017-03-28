@@ -6,9 +6,8 @@ use DateTime;
 
 class Filter
 {
-
     /**
-     * @var string $name
+     * @var string
      */
     public $name;
 

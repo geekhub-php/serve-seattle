@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,6 +32,7 @@ class FormRequest
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="FormRequestType", inversedBy="requests")
+     * @Groups({"Detail"})
      */
     private $type;
 
@@ -42,6 +44,7 @@ class FormRequest
      *      max = 255
      * )
      * @ORM\Column(type="string", length=255)
+     * @Groups({"Detail"})
      */
     private $status;
 
@@ -57,6 +60,7 @@ class FormRequest
      * @var \DateTime
      * @Assert\Date()
      * @ORM\Column(type="datetime")
+     * @Groups({"Detail"})
      */
     private $date;
 

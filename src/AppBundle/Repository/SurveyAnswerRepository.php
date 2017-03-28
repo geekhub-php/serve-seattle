@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Survey\Survey;
+
 /**
  * SurveyAnswerRepository.
  *
@@ -10,4 +12,13 @@ namespace AppBundle\Repository;
  */
 class SurveyAnswerRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAnswersBySurvey(Survey $survey)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->where('a.survey = :survey')
+            ->setParameter('survey', $survey)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

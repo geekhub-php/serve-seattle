@@ -14,7 +14,7 @@ class AdminControllerTest extends WebTestCase
         exec('./bin/console h:f:l -n --env=test');
 
         $client = static::createClient();
-        $em =  $client->getContainer()->get('doctrine');
+        $em = $client->getContainer()->get('doctrine');
 
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Login')->form();

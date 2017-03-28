@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Event.
@@ -12,7 +13,7 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  * @ORM\Table(name="event")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
  */
-class Event
+class Event implements \JsonSerializable
 {
     use ORMBehaviors\Timestampable\Timestampable;
 
@@ -29,6 +30,7 @@ class Event
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Groups({"Short"})
      */
     private $googleId;
 
@@ -43,10 +45,17 @@ class Event
         $this->users = new ArrayCollection();
     }
 
+    public function jsonSerialize()
+    {
+        return [
+            'event' => $this->getGoogleId(),
+        ];
+    }
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -54,7 +63,7 @@ class Event
     }
 
     /**
-     * Set googleId
+     * Set googleId.
      *
      * @param string $googleId
      *
@@ -68,7 +77,7 @@ class Event
     }
 
     /**
-     * Get googleId
+     * Get googleId.
      *
      * @return string
      */
@@ -78,7 +87,7 @@ class Event
     }
 
     /**
-     * Add user
+     * Add user.
      *
      * @param User $user
      *
@@ -92,7 +101,7 @@ class Event
     }
 
     /**
-     * Remove user
+     * Remove user.
      *
      * @param User $user
      */
@@ -102,7 +111,7 @@ class Event
     }
 
     /**
-     * Get users
+     * Get users.
      *
      * @return ArrayCollection
      */

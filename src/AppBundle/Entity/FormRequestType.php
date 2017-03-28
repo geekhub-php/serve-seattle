@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,6 +35,7 @@ class FormRequestType
      *      max = 190
      * )
      * @ORM\Column(name="name", type="string", length=190, unique=true)
+     * @Groups({"Detail"})
      */
     private $name;
 
@@ -42,6 +44,7 @@ class FormRequestType
      *
      * @Assert\Type("string")
      * @ORM\Column(name="description", type="string", nullable=true)
+     * @Groups({"Detail"})
      */
     private $description;
 

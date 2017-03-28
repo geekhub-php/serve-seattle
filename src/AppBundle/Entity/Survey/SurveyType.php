@@ -1,11 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Survey;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * SurveyType.
@@ -34,25 +35,39 @@ class SurveyType
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, unique=true)
+     * @Groups({"group1"})
      */
     private $name;
 
     /**
+     * @var string
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 500
+     * )
+     * @ORM\Column(type="string", length=500, nullable=true)
+     * @Groups({"group2"})
+     */
+    private $description;
+
+    /**
+     * @var ArrayCollection[SurveyTypeSection]
+     * @ORM\OneToMany(targetEntity="SurveyTypeSection", mappedBy="surveyType", cascade={"persist", "remove"})
+     * @Groups({"group2"})
+     */
+    private $sections;
+
+    /**
      * @var ArrayCollection[Survey]
-     * @ORM\OneToMany(targetEntity="Survey", mappedBy="type")
+     * @ORM\OneToMany(targetEntity="Survey", mappedBy="type", cascade={"persist", "remove"})
      */
     private $surveys;
 
-    /**
-     * @var ArrayCollection[SurveyQuestion]
-     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="surveyType")
-     */
-    private $questions;
-
     public function __construct()
     {
+        $this->sections = new ArrayCollection();
         $this->surveys = new ArrayCollection();
-        $this->questions = new ArrayCollection();
     }
 
     /**
@@ -90,6 +105,40 @@ class SurveyType
     }
 
     /**
+     * Set description.
+     *
+     * @param string $description
+     *
+     * @return SurveyType
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Get SurveysTypeSection.
+     *
+     * @return ArrayCollection
+     */
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
      * Get Surveys.
      *
      * @return ArrayCollection
@@ -97,15 +146,5 @@ class SurveyType
     public function getSurveys()
     {
         return $this->surveys;
-    }
-
-    /**
-     * Get Questions.
-     *
-     * @return ArrayCollection
-     */
-    public function getQuestions()
-    {
-        return $this->questions;
     }
 }

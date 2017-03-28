@@ -25,7 +25,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"Short"})
+     * @Groups({"Default", "Short", "Detail"})
      */
     private $id;
 
@@ -43,7 +43,7 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190)
-     * @Groups({"Short"})
+     * @Groups({"Default", "Short", "Detail"})
      */
     private $firstName;
 
@@ -60,14 +60,19 @@ class User implements UserInterface, \Serializable
      *      max = 190
      * )
      * @ORM\Column(type="string", length=190, nullable=true)
-     * @Groups({"Short"})
+     * @Groups({"Default", "Short", "Detail"})
      */
     private $lastName;
 
     /**
      * @var string
-     * @Assert\Image()
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\OneToOne(
+     *     targetEntity="AppBundle\Entity\S3\Image",
+     *      cascade={"persist", "remove"},
+     *      fetch="EAGER",
+     *      orphanRemoval=true
+     *     )
+     * @Groups({"Short", "Detail"})
      */
     private $image;
 
@@ -75,14 +80,13 @@ class User implements UserInterface, \Serializable
      * @var string
      * @Assert\NotBlank()
      * @Assert\Email(
-     *     checkMX = true
      * )
      * @Assert\Type("string")
      * @Assert\Length(
      *      max = 250
      * )
      * @ORM\Column(type="string", length=250, unique=true)
-     * @Groups({"Short"})
+     * @Groups({"Short", "Detail"})
      */
     private $email;
 
@@ -105,7 +109,6 @@ class User implements UserInterface, \Serializable
     /**
      * @var bool
      * @ORM\Column(type="boolean")
-     * @Groups({"Short"})
      */
     private $enabled = true;
 
@@ -125,33 +128,28 @@ class User implements UserInterface, \Serializable
     /**
      * @var ArrayCollection[Event]
      * @ORM\ManyToMany(targetEntity="Event", inversedBy="users", cascade={"persist", "remove"})
+     * @Groups({"Detail"})
      */
     private $events;
 
     /**
      * @var ArrayCollection[FormRequest]
      * @ORM\OneToMany(targetEntity="FormRequest", mappedBy="user")
+     * @Groups({"Detail"})
      */
     private $formRequests;
 
     /**
      * @var ArrayCollection[Survey]
-     * @ORM\OneToMany(targetEntity="Survey", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Survey\Survey", mappedBy="user")
      */
     private $surveys;
-
-    /**
-     * @var ArrayCollection[SurveyAnswer]
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="user")
-     */
-    private $answers;
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->formRequests = new ArrayCollection();
         $this->surveys = new ArrayCollection();
-        $this->answers = new ArrayCollection();
         $this->roles = array('ROLE_USER');
     }
 
@@ -387,18 +385,11 @@ class User implements UserInterface, \Serializable
     {
         return $this->surveys;
     }
-    /**
-     * @return ArrayCollection
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
 
     /**
-     * Set enabled
+     * Set enabled.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      *
      * @return User
      */
@@ -410,9 +401,9 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Get enabled
+     * Get enabled.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEnabled()
     {

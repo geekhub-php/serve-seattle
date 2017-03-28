@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Survey;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
@@ -25,34 +25,20 @@ class SurveyAnswer
     private $id;
 
     /**
-     * @var string
-     * @Assert\NotBlank()
-     * @Assert\Type("string")
-     * @ORM\Column(type="string")
-     */
-    private $type;
-
-    /**
      * @var SurveyQuestion
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="answers")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $question;
-
-    /**
-     * @var User
-     * @Assert\Type("object")
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="answers")
-     */
-    private $user;
 
     /**
      * @var Survey
      * @Assert\Type("object")
      * @Assert\Valid
      * @ORM\ManyToOne(targetEntity="Survey", inversedBy="answers")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $survey;
 
@@ -78,30 +64,6 @@ class SurveyAnswer
     }
 
     /**
-     * Set type.
-     *
-     * @param string $type
-     *
-     * @return SurveyAnswer
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type.
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
      * Set survey question.
      *
      * @param SurveyQuestion $question
@@ -123,30 +85,6 @@ class SurveyAnswer
     public function getQuestion()
     {
         return $this->question;
-    }
-
-    /**
-     * Set user.
-     *
-     * @param User $user
-     *
-     * @return SurveyAnswer
-     */
-    public function setUser(User $user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user.
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**

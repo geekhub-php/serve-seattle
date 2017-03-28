@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class DefaultController extends JsonController
 {
@@ -65,13 +66,11 @@ class DefaultController extends JsonController
     }
 
     /**
-     * @Route("/user", name="user")
-     * @Method("GET")
-     *
-     * @return JsonResponse
+     * @Route("/user")
+     * @Method({"GET"})
      */
-    public function securityTestAction()
+    public function userAction()
     {
-        return $this->json(['autorization' => 'works!']);
+        return $this->json(['user' => $this->getUser()], 200, [], [AbstractNormalizer::GROUPS => ['Detail']]);
     }
 }
