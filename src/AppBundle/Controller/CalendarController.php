@@ -7,7 +7,6 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
 use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\EventType;
-use Aws\S3\S3Client;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,7 +32,8 @@ class CalendarController extends JsonController
         foreach ($googleEvents['events'] as $event) {
             $events[] = new DtoEvent($event);
         }
-        return $this->json(['pageToken'=> $googleEvents['pageToken'], 'events' => $events]);
+
+        return $this->json(['pageToken' => $googleEvents['pageToken'], 'events' => $events]);
     }
 
     /**
@@ -99,6 +99,7 @@ class CalendarController extends JsonController
             ->getEventById($id);
         $event = new DtoEvent($googleEvent);
         $user = $this->get('serializer')->normalize($user, null, ['groups' => ['Short']]);
+
         return new JsonResponse(['user' => $user, 'event' => $event]);
     }
 

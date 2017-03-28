@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\DTO\Filter;
-use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\FilterType;
 use AppBundle\Form\User\EditType;
 use AppBundle\Form\User\ActivationType;
@@ -164,6 +163,7 @@ class UserController extends Controller
      * @Route("/users-list")
      *
      * @Method("GET")
+     *
      * @return JsonResponse
      */
     public function jsonListAction()
@@ -171,6 +171,7 @@ class UserController extends Controller
         $users = $this->getDoctrine()
             ->getRepository('AppBundle:User')
             ->selectNotBlocked();
+
         return $this->json(['users' => $users], 200, [], [AbstractNormalizer::GROUPS => ['Default']]);
     }
 }

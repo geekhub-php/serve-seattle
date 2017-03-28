@@ -30,7 +30,7 @@ class EmailNotification
             ->setFrom($this->from)
             ->setTo($email)
             ->setBody($this->twig->render('AppBundle:Email:email.html.twig', [
-                'title' => $title, 'content' => $content]), 'text/html');
+                'title' => $title, 'content' => $content, ]), 'text/html');
         $this->mailer->send($message);
     }
 }
