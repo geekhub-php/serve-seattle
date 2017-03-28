@@ -72,8 +72,6 @@ class DefaultController extends JsonController
      */
     public function userAction()
     {
-        $this->get('app.email_notification')->sendNotification('bloodboil@list.ru');
-
         return $this->json(['user' => $this->getUser()], 200, [], [AbstractNormalizer::GROUPS => ['Detail']]);
     }
 }
