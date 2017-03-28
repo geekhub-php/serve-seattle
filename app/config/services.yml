@@ -28,3 +28,9 @@ services:
           arguments: ['@security.password_encoder']
           tags:
               - { name: doctrine.event_subscriber }
+
+      app.request.normalizer:
+          class: AppBundle\Serializer\RequestNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }

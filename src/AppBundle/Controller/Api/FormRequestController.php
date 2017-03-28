@@ -46,7 +46,12 @@ class FormRequestController extends JsonController
      */
     public function AddAction(FormRequestType $formRequestType)
     {
-        $date = new \DateTime("2017-12-12 12:25:23");
+        $dt = '2017-12-12 12:25:23';
+        if(preg_match('(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})', $dt)){
+            $date = new \DateTime($dt);
+        } else {
+            return $this->json('Invalid date format');
+        }
         $em = $this->getDoctrine()->getManager();
         $formRequest = new FormRequest();
         $formRequest->setDate($date)
