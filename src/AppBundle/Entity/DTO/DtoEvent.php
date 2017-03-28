@@ -50,12 +50,12 @@ class DtoEvent implements \JsonSerializable
         $description = json_decode($this->description, true);
         return [
             'user' => (int)$description['user'],
-            'summary' => $this->summary,
+            'title' => $this->summary,
             'description' => $description['description'],
             'location' => $this->location,
             'start' => $this->start->dateTime,
             'end' => $this->end->dateTime,
-            'googleEventId' => $this->googleEventId
+            'id' => $this->googleEventId
         ];
     }
 
