@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Survey\Survey;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
@@ -127,7 +128,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var ArrayCollection[Event]
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="users", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="user", cascade={"persist", "remove"})
      * @Groups({"Detail"})
      */
     private $events;
@@ -356,7 +357,7 @@ class User implements UserInterface, \Serializable
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            $event->addUser($this);
+            $event->setUser($this);
         }
 
         return $this;
@@ -441,5 +442,87 @@ class User implements UserInterface, \Serializable
             $this->lastName,
             $this->email,
             $this->enabled) = unserialize($serialized);
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Add event
+     *
+     * @param Event $event
+     *
+     * @return User
+     */
+    public function addEvent(Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param Event $event
+     */
+    public function removeEvent(Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Add formRequest
+     *
+     * @param FormRequest $formRequest
+     *
+     * @return User
+     */
+    public function addFormRequest(FormRequest $formRequest)
+    {
+        $this->formRequests[] = $formRequest;
+
+        return $this;
+    }
+
+    /**
+     * Remove formRequest
+     *
+     * @param FormRequest $formRequest
+     */
+    public function removeFormRequest(FormRequest $formRequest)
+    {
+        $this->formRequests->removeElement($formRequest);
+    }
+
+    /**
+     * Add survey
+     *
+     * @param Survey $survey
+     *
+     * @return User
+     */
+    public function addSurvey(Survey $survey)
+    {
+        $this->surveys[] = $survey;
+
+        return $this;
+    }
+
+    /**
+     * Remove survey
+     *
+     * @param Survey $survey
+     */
+    public function removeSurvey(Survey $survey)
+    {
+        $this->surveys->removeElement($survey);
     }
 }

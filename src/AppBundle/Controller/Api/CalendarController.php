@@ -18,8 +18,8 @@ class CalendarController extends Controller
      */
     public function userEventsAction()
     {
-        $user = $this->getUser();
-        $events = $user->getEvents();
+        $events = $this->getDoctrine()->getRepository(Event::class)
+            ->selectNotExpiredByUser($this->getUser());
         $calendar = $this->get('app.google_calendar');
         $googleEvents = [];
         foreach ($events as $event) {
@@ -45,7 +45,7 @@ class CalendarController extends Controller
         /** @var Event $event */
         $event = $this->getDoctrine()->getRepository('AppBundle:Event')
             ->findByGoogleId($id);
-        $user = $event->getUsers()->first();
+        $user = $event->getUser();
         if (!$user) {
             throw new JsonHttpException(404, 'User not found.');
         }

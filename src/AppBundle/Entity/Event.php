@@ -35,15 +35,18 @@ class Event implements \JsonSerializable
     private $googleId;
 
     /**
-     * @var ArrayCollection|$users[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="events", cascade={"persist"})
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     * @Groups({"Short"})
      */
-    private $users = [];
+    private $expiredAt;
 
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
+    /**
+     * @var
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="events", cascade={"persist"})
+     */
+    private $user;
 
     public function jsonSerialize()
     {
@@ -85,36 +88,48 @@ class Event implements \JsonSerializable
     }
 
     /**
-     * Add user.
+     * @return \DateTime
+     */
+    public function getExpiredAt()
+    {
+        return $this->expiredAt;
+    }
+
+    /**
+     * @param \DateTime $expiredAt
+     *
+     * @return $this
+     */
+    public function setExpiredAt($expiredAt)
+    {
+        $this->expiredAt = $expiredAt;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Set user
      *
      * @param User $user
      *
      * @return Event
      */
-    public function addUser(User $user)
+    public function setUser(User $user)
     {
-        $this->users[] = $user;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Remove user.
+     * Get user
      *
-     * @param User $user
+     * @return User
      */
-    public function removeUser(User $user)
+    public function getUser()
     {
-        $this->users->removeElement($user);
-    }
-
-    /**
-     * Get users.
-     *
-     * @return ArrayCollection
-     */
-    public function getUsers()
-    {
-        return $this->users;
+        return $this->user;
     }
 }

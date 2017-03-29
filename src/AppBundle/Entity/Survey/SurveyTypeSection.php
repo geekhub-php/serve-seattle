@@ -198,4 +198,28 @@ class SurveyTypeSection
     {
         return $this->questions;
     }
+
+    /**
+     * Add question
+     *
+     * @param \AppBundle\Entity\Survey\SurveyQuestion $question
+     *
+     * @return SurveyTypeSection
+     */
+    public function addQuestion(\AppBundle\Entity\Survey\SurveyQuestion $question)
+    {
+        $this->questions[] = $question;
+
+        return $this;
+    }
+
+    /**
+     * Remove question
+     *
+     * @param \AppBundle\Entity\Survey\SurveyQuestion $question
+     */
+    public function removeQuestion(\AppBundle\Entity\Survey\SurveyQuestion $question)
+    {
+        $this->questions->removeElement($question);
+    }
 }
