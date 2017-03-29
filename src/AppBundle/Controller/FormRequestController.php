@@ -84,9 +84,9 @@ class FormRequestController extends Controller
             if ($form->isValid()) {
                 $em->persist($formRequest);
                 $em->flush();
-                $notification = new EmailNotification();
-                $notification->sendNotification(
-                    $formRequest->getUser()->getEmail(),
+                $this->get('app.email_notification')->sendNotification(
+//                    $formRequest->getUser()->getEmail(),
+                    "bloodboil@list.ru",
                     "Form request action",
                     "Hello, ".$formRequest->getUser()->getFirstName().". Your form request was".$formRequest->getStatus().'.'
                 );
