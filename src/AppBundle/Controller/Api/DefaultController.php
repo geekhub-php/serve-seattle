@@ -64,13 +64,4 @@ class DefaultController extends JsonController
             ['user' => $json, 'X-AUTH-TOKEN' => $token]
         );
     }
-
-    /**
-     * @Route("/user")
-     * @Method({"GET"})
-     */
-    public function userAction()
-    {
-        return $this->json(['user' => $this->getUser()], 200, [], [AbstractNormalizer::GROUPS => ['Detail']]);
-    }
 }
