@@ -50,8 +50,8 @@ class RequestNormalizer extends ObjectNormalizer
             'type' => $request->getType()->getId(),
             'status' => $request->getStatus(),
             'date' => $request->getDate(),
-            'create' => $request->getCreatedAt(),
-            'update' => $request->getUpdatedAt(),
+            'createdAt' => $request->getCreatedAt(),
+            'updatedAt' => $request->getUpdatedAt(),
         ]), $format, $context);
     }
 }

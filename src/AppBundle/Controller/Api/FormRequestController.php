@@ -7,7 +7,6 @@ use AppBundle\Entity\FormRequestType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use AppBundle\Exception\JsonHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,10 +24,9 @@ class FormRequestController extends JsonController
      */
     public function listAction(Request $request, $status)
     {
-        $em = $this->getDoctrine()->getManager();
         $requestForms = $this->get('knp_paginator')
             ->paginate(
-                $em->getRepository(FormRequest::class)->findBy([
+                $this->getDoctrine()->getManager()->getRepository(FormRequest::class)->findBy([
                     'user' => $this->getUser(),
                     'status' => $status == "pending" ? "pending" : ["approved", "rejected"],
                 ]),

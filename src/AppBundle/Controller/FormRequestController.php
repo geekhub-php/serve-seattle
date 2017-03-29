@@ -9,6 +9,7 @@ use AppBundle\Form\DTO\FormRequestFilterType;
 use AppBundle\Form\User\EditType;
 use AppBundle\Form\User\ActivationType;
 use AppBundle\Form\FormRequestType;
+use AppBundle\Notification\EmailNotification;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -83,31 +84,12 @@ class FormRequestController extends Controller
             if ($form->isValid()) {
                 $em->persist($formRequest);
                 $em->flush();
-                //TODO send email to intern
-//                $message = \Swift_Message::newInstance()
-//                    ->setSubject('Hello Email')
-//                    ->setFrom('send@example.com')
-//                    ->setTo('recipient@example.com')
-//                    ->setBody(
-//                        $this->renderView(
-//                        // app/Resources/views/Emails/registration.html.twig
-//                            'Emails/registration.html.twig',
-//                            array('name' => $name)
-//                        ),
-//                        'text/html'
-//                    )
-//                    /*
-//                     * If you also want to include a plaintext version of the message
-//                    ->addPart(
-//                        $this->renderView(
-//                            'Emails/registration.txt.twig',
-//                            array('name' => $name)
-//                        ),
-//                        'text/plain'
-//                    )
-//                    */
-//                ;
-//                $this->get('mailer')->send($message);
+                $notification = new EmailNotification();
+                $notification->sendNotification(
+                    $formRequest->getUser()->getEmail(),
+                    "Form request action",
+                    "Hello, ".$formRequest->getUser()->getFirstName().". Your form request was".$formRequest->getStatus().'.'
+                );
             }
         }
 
