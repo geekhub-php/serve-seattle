@@ -5,12 +5,21 @@ parameters:
 
 services:
 
+#Exception
+
+      app.exception_listener:
+          class: AppBundle\Exception\ExceptionListener
+          tags:
+              - { name: kernel.event_listener, event: kernel.exception }
+
       app.json_exception_listener:
           class: AppBundle\Listener\JsonExceptionListener
           arguments:
               - "@logger"
           tags:
               - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
+
+#Google_Calendar
 
       app.google_calendar_factory:
           class: AppBundle\Services\GoogleClientFactory
@@ -20,6 +29,8 @@ services:
           class: AppBundle\Services\GoogleCalendarManager
           autowire: true
 
+#Security
+
       app.api_token_authenticator:
           class: AppBundle\Security\ApiTokenAuthenticator
 
@@ -28,6 +39,9 @@ services:
           arguments: ['@security.password_encoder']
           tags:
               - { name: doctrine.event_subscriber }
+
+#Normalizer
+
       app.answer.normalizer:
           class: AppBundle\Serializer\SurveyAnswerNormalizer
           parent: serializer.normalizer.object
