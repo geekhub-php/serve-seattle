@@ -96,5 +96,3 @@ services:
               - "@mailer"
               - "@twig"
               - "%mailer_from%"
-
->>>>>>> 58abcbdba0354e84c3fe3913e553fa839ff4e163

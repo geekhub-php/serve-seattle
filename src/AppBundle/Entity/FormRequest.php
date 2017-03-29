@@ -64,7 +64,7 @@ class FormRequest
      */
     private $date;
 
-    function __construct()
+    public function __construct()
     {
         $this->setStatus("pending");
     }

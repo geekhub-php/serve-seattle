@@ -7,7 +7,7 @@ AppBundle\Entity\Admin:
 AppBundle\Entity\User:
     intern1:
         firstName: <firstName()>
-        email: intern1@seattle.com
+        email: intern@serve-seattle.com
         lastName: <lastName()>
         plainPassword: intern1
     intern2:
@@ -102,11 +102,11 @@ AppBundle\Entity\Survey\SurveyAnswer:
 
 AppBundle\Entity\FormRequestType:
     request_type1:
-        name: Personal Day Request
+        name: Personal Day
     request_type2:
-        name: Overnight Guest Request
+        name: Overnight Guest
     request_type3:
-        name: Sick Day Request
+        name: Sick Day
 
 AppBundle\Entity\FormRequest:
     request{1..10}:
