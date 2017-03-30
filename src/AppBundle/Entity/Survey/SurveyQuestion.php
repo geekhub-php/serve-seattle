@@ -206,28 +206,4 @@ class SurveyQuestion
     {
         return $this->answers;
     }
-
-    /**
-     * Add answer
-     *
-     * @param \AppBundle\Entity\Survey\SurveyAnswer $answer
-     *
-     * @return SurveyQuestion
-     */
-    public function addAnswer(\AppBundle\Entity\Survey\SurveyAnswer $answer)
-    {
-        $this->answers[] = $answer;
-
-        return $this;
-    }
-
-    /**
-     * Remove answer
-     *
-     * @param \AppBundle\Entity\Survey\SurveyAnswer $answer
-     */
-    public function removeAnswer(\AppBundle\Entity\Survey\SurveyAnswer $answer)
-    {
-        $this->answers->removeElement($answer);
-    }
 }

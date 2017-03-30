@@ -449,7 +449,7 @@ class User implements UserInterface, \Serializable
      *
      * @return boolean
      */
-    public function getEnabled()
+    public function getIsEnabled()
     {
         return $this->enabled;
     }
@@ -500,29 +500,5 @@ class User implements UserInterface, \Serializable
     public function removeFormRequest(FormRequest $formRequest)
     {
         $this->formRequests->removeElement($formRequest);
-    }
-
-    /**
-     * Add survey
-     *
-     * @param Survey $survey
-     *
-     * @return User
-     */
-    public function addSurvey(Survey $survey)
-    {
-        $this->surveys[] = $survey;
-
-        return $this;
-    }
-
-    /**
-     * Remove survey
-     *
-     * @param Survey $survey
-     */
-    public function removeSurvey(Survey $survey)
-    {
-        $this->surveys->removeElement($survey);
     }
 }
