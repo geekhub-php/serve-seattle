@@ -127,28 +127,4 @@ class FormRequestType
     {
         return $this->requests;
     }
-
-    /**
-     * Add request
-     *
-     * @param \AppBundle\Entity\FormRequest $request
-     *
-     * @return FormRequestType
-     */
-    public function addRequest(\AppBundle\Entity\FormRequest $request)
-    {
-        $this->requests[] = $request;
-
-        return $this;
-    }
-
-    /**
-     * Remove request
-     *
-     * @param \AppBundle\Entity\FormRequest $request
-     */
-    public function removeRequest(\AppBundle\Entity\FormRequest $request)
-    {
-        $this->requests->removeElement($request);
-    }
 }
