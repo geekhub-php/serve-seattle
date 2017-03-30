@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\DTO\DtoUser;
 use AppBundle\Entity\DTO\DtoEvent;
+use AppBundle\Entity\Event;
 use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\LoginType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
@@ -76,7 +77,8 @@ class DefaultController extends JsonController
     public function dashboardAction()
     {
         $user = $this->getUser();
-        $events = $user->getEvents();
+        $events = $this->getDoctrine()->getRepository(Event::class)
+            ->selectNotExpiredByUser($this->getUser());
         $requests = $user->getFormRequests();
         $surveys = $user->getSurveys();
         $array = new ArrayCollection(
