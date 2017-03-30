@@ -5,6 +5,8 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Entity\DTO\DtoUser;
 use AppBundle\Entity\DTO\DtoEvent;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\FormRequest;
+use AppBundle\Entity\Survey\Survey;
 use AppBundle\Exception\JsonHttpException;
 use AppBundle\Form\LoginType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
@@ -81,13 +83,27 @@ class DefaultController extends JsonController
             ->selectNotExpiredByUser($this->getUser());
         $requests = $user->getFormRequests();
         $surveys = $user->getSurveys();
+        $surveys = $surveys->matching(Criteria::create()->where(Criteria::expr()->eq('status', 'current')));
         $array = new ArrayCollection(
             array_merge($events->toArray(), $requests->toArray(), $surveys->toArray())
         );
         $news = $array->matching(Criteria::create()->orderBy(array('updatedAt' => Criteria::DESC))->setFirstResult(0)
             ->setMaxResults(3));
-        $events = $events->matching(Criteria::create()->setFirstResult(0)->setMaxResults(2));
+        $sort_news = array_fill_keys(['events', 'surveys', 'requests'], false);
         $calendar = $this->get('app.google_calendar');
+        foreach ($news as $new) {
+            if ($new instanceof Event) {
+                $sort_news['events'][] = new DtoEvent($calendar
+                    ->getEventById($new->getGoogleId()));
+            }
+            if ($new instanceof Survey) {
+                $sort_news['surveys'][] = $new;
+            }
+            if ($new instanceof FormRequest) {
+                $sort_news['requests'][] = $new;
+            }
+        }
+        $events = $events->matching(Criteria::create()->setFirstResult(0)->setMaxResults(2));
         $googleEvents = [];
         foreach ($events as $event) {
             $googleEvents[] = $calendar
@@ -99,10 +115,9 @@ class DefaultController extends JsonController
                 $events[] = new DtoEvent($event);
             }
         }
-        $surveys = $surveys->matching(Criteria::create()->where(Criteria::expr()->eq('status', 'current')));
 
         return $this->json(
-            ['news' => $news, 'events' => $events, 'surveys' => $surveys]
+            ['news' => $sort_news, 'events' => $events, 'surveys' => $surveys]
         );
     }
 
@@ -115,17 +130,33 @@ class DefaultController extends JsonController
     public function newsAction()
     {
         $user = $this->getUser();
-        $events = $user->getEvents();
+        $events = $this->getDoctrine()->getRepository(Event::class)
+            ->selectNotExpiredByUser($this->getUser());
         $requests = $user->getFormRequests();
         $surveys = $user->getSurveys();
+        $surveys = $surveys->matching(Criteria::create()->where(Criteria::expr()->eq('status', 'current')));
         $array = new ArrayCollection(
             array_merge($events->toArray(), $requests->toArray(), $surveys->toArray())
         );
         $news = $array->matching(Criteria::create()->orderBy(array('updatedAt' => Criteria::DESC))->setFirstResult(0)
-            ->setMaxResults(100));
+            ->setMaxResults(3));
+        $sort_news = array_fill_keys(['events', 'surveys', 'requests'], false);
+        $calendar = $this->get('app.google_calendar');
+        foreach ($news as $new) {
+            if ($new instanceof Event) {
+                $sort_news['events'][] = new DtoEvent($calendar
+                    ->getEventById($new->getGoogleId()));
+            }
+            if ($new instanceof Survey) {
+                $sort_news['surveys'][] = $new;
+            }
+            if ($new instanceof FormRequest) {
+                $sort_news['requests'][] = $new;
+            }
+        }
 
         return $this->json(
-            ['news' => $news]
+            ['news' => $sort_news]
         );
     }
 }
