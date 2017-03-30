@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Survey\Survey;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
@@ -127,7 +128,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var ArrayCollection[Event]
-     * @ORM\ManyToMany(targetEntity="Event", inversedBy="users", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="user", cascade={"persist", "remove"})
      * @Groups({"Detail"})
      */
     private $events;
@@ -356,7 +357,7 @@ class User implements UserInterface, \Serializable
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            $event->addUser($this);
+            $event->setUser($this);
         }
 
         return $this;

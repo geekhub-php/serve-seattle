@@ -69,7 +69,8 @@ class CalendarController extends JsonController
         }
         $event = new Event();
         $event->setGoogleId($result->id);
-        $event->addUser($user);
+        $event->setUser($user);
+        $event->setExpiredAt(new \DateTime($result->getEnd()->dateTime));
         $user->setEvent($event);
 
         $em->persist($user);
@@ -91,7 +92,7 @@ class CalendarController extends JsonController
         /** @var Event $event */
         $event = $this->getDoctrine()->getRepository('AppBundle:Event')
             ->findByGoogleId($id);
-        $user = $event->getUsers()->first();
+        $user = $event->getUser();
         if (!$user) {
             throw new JsonHttpException(404, 'User not found.');
         }
@@ -112,7 +113,8 @@ class CalendarController extends JsonController
     public function userEventsAction($id)
     {
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
-        $events = $user->getEvents();
+        $events = $this->getDoctrine()->getRepository(Event::class)
+        ->selectNotExpiredByUser($user);
         $calendar = $this->get('app.google_calendar');
         $googleEvents = [];
         foreach ($events as $event) {

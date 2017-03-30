@@ -47,4 +47,14 @@ class UserController extends Controller
 
         return $this->json(['user' => $user], 201, [], [AbstractNormalizer::GROUPS => ['Short']]);
     }
+
+
+    /**
+     * @Route("/user")
+     * @Method({"GET"})
+     */
+    public function userAction()
+    {
+        return $this->json(['user' => $this->getUser()], 200, [], [AbstractNormalizer::GROUPS => ['Detail']]);
+    }
 }
