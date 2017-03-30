@@ -27,7 +27,7 @@ class SurveyAnswerNormalizer extends ObjectNormalizer
      *
      * @param ClassMetadataFactoryInterface|null  $classMDF
      * @param NameConverterInterface|null         $nameCv
-     * @param PropertyAccessorInterface|null      $propertyAs
+     * @param PropertyAccessorInterface|null      $propAs
      * @param PropertyTypeExtractorInterface|null $propTE
      * @param Registry                            $doctrine
      */
