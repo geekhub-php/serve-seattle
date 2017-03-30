@@ -89,18 +89,18 @@ class DefaultController extends JsonController
         );
         $news = $array->matching(Criteria::create()->orderBy(array('updatedAt' => Criteria::DESC))->setFirstResult(0)
             ->setMaxResults(3));
-        $sort_news = array_fill_keys(['events', 'surveys', 'requests'], false);
+        $sortNews = array_fill_keys(['events', 'surveys', 'requests'], false);
         $calendar = $this->get('app.google_calendar');
         foreach ($news as $new) {
             if ($new instanceof Event) {
-                $sort_news['events'][] = new DtoEvent($calendar
+                $sortNews['events'][] = new DtoEvent($calendar
                     ->getEventById($new->getGoogleId()));
             }
             if ($new instanceof Survey) {
-                $sort_news['surveys'][] = $new;
+                $sortNews['surveys'][] = $new;
             }
             if ($new instanceof FormRequest) {
-                $sort_news['requests'][] = $new;
+                $sortNews['requests'][] = $new;
             }
         }
         $events = $events->matching(Criteria::create()->setFirstResult(0)->setMaxResults(2));
@@ -117,7 +117,7 @@ class DefaultController extends JsonController
         }
 
         return $this->json(
-            ['news' => $sort_news, 'events' => $events, 'surveys' => $surveys]
+            ['news' => $sortNews, 'events' => $events, 'surveys' => $surveys]
         );
     }
 
@@ -140,23 +140,23 @@ class DefaultController extends JsonController
         );
         $news = $array->matching(Criteria::create()->orderBy(array('updatedAt' => Criteria::DESC))->setFirstResult(0)
             ->setMaxResults(3));
-        $sort_news = array_fill_keys(['events', 'surveys', 'requests'], false);
+        $sortNews = array_fill_keys(['events', 'surveys', 'requests'], false);
         $calendar = $this->get('app.google_calendar');
         foreach ($news as $new) {
             if ($new instanceof Event) {
-                $sort_news['events'][] = new DtoEvent($calendar
+                $sortNews['events'][] = new DtoEvent($calendar
                     ->getEventById($new->getGoogleId()));
             }
             if ($new instanceof Survey) {
-                $sort_news['surveys'][] = $new;
+                $sortNews['surveys'][] = $new;
             }
             if ($new instanceof FormRequest) {
-                $sort_news['requests'][] = $new;
+                $sortNews['requests'][] = $new;
             }
         }
 
         return $this->json(
-            ['news' => $sort_news]
+            ['news' => $sortNews]
         );
     }
 }
