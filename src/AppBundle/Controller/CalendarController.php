@@ -174,6 +174,7 @@ class CalendarController extends JsonController
             ->editEvent($dtoEvent, $id, $request->query->all());
 
         $event = new DtoEvent($result);
+
         return $this->json(['event' => $event]);
     }
 

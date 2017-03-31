@@ -18,7 +18,7 @@ class SurveyTypeSectionNormalizer extends ObjectNormalizer
      *
      * @param ClassMetadataFactoryInterface|null  $classMDF
      * @param NameConverterInterface|null         $nameCv
-     * @param PropertyAccessorInterface|null      $propertyAs
+     * @param PropertyAccessorInterface|null      $propAs
      * @param PropertyTypeExtractorInterface|null $propTE
      */
     public function __construct($classMDF, $nameCv, $propAs, $propTE)
