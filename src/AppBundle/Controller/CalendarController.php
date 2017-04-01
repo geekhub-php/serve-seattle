@@ -175,9 +175,9 @@ class CalendarController extends JsonController
         $event = new DtoEvent($result);
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->find($dtoEvent->getUser());
-        /** @var Event $e */
-        $e = $this->getDoctrine()->getRepository(Event::class)->findByGoogleId($id);
-        $e->setUser($user);
+        /** @var Event $ev */
+        $ev = $this->getDoctrine()->getRepository(Event::class)->findByGoogleId($id);
+        $ev->setUser($user);
         $em->flush();
         return $this->json(['event' => $event]);
     }
