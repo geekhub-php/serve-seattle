@@ -111,6 +111,20 @@ class UserControllerTest extends WebTestCase
             User::class,
             $em->getRepository(User::class)->findOneBy(['email' => 'test123@gmail.com'])
         );
+    }
+
+    public function testUpdatePassword()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/password_update/2');
+        $this->assertEquals('200', $client->getResponse()->getStatusCode());
+
+        $form = $crawler->selectButton('Submit')->form();
+        $form['reset_password[plainPassword][first]'] = 'new';
+        $form['reset_password[plainPassword][second]'] = 'new';
+        $client->submit($form);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
         exec('./bin/console d:d:d --force --env=test');
     }
 }
