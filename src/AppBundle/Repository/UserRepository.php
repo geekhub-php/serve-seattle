@@ -23,6 +23,24 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->getOneOrNullResult();
     }
 
+    public function loadUserByEmail($email)
+    {
+        return $this->createQueryBuilder('user')
+            ->andWhere('user.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function loadUserByToken($token)
+    {
+        return $this->createQueryBuilder('user')
+            ->andWhere('user.apiToken = :token')
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * @param Filter $filter
      *
