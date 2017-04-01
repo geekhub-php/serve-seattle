@@ -22,7 +22,7 @@ class EmailNotification
         $this->from = $from;
     }
 
-    public function sendNotification($email, $title = 'Hello!', $content = ' ')
+    public function sendNotification($email, $title = 'Hello!', $content = ' ', $user = null)
     {
         $message = new \Swift_Message();
         $message
@@ -30,7 +30,7 @@ class EmailNotification
             ->setFrom($this->from)
             ->setTo($email)
             ->setBody($this->twig->render('AppBundle:Email:email.html.twig', [
-                'title' => $title, 'content' => $content, ]), 'text/html');
+                'title' => $title, 'content' => $content, 'user' => $user, ]), 'text/html');
         $this->mailer->send($message);
     }
 }

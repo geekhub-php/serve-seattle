@@ -43,7 +43,7 @@ security:
     access_control:
           - { path: ^/api/login$, role:  IS_AUTHENTICATED_ANONYMOUSLY }
           - { path: ^/api/password_reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
-          - { path: ^/api/password_update, role: IS_AUTHENTICATED_ANONYMOUSLY }
+          - { path: ^/password_update, role: IS_AUTHENTICATED_ANONYMOUSLY }
           - { path: ^/api, roles: ROLE_USER }
           - { path: ^/login$, allow_if: "is_anonymous() and !is_authenticated()" }
           - { path: ^/, role:  ROLE_ADMIN }
