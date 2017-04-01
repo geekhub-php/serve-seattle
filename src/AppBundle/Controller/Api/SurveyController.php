@@ -30,7 +30,7 @@ class SurveyController extends Controller
 
     /**
      * @param int $id
-     * @Route("/surveys/{id}", name="show_survey")
+     * @Route("/surveys/{id}",  requirements={"id": "\d+"}, name="show_survey")
      * @Method("GET")
      *
      * @return JsonResponse
@@ -49,7 +49,7 @@ class SurveyController extends Controller
 
     /**
      * @param Request $request, int $id
-     * @Route("/surveys/{id}", name="edit_survey")
+     * @Route("/surveys/{id}", requirements={"id": "\d+"}, name="edit_survey")
      * @Method("PUT")
      *
      * @return JsonResponse
