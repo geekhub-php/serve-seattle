@@ -7,8 +7,9 @@ use AppBundle\Entity\User;
 use AppBundle\Exception\JsonHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -55,5 +56,37 @@ class UserController extends Controller
     public function userAction()
     {
         return $this->json(['user' => $this->getUser()], 200, [], [AbstractNormalizer::GROUPS => ['Detail']]);
+    }
+
+    /**
+     * @Route("/password_reset", name="password_reset")
+     * @Method({"POST"})
+     *
+     * @return JsonResponse
+     */
+    public function resetPasswordAction(Request $request)
+    {
+        $data = $request->getContent();
+        $serializer = $this->get('serializer');
+        $data = $serializer->decode($data, 'json');
+        if (!isset($data['email']) || $data['email'] == null) {
+            throw new JsonHttpException(400, 'Bad Request');
+        }
+        $user = $this->getDoctrine()->getRepository(User::class)->loadUserByEmail($data['email']);
+        if (!$user) {
+            throw new JsonHttpException(404, 'There is no user with this email');
+        }
+        $token = $user->getApiToken();
+        if ($token == null) {
+            $token = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+            $user->setApiToken($token);
+        }
+        $tomorrow = (new \DateTime())->modify('+24 hours');
+        $user->setLinkExpiredAt($tomorrow);
+        $this->getDoctrine()->getManager()->flush();
+        $title = 'Hello '.$user->getFirstName();
+        $this->get('app.email_notification')->sendNotification($user->getEmail(), $title, 'reset', $user);
+
+        return $this->json(['message' => "You've got an update link on you email. Check your email"], 201);
     }
 }

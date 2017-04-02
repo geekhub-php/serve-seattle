@@ -127,6 +127,13 @@ class User implements UserInterface, \Serializable
     private $apiToken;
 
     /**
+     * @var \DateTime
+     * @Assert\Date()
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $linkExpiredAt;
+
+    /**
      * @var ArrayCollection[Event]
      * @ORM\OneToMany(targetEntity="Event", mappedBy="user", cascade={"persist", "remove"})
      * @Groups({"Detail"})
@@ -346,6 +353,28 @@ class User implements UserInterface, \Serializable
     public function getApiToken()
     {
         return $this->apiToken;
+    }
+
+    /**
+     * Set link expired date.
+     *
+     * @param \DateTime $linkExpiredAt
+     *
+     * @return User
+     */
+    public function setLinkExpiredAt($linkExpiredAt)
+    {
+        $this->linkExpiredAt = $linkExpiredAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLinkExpiredAt()
+    {
+        return $this->linkExpiredAt;
     }
 
     /**
