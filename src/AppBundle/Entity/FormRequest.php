@@ -17,6 +17,7 @@ class FormRequest
     use ORMBehaviors\Timestampable\Timestampable;
 
     const STATUS = ['pending', 'approved', 'rejected'];
+    const TYPE = ['personal day', 'overnight guest', 'sick day'];
 
     /**
      * @var int
@@ -28,10 +29,10 @@ class FormRequest
     private $id;
 
     /**
-     * @var FormRequestType
-     * @Assert\Type("object")
-     * @Assert\Valid
-     * @ORM\ManyToOne(targetEntity="FormRequestType", inversedBy="requests")
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Choice({FormRequest::TYPE})
+     * @ORM\Column(type="string", length=25)
      * @Groups({"Detail"})
      */
     private $type;
@@ -58,7 +59,7 @@ class FormRequest
 
     /**
      * @var \DateTime
-     * @Assert\Date()
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      * @Groups({"Detail"})
      */
@@ -82,21 +83,22 @@ class FormRequest
     /**
      * Set type.
      *
-     * @param FormRequestType $type
+     * @param $type
      *
      * @return FormRequest
      */
-    public function setType(FormRequestType $type)
+    public function setType($type)
     {
-        $this->type = $type;
-
+        if (in_array($type, self::TYPE)) {
+            $this->type = $type;
+        }
         return $this;
     }
 
     /**
      * Get type.
      *
-     * @return FormRequestType
+     * @return string
      */
     public function getType()
     {
@@ -161,7 +163,7 @@ class FormRequest
      */
     public function setDate($date)
     {
-        $this->date = $date;
+        $this->date = new \DateTime($date);
 
         return $this;
     }

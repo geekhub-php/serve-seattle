@@ -85,8 +85,7 @@ class FormRequestController extends Controller
                 $em->persist($formRequest);
                 $em->flush();
                 $this->get('app.email_notification')->sendNotification(
-//                    $formRequest->getUser()->getEmail(),
-                    "bloodboil@list.ru",
+                    $formRequest->getUser()->getEmail(),
                     "Form request action",
                     "Hello, ".$formRequest->getUser()->getFirstName().". Your form request was".$formRequest->getStatus().'.'
                 );

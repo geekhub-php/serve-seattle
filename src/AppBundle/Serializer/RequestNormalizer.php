@@ -3,12 +3,14 @@
 namespace AppBundle\Serializer;
 
 use AppBundle\Entity\FormRequest;
+use Faker\Provider\DateTime;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class RequestNormalizer extends ObjectNormalizer
@@ -47,11 +49,36 @@ class RequestNormalizer extends ObjectNormalizer
 
         return $this->serializer->normalize(new \ArrayObject([
             'id' => $request->getId(),
-            'type' => $request->getType()->getId(),
+            'type' => $request->getType(),
             'status' => $request->getStatus(),
             'date' => $request->getDate(),
             'createdAt' => $request->getCreatedAt(),
             'updatedAt' => $request->getUpdatedAt(),
         ]), $format, $context);
+    }
+
+    public function denormalize($data, $class, $format = null, array $context = array())
+    {
+        if (!$this->serializer instanceof DenormalizerInterface) {
+            throw new LogicException('Cannot normalize attributes because injected serializer is not a normalizer');
+        }
+        /** @var FormRequest $request */
+        $request = $context[ObjectNormalizer::OBJECT_TO_POPULATE];
+
+        $request->setDate($data['date']);
+
+        return $request;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsDenormalization($data, $type, $format = null)
+    {
+        if ($type != FormRequest::class) {
+            return false;
+        }
+
+        return true;
     }
 }

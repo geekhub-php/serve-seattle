@@ -40,7 +40,7 @@ class FormRequestController extends JsonController
      * @Route("/{type}", requirements={"type"= "sick-day|personal-day|overnight-guest"})
      * @Method("POST")
      *
-     * @param FormRequestType $type
+     * @param $type
      * @param  Request $request
      * @return JsonResponse
      */
@@ -49,34 +49,20 @@ class FormRequestController extends JsonController
         if (!$request->getContent()) {
             throw new JsonHttpException(404, 'Request body is empty');
         }
-
-        $data = json_decode($request->getContent());
-
-        if (!preg_match('/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/', $data->date)) {
-            throw new JsonHttpException(404, 'Invalid date format');
-        }
-
         $em = $this->getDoctrine()->getManager();
 
-        switch ($type){
-            case 'sick-day':
-                $formRequestType = $em->getRepository(FormRequestType::class)
-                    ->findOneBy(['name' => 'Sick Day']);
-                break;
-            case 'personal-day':
-                $formRequestType = $em->getRepository(FormRequestType::class)
-                    ->findOneBy(['name' => 'Personal Day']);
-                break;
-            case 'overnight-guest':
-                $formRequestType = $em->getRepository(FormRequestType::class)
-                    ->findOneBy(['name' => 'Overnight Guest']);
-                break;
-        }
-        $date = new \DateTime($data->date);
         $formRequest = new FormRequest();
-        $formRequest->setDate($date)
-            ->setType($formRequestType)
+        $formRequest
+            ->setType(str_replace('-', " ",$type))
             ->setUser($this->getUser());
+
+        $formRequest = $this->get('serializer')->deserialize(
+            $request->getContent(),
+            FormRequest::class,
+            'json',
+            ['object_to_populate' => $formRequest]
+        );
+
         $em->persist($formRequest);
         $em->flush();
 

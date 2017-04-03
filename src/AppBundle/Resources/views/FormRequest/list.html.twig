@@ -46,7 +46,7 @@
                             {{ formRequest.user.firstName }}
                         </td>
                         <td>
-                            {{ formRequest.type.name }}
+                            {{ formRequest.type | capitalize }}
                         </td>
                         <td>
                             {% if formRequest.status == 'pending' %}
