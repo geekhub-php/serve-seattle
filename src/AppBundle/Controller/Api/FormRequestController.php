@@ -53,7 +53,7 @@ class FormRequestController extends JsonController
 
         $formRequest = new FormRequest();
         $formRequest
-            ->setType(str_replace('-', " ",$type))
+            ->setType(str_replace('-', " ", $type))
             ->setUser($this->getUser());
 
         $formRequest = $this->get('serializer')->deserialize(
