@@ -57,6 +57,15 @@ class RequestNormalizer extends ObjectNormalizer
         ]), $format, $context);
     }
 
+
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param mixed $data
+     * @param string $class
+     * @param null $format
+     * @param array $context
+     * @return FormRequest
+     */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (!$this->serializer instanceof DenormalizerInterface) {
