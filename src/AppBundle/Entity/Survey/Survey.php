@@ -150,7 +150,7 @@ class Survey
      *
      * @return bool
      */
-    public function getReviewed()
+    public function isReviewed()
     {
         return $this->reviewed;
     }

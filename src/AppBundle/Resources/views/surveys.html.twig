@@ -20,7 +20,7 @@
         <h3>{{ filter_type.getName|capitalize }} surveys</h3>
         {% for survey in surveys %}
             {%  if survey.getType.getName == 'internship' %}
-                {% if survey.getReviewed %}
+                {% if survey.isReviewed %}
                 <ul style="font-weight: normal">
                 {% else %}
                 <ul style="font-weight: bold">
@@ -36,7 +36,7 @@
     {% endif %}
     {% for survey in surveys %}
         {% if survey.getType.getName == 'internship' %}
-            {% if survey.getReviewed %}
+            {% if survey.isReviewed %}
                 <ul style="font-weight: normal">
             {% else %}
                 <ul style="font-weight: bold">
@@ -52,7 +52,7 @@
     {% endif %}
         {% for survey in surveys %}
             {% if survey.getType.getName == 'speaker' %}
-                {% if survey.getReviewed %}
+                {% if survey.isReviewed %}
                     <ul style="font-weight: normal">
                 {% else %}
                     <ul style="font-weight: bold">
@@ -68,7 +68,7 @@
     {% endif %}
     {% for survey in surveys %}
         {% if survey.getType.getName == 'exit' %}
-            {% if survey.getReviewed %}
+            {% if survey.isReviewed %}
                 <ul style="font-weight: normal">
             {% else %}
                 <ul style="font-weight: bold">
@@ -84,7 +84,7 @@
     {% endif %}
     {% for survey in surveys %}
         {% if survey.getType.getName == 'supervisor' %}
-            {% if survey.getReviewed %}
+            {% if survey.isReviewed %}
                 <ul style="font-weight: normal">
             {% else %}
                 <ul style="font-weight: bold">

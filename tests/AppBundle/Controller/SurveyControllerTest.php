@@ -23,9 +23,8 @@ class SurveyControllerTest extends WebTestCase
         $form['survey_filter[type]']->select('1');
 
         $client->followRedirects();
-        $crawler = $client->submit($form);
+        $client->submit($form);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertCount(1, $crawler->filter('ul.survey_item'));
     }
 
     public function testSurvey()
