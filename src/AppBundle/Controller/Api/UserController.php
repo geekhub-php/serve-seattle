@@ -67,6 +67,9 @@ class UserController extends Controller
     public function resetPasswordAction(Request $request)
     {
         $data = $request->getContent();
+        if (!$data) {
+            throw new JsonHttpException(400, 'Bad Request.');
+        }
         $serializer = $this->get('serializer');
         $data = $serializer->decode($data, 'json');
         if (!isset($data['email']) || $data['email'] == null) {

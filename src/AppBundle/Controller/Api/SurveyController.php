@@ -59,6 +59,9 @@ class SurveyController extends Controller
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $data = $request->getContent();
+        if (!$data) {
+            throw new JsonHttpException(400, 'Bad Request.');
+        }
         $survey = $em->getRepository(Survey::class)->find($id);
 
         if ($user !== $survey->getUser()) {
