@@ -74,6 +74,11 @@ class SurveyController extends Controller
     public function surveyAction(Survey $survey)
     {
         $em = $this->getDoctrine()->getManager();
+        if ($survey->getReviewed() == false) {
+            $survey->setReviewed(true);
+            $em->persist($survey);
+            $em->flush();
+        }
         $answers = $em->getRepository(SurveyAnswer::class)->findAnswersBySurvey($survey);
         if ($answers) {
             foreach ($answers as $answer) {

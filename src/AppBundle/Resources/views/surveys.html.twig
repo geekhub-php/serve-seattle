@@ -20,7 +20,11 @@
         <h3>{{ filter_type.getName|capitalize }} surveys</h3>
         {% for survey in surveys %}
             {%  if survey.getType.getName == 'internship' %}
-                <ul class="survey_item">
+                {% if survey.getReviewed %}
+                <ul style="font-weight: normal">
+                {% else %}
+                <ul style="font-weight: bold">
+                {% endif %}
                     <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
                     <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
                 </ul>
@@ -32,7 +36,11 @@
     {% endif %}
     {% for survey in surveys %}
         {% if survey.getType.getName == 'internship' %}
-             <ul>
+            {% if survey.getReviewed %}
+                <ul style="font-weight: normal">
+            {% else %}
+                <ul style="font-weight: bold">
+            {% endif %}
                  <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
                  <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
                  <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
@@ -44,7 +52,11 @@
     {% endif %}
         {% for survey in surveys %}
             {% if survey.getType.getName == 'speaker' %}
-                <ul>
+                {% if survey.getReviewed %}
+                    <ul style="font-weight: normal">
+                {% else %}
+                    <ul style="font-weight: bold">
+                {% endif %}
                     <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
                     <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
                     <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
@@ -56,7 +68,11 @@
     {% endif %}
     {% for survey in surveys %}
         {% if survey.getType.getName == 'exit' %}
-            <ul>
+            {% if survey.getReviewed %}
+                <ul style="font-weight: normal">
+            {% else %}
+                <ul style="font-weight: bold">
+            {% endif %}
                 <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
                 <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
                 <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
@@ -68,7 +84,11 @@
     {% endif %}
     {% for survey in surveys %}
         {% if survey.getType.getName == 'supervisor' %}
-            <ul>
+            {% if survey.getReviewed %}
+                <ul style="font-weight: normal">
+            {% else %}
+                <ul style="font-weight: bold">
+            {% endif %}
                 <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
                 <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
                 <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
