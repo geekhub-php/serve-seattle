@@ -180,6 +180,7 @@ class CalendarController extends JsonController
         $ev = $this->getDoctrine()->getRepository(Event::class)->findByGoogleId($id);
         $ev->setUser($user);
         $em->flush();
+
         return $this->json(['event' => $event]);
     }
 

@@ -67,7 +67,7 @@ class FormRequest
 
     public function __construct()
     {
-        $this->setStatus("pending");
+        $this->setStatus('pending');
     }
 
     /**
@@ -92,6 +92,7 @@ class FormRequest
         if (in_array($type, self::TYPE)) {
             $this->type = $type;
         }
+
         return $this;
     }
 
@@ -117,6 +118,7 @@ class FormRequest
         if (in_array($status, self::STATUS)) {
             $this->status = $status;
         }
+
         return $this;
     }
 

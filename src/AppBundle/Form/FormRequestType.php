@@ -9,14 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\FormRequest;
 
 /**
- * Class UserType
- * @package AppBundle\Form
+ * Class UserType.
  */
 class FormRequestType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      * @SuppressWarnings("UnusedFormalParameter")
      * After add new field in UserType need create
      * offsetUnset() method from this field in Security controller
@@ -26,8 +25,8 @@ class FormRequestType extends AbstractType
         $builder
             ->add('status', ChoiceType::class, [
                 'choices' => [
-                    'Approve'    => 'approved',
-                    'Reject'    => 'rejected',
+                    'Approve' => 'approved',
+                    'Reject' => 'rejected',
                 ],
                 'label' => false,
                 'multiple' => false,

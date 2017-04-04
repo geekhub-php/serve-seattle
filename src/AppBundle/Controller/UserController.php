@@ -25,15 +25,16 @@ class UserController extends Controller
      * @Template("@App/User/users.html.twig")
      *
      * @param Request $request
+     *
      * @return array
      */
     public function listAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $filter = new Filter;
+        $filter = new Filter();
         $filterForm = $this->createForm(UserFilterType::class, $filter)
-            ->add("Search", SubmitType::class, [
-                "attr" => ["class" => "fa fa-search"]
+            ->add('Search', SubmitType::class, [
+                'attr' => ['class' => 'fa fa-search'],
             ]);
         $filterForm->handleRequest($request);
         $users = $this->get('knp_paginator')->paginate(
@@ -64,7 +65,7 @@ class UserController extends Controller
      * @Method("PUT")
      *
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      *
      * @return RedirectResponse
      */
@@ -122,7 +123,7 @@ class UserController extends Controller
      * @Template("@App/User/add.html.twig")
      *
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      *
      * @return array|RedirectResponse
      */

@@ -79,8 +79,7 @@ class DefaultController extends JsonController
     public function dashboardAction()
     {
         $user = $this->getUser();
-        $events = $this->getDoctrine()->getRepository(Event::class)
-            ->selectNotExpiredByUser($this->getUser());
+        $events = $user->getEvents();
         $requests = $user->getFormRequests();
         $surveys = $user->getSurveys();
         $surveys = $surveys->matching(Criteria::create()->where(Criteria::expr()->eq('status', 'current')));
@@ -89,7 +88,7 @@ class DefaultController extends JsonController
         );
         $news = $array->matching(Criteria::create()->orderBy(array('updatedAt' => Criteria::DESC))->setFirstResult(0)
             ->setMaxResults(3));
-        $sortNews = array_fill_keys(['events', 'surveys', 'requests'], false);
+        $sortNews = array_fill_keys(['events', 'surveys', 'requests'], []);
         $calendar = $this->get('app.google_calendar');
         foreach ($news as $new) {
             if ($new instanceof Event) {
@@ -130,8 +129,7 @@ class DefaultController extends JsonController
     public function newsAction()
     {
         $user = $this->getUser();
-        $events = $this->getDoctrine()->getRepository(Event::class)
-            ->selectNotExpiredByUser($this->getUser());
+        $events = $user->getEvents();
         $requests = $user->getFormRequests();
         $surveys = $user->getSurveys();
         $surveys = $surveys->matching(Criteria::create()->where(Criteria::expr()->eq('status', 'current')));
@@ -140,7 +138,7 @@ class DefaultController extends JsonController
         );
         $news = $array->matching(Criteria::create()->orderBy(array('updatedAt' => Criteria::DESC))->setFirstResult(0)
             ->setMaxResults(3));
-        $sortNews = array_fill_keys(['events', 'surveys', 'requests'], false);
+        $sortNews = array_fill_keys(['events', 'surveys', 'requests'], []);
         $calendar = $this->get('app.google_calendar');
         foreach ($news as $new) {
             if ($new instanceof Event) {
