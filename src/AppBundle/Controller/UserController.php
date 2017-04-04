@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\DTO\Filter;
-use AppBundle\Form\FilterType;
+use AppBundle\Form\DTO\UserFilterType;
 use AppBundle\Form\User\EditType;
 use AppBundle\Form\User\ActivationType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,16 +25,15 @@ class UserController extends Controller
      * @Template("@App/User/users.html.twig")
      *
      * @param Request $request
-     *
      * @return array
      */
     public function listAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $filter = new Filter();
-        $filterForm = $this->createForm(FilterType::class, $filter)
-            ->add('Search', SubmitType::class, [
-                'attr' => ['class' => 'fa fa-search'],
+        $filter = new Filter;
+        $filterForm = $this->createForm(UserFilterType::class, $filter)
+            ->add("Search", SubmitType::class, [
+                "attr" => ["class" => "fa fa-search"]
             ]);
         $filterForm->handleRequest($request);
         $users = $this->get('knp_paginator')->paginate(
@@ -65,7 +64,7 @@ class UserController extends Controller
      * @Method("PUT")
      *
      * @param Request $request
-     * @param User    $user
+     * @param User $user
      *
      * @return RedirectResponse
      */
@@ -123,7 +122,7 @@ class UserController extends Controller
      * @Template("@App/User/add.html.twig")
      *
      * @param Request $request
-     * @param User    $user
+     * @param User $user
      *
      * @return array|RedirectResponse
      */

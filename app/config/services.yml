@@ -39,9 +39,14 @@ services:
           arguments: ['@security.password_encoder']
           tags:
               - { name: doctrine.event_subscriber }
-
 #Normalizer
 
+      app.request.normalizer:
+          class: AppBundle\Serializer\RequestNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
+              
       app.answer.normalizer:
           class: AppBundle\Serializer\SurveyAnswerNormalizer
           parent: serializer.normalizer.object
@@ -103,4 +108,3 @@ services:
               - "@mailer"
               - "@twig"
               - "%mailer_from%"
-

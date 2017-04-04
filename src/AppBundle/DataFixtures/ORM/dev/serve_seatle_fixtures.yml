@@ -100,18 +100,10 @@ AppBundle\Entity\Survey\SurveyAnswer:
         question: '@survey_quest_choice2'
         content: 5
 
-AppBundle\Entity\FormRequestType:
-    request_type1:
-        name: Personal Day Request
-    request_type2:
-        name: Overnight Guest Request
-    request_type3:
-        name: Sick Day Request
-
 AppBundle\Entity\FormRequest:
     request{1..10}:
-        type: '@request_type*'
+        type: 'sick day'
         user: '@intern*'
-        status: 'new'
-        date: <dateTime()>
+        status: 'pending'
+        date: <iso8601()>
 
