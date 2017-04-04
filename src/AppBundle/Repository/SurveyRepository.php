@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\DTO\SurveyFilter;
+use AppBundle\Entity\Survey\Survey;
 
 /**
  * SurveyRepository.
@@ -12,6 +13,32 @@ use AppBundle\Entity\DTO\SurveyFilter;
  */
 class SurveyRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function selectSurveysByParams($filter)
+    {
+        $query = $this->createQueryBuilder('Surveys')
+            ->select('s')
+            ->from('AppBundle:Survey\Survey', 's')
+            ->join('s.type', 't')
+            ->where('s.status = ?1')
+            ->setParameter('1', 'submitted')
+        ;
+
+        if ($filter->type && $filter->type != 'All') {
+            $query->andWhere('t.name = ?2')
+                ->setParameter('2', $filter->type)
+            ;
+        }
+
+        if ($filter->start && $filter->end) {
+            $query->andWhere('s.createdAt BETWEEN ?3 AND ?4')
+                ->setParameter('3', $filter->getStart())
+                ->setParameter('4', $filter->getEnd())
+            ;
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
     public function findSurveyByStatus($status)
     {
         $query = $this->createQueryBuilder('s')

@@ -1,0 +1,38 @@
+.request-table
+  margin-top 25px
+  @extends .table
+
+  caption
+    font-size 18px
+
+  .reject
+    position relative
+    @extends .btn-danger
+    size(30px)
+
+    &::after
+      content '\f00d'
+      font-family 'FontAwesome'
+      position absolute
+      font-size 14px
+      color white
+      centralizer(true, true)
+
+  .accept
+    position relative
+    @extends .btn-success
+    size(30px)
+
+    &::after
+      content '\f00c'
+      font-family 'FontAwesome'
+      position absolute
+      font-size 14px
+      color white
+      centralizer(true, true)
+
+  .approved
+    color $btn-success-bg
+
+  .rejected
+    color $btn-danger-bg

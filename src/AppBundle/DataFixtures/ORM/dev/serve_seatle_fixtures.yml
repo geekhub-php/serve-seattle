@@ -530,7 +530,7 @@ AppBundle\Entity\Survey\SurveyQuestion:
 AppBundle\Entity\Survey\Survey:
     survey1:
         type: '@survey_type1'
-        status: 'submited'
+        status: 'submitted'
         user: '@intern1'
     survey2:
         type: '@survey_type1'

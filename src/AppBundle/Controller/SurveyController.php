@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Survey\SurveyAnswer;
 use AppBundle\Entity\Survey\SurveyType;
 use AppBundle\Entity\Survey\Survey;
-use AppBundle\Entity\DTO\SurveyFilter;
+use AppBundle\Entity\DTO\Filter;
 use AppBundle\Form\SurveyFilterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -24,43 +24,62 @@ class SurveyController extends Controller
     public function surveysAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $surveyTypes = $em->getRepository(SurveyType::class)->findAll();
-        $paginator = $this->get('knp_paginator');
-        $surveys = $em->getRepository(Survey::class)->findSurveyByStatus('submited');
-        $filter = new SurveyFilter();
-        $filter->setStart($surveys[count($surveys) - 1]->getUpdatedAt());
-        $filter->setEnd($surveys[0]->getUpdatedAt());
-        $form = $this->createForm(SurveyFilterType::class, $filter);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $surveys = $em->getRepository(Survey::class)->findSurveyByParams($filter);
-            $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
 
-            return [
-                'surveys' => $pagination, 'survey_types' => $surveyTypes,
-                'form' => $form->createView(), 'filter_type' => $filter->getType(),
-            ];
-        }
-        $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
-        $types = array_fill_keys(['int', 'sp', 'ex', 'sr'], false);
-        foreach ($pagination as $item) {
-            if ($item->getType()->getName() == 'internship') {
-                $types['int'] = true;
-            }
-            if ($item->getType()->getName() == 'speaker') {
-                $types['sp'] = true;
-            }
-            if ($item->getType()->getName() == 'exit') {
-                $types['ex'] = true;
-            }
-            if ($item->getType()->getName() == 'supervisor') {
-                $types['sr'] = true;
-            }
-        }
+        $filter = new Filter();
+        $filterForm = $this->createForm(SurveyFilterType::class, $filter);
+        $filterForm->handleRequest($request);
+
+        $surveys = $em->getRepository(Survey::class)->selectSurveysByParams($filter);
+        $types = $em->getRepository(SurveyType::class)->findAll();
+
 
         return [
-            'surveys' => $pagination, 'survey_types' => $surveyTypes, 'types' => $types, 'form' => $form->createView(),
+            'surveys' => $this->get('knp_paginator')
+                ->paginate(
+                    $surveys,
+                    $request->query->getInt('page', 1),
+                    10
+                ),
+            'types' => $types,
+            'filterForm' => $filterForm->createView(),
         ];
+
+//        $paginator = $this->get('knp_paginator');
+//        $surveys = $em->getRepository(Survey::class)->findSurveyByStatus('submited');
+//        $filter = new SurveyFilter();
+//        $filter->setStart($surveys[count($surveys) - 1]->getUpdatedAt());
+//        $filter->setEnd($surveys[0]->getUpdatedAt());
+//        $form = $this->createForm(SurveyFilterType::class, $filter);
+//        $form->handleRequest($request);
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $surveys = $em->getRepository(Survey::class)->findSurveyByParams($filter);
+//            $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
+//
+//            return [
+//                'surveys' => $pagination, 'survey_types' => $surveyTypes,
+//                'form' => $form->createView(), 'filter_type' => $filter->getType(),
+//            ];
+//        }
+//        $pagination = $paginator->paginate($surveys, $request->query->getInt('page', 1), 10);
+//        $types = array_fill_keys(['int', 'sp', 'ex', 'sr'], false);
+//        foreach ($pagination as $item) {
+//            if ($item->getType()->getName() == 'internship') {
+//                $types['int'] = true;
+//            }
+//            if ($item->getType()->getName() == 'speaker') {
+//                $types['sp'] = true;
+//            }
+//            if ($item->getType()->getName() == 'exit') {
+//                $types['ex'] = true;
+//            }
+//            if ($item->getType()->getName() == 'supervisor') {
+//                $types['sr'] = true;
+//            }
+//        }
+//
+//        return [
+//            'surveys' => $pagination, 'survey_types' => $surveyTypes, 'types' => $types, 'form' => $form->createView(),
+//        ];
     }
 
     /**

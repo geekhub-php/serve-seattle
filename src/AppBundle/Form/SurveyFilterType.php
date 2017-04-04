@@ -3,10 +3,10 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class SurveyFilterType.
@@ -23,26 +23,35 @@ class SurveyFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('start', DateType::class, array(
-                'widget' => 'choice',
-                'input' => 'datetime',
-            ))
-            ->add('end', DateType::class, array(
-                'widget' => 'choice',
-                'input' => 'datetime',
-            ))
-            ->add('type', EntityType::class, array(
-                'class' => 'AppBundle\Entity\Survey\SurveyType',
-                'label' => 'Survey type',
-                'choice_label' => 'name',
-            ))
+            ->add('start', DateTimeType::class, [
+                'attr' => ['class' => 'input-sm form-control'],
+                'required' => false,
+                'widget' => 'single_text',
+                'format' => 'MM/dd/yyyy',
+            ])
+            ->add('end', DateTimeType::class, [
+                'attr' => ['class' => 'input-sm form-control'],
+                'required' => false,
+                'widget' => 'single_text',
+                'format' => 'MM/dd/yyyy',
+            ])
+            ->add('type', ChoiceType::class, [
+                'attr' => ['class' => 'input-sm form-control'],
+                'choices' => [
+                    'All' => 'All',
+                    'Internship Survey' => 'internship',
+                    'Speaker Survey' => 'speaker',
+                    'Exit Survey' => 'exit',
+                    'Supervisor Survey' => 'supervisor',
+                ],
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\DTO\SurveyFilter',
+            'data_class' => 'AppBundle\Entity\DTO\Filter',
         ));
     }
 }
