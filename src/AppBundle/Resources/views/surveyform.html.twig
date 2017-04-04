@@ -22,7 +22,7 @@
                     {% if section.getDescription() %}
                         <p>{{ section.getDescription() }}</p>
                     {% endif %}
-                    <ol>
+                    <ul>
                     {% for question in section.getQuestions() %}
                         <li><b>{{ question.getTitle() }}</b></li>
                         {% if question.variants is defined %}
@@ -31,7 +31,7 @@
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
-                    </ol>
+                    </ul>
                 {% endfor %}
                 <br/>
                  <input type="submit" value="Create survey"/>
