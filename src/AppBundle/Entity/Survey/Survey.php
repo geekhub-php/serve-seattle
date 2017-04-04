@@ -44,6 +44,14 @@ class Survey
     private $status;
 
     /**
+     * @var bool
+     * @Assert\NotBlank()
+     * @Assert\Type("bool")
+     * @ORM\Column(type="boolean")
+     */
+    private $reviewed;
+
+    /**
      * @var User
      * @Assert\Type("object")
      * @Assert\Valid
@@ -62,6 +70,7 @@ class Survey
     {
         $this->answers = new ArrayCollection();
         $this->status = 'current';
+        $this->reviewed = false;
     }
 
     /**
@@ -120,6 +129,30 @@ class Survey
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set review.
+     *
+     * @param bool $review
+     *
+     * @return Survey
+     */
+    public function setReviewed($review)
+    {
+        $this->reviewed = $review;
+
+        return $this;
+    }
+
+    /**
+     * Get review.
+     *
+     * @return bool
+     */
+    public function getReviewed()
+    {
+        return $this->reviewed;
     }
 
     /**

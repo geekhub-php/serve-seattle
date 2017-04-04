@@ -12,12 +12,12 @@ class Filter
     public $name;
 
     /**
-     * @var string $type
+     * @var string
      */
     public $type;
 
     /**
-     * @var string $decision
+     * @var string
      */
     public $decision;
 
@@ -30,7 +30,7 @@ class Filter
      * @var DateTime
      */
     public $end;
-    
+
     /**
      * @return string
      */

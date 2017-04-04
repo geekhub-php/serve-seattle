@@ -3,14 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\FormRequest;
-use AppBundle\Entity\User;
 use AppBundle\Entity\DTO\Filter;
 use AppBundle\Form\DTO\FormRequestFilterType;
-use AppBundle\Form\User\EditType;
-use AppBundle\Form\User\ActivationType;
 use AppBundle\Form\FormRequestType;
-use AppBundle\Notification\EmailNotification;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -20,8 +15,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class FormRequestController
- * @package AppBundle\Controller
+ * Class FormRequestController.
+ *
  * @Route("/form_request", name="form_requests")
  */
 class FormRequestController extends Controller
@@ -31,12 +26,13 @@ class FormRequestController extends Controller
      * @Template("@App/FormRequest/list.html.twig")
      *
      * @param Request $request
+     *
      * @return array
      */
     public function listAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $filter = new Filter;
+        $filter = new Filter();
         $filterForm = $this->createForm(FormRequestFilterType::class, $filter)
             ->add('Search', SubmitType::class);
 
@@ -46,17 +42,18 @@ class FormRequestController extends Controller
             $request->query->getInt('page', 1),
             10
         );
-        $approveForms =[];
+        $approveForms = [];
 
         foreach ($formRequests as $formRequest) {
-            if ($formRequest->getStatus() == "pending") {
+            if ($formRequest->getStatus() == 'pending') {
                 $approveForms[$formRequest->getId()] = $this->createForm(FormRequestType::class, $formRequest, [
-                    'method' => "PUT",
+                    'method' => 'PUT',
                     'action' => $this->generateUrl('form_approve', ['id' => $formRequest->getId()]),
                 ])
                     ->createView();
             }
         }
+
         return [
             'formRequests' => $formRequests,
             'approveForms' => $approveForms,
@@ -68,15 +65,17 @@ class FormRequestController extends Controller
      * @Route("/form_request/approve/{id}", name="form_approve")
      *
      * @Method("PUT")
-     * @param  Request $request
-     * @param  FormRequest $formRequest
+     *
+     * @param Request     $request
+     * @param FormRequest $formRequest
+     *
      * @return RedirectResponse
      */
     public function activationAction(Request $request, FormRequest $formRequest)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(FormRequestType::class, $formRequest, [
-            'method' => "PUT",
+            'method' => 'PUT',
             'action' => $this->generateUrl('form_approve', ['id' => $formRequest->getId()]),
         ]);
         $form->handleRequest($request);
@@ -86,13 +85,13 @@ class FormRequestController extends Controller
                 $em->flush();
                 $this->get('app.email_notification')->sendNotification(
                     $formRequest->getUser()->getEmail(),
-                    "Form request action",
-                    "Hello, ".$formRequest->getUser()->getFirstName(). ". 
-                    Your form request was ".$formRequest->getStatus().'.'
+                    'Form request action',
+                    'Hello, '.$formRequest->getUser()->getFirstName().'. 
+                    Your form request was '.$formRequest->getStatus().'.'
                 );
             }
         }
 
-        return $this->redirect($this->generateUrl("form_request_list"));
+        return $this->redirect($this->generateUrl('form_request_list'));
     }
 }

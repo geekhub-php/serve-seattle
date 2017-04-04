@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\FormRequest;
-use AppBundle\Entity\FormRequestType;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use AppBundle\Exception\JsonHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -28,11 +27,12 @@ class FormRequestController extends JsonController
             ->paginate(
                 $this->getDoctrine()->getManager()->getRepository(FormRequest::class)->findBy([
                     'user' => $this->getUser(),
-                    'status' => $status == "pending" ? "pending" : ["approved", "rejected"],
+                    'status' => $status == 'pending' ? 'pending' : ['approved', 'rejected'],
                 ]),
                 $request->query->getInt('page', 1),
                 10
             );
+
         return $this->json($requestForms);
     }
 
@@ -41,7 +41,8 @@ class FormRequestController extends JsonController
      * @Method("POST")
      *
      * @param $type
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function addAction($type, Request $request)
@@ -53,7 +54,7 @@ class FormRequestController extends JsonController
 
         $formRequest = new FormRequest();
         $formRequest
-            ->setType(str_replace('-', " ", $type))
+            ->setType(str_replace('-', ' ', $type))
             ->setUser($this->getUser());
 
         $formRequest = $this->get('serializer')->deserialize(
@@ -68,9 +69,10 @@ class FormRequestController extends JsonController
 
         $this->get('app.email_notification')->sendNotification(
             $formRequest->getUser()->getEmail(),
-            "Form request",
-            "Hello, ".$formRequest->getUser()->getFirstName().". Your form request was created."
+            'Form request',
+            'Hello, '.$formRequest->getUser()->getFirstName().'. Your form request was created.'
         );
-        return $this->json("Request form created", 200);
+
+        return $this->json('Request form created', 200);
     }
 }
