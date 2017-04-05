@@ -219,4 +219,28 @@ class Survey
 
         return $questions;
     }
+
+    /**
+     * Add answer
+     *
+     * @param \AppBundle\Entity\Survey\SurveyAnswer $answer
+     *
+     * @return Survey
+     */
+    public function addAnswer(\AppBundle\Entity\Survey\SurveyAnswer $answer)
+    {
+        $this->answers[] = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Remove answer
+     *
+     * @param \AppBundle\Entity\Survey\SurveyAnswer $answer
+     */
+    public function removeAnswer(\AppBundle\Entity\Survey\SurveyAnswer $answer)
+    {
+        $this->answers->removeElement($answer);
+    }
 }

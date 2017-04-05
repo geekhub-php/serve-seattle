@@ -148,7 +148,7 @@ class User implements UserInterface, \Serializable
     private $formRequests;
 
     /**
-     * @var ArrayCollection[Survey]
+     * @var ArrayCollection|$surveys[]
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Survey\Survey", mappedBy="user")
      */
     private $surveys;
@@ -409,14 +409,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function getSurveys()
-    {
-        return $this->surveys;
-    }
-
-    /**
      * Set enabled.
      *
      * @param bool $enabled
@@ -471,5 +463,97 @@ class User implements UserInterface, \Serializable
             $this->lastName,
             $this->email,
             $this->enabled) = unserialize($serialized);
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Add event
+     *
+     * @param \AppBundle\Entity\Event $event
+     *
+     * @return User
+     */
+    public function addEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \AppBundle\Entity\Event $event
+     */
+    public function removeEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Add formRequest
+     *
+     * @param \AppBundle\Entity\FormRequest $formRequest
+     *
+     * @return User
+     */
+    public function addFormRequest(\AppBundle\Entity\FormRequest $formRequest)
+    {
+        $this->formRequests[] = $formRequest;
+
+        return $this;
+    }
+
+    /**
+     * Remove formRequest
+     *
+     * @param \AppBundle\Entity\FormRequest $formRequest
+     */
+    public function removeFormRequest(\AppBundle\Entity\FormRequest $formRequest)
+    {
+        $this->formRequests->removeElement($formRequest);
+    }
+
+    /**
+     * Add survey
+     *
+     * @param Survey $survey
+     *
+     * @return User
+     */
+    public function addSurvey(Survey $survey)
+    {
+        $this->surveys[] = $survey;
+
+        return $this;
+    }
+
+    /**
+     * Remove survey
+     *
+     * @param Survey $survey
+     */
+    public function removeSurvey(Survey $survey)
+    {
+        $this->surveys->removeElement($survey);
+    }
+
+    /**
+     * Get surveys
+     *
+     * @return ArrayCollection
+     */
+    public function getSurveys()
+    {
+        return $this->surveys;
     }
 }
