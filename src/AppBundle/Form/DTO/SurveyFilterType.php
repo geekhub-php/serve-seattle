@@ -2,17 +2,23 @@
 
 namespace AppBundle\Form\DTO;
 
-use AppBundle\Entity\DTO\Filter;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class FormRequestFilterType extends AbstractType
+/**
+ * Class SurveyFilterType.
+
+ */
+class SurveyFilterType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @param FormBuilderInterface $builder
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,31 +39,19 @@ class FormRequestFilterType extends AbstractType
                 'attr' => ['class' => 'input-sm form-control'],
                 'choices' => [
                     'All' => 'All',
-                    'Personal Day' => 'Personal Day',
-                    'Overnight Guest' => 'Overnight Guest',
-                    'Sick Day' => 'Sick Day',
-                ],
-            ])
-            ->add('decision', ChoiceType::class, [
-                'attr' => ['class' => 'input-sm form-control'],
-                'choices' => [
-                    'All' => 'All',
-                    'Approved' => 'approved',
-                    'Rejected' => 'rejected',
-                    'No Decision' => 'pending',
+                    'Internship Survey' => 'internship',
+                    'Speaker Survey' => 'speaker',
+                    'Exit Survey' => 'exit',
+                    'Supervisor Survey' => 'supervisor',
                 ],
             ])
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Filter::class,
-            'csrf_protection' => false,
-        ]);
+        $resolver->setDefaults(array(
+            'data_class' => 'AppBundle\Entity\DTO\Filter',
+        ));
     }
 }

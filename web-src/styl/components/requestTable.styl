@@ -1,0 +1,57 @@
+.request-table
+  margin-top 25px
+  text-align center
+  @extends .table
+
+  caption
+    font-size 18px
+
+  thead tr:first-of-type
+    background-color rgb(102, 102, 102)
+    color rgb(232, 232, 232)
+    th
+      text-align center
+
+  tbody tr nth-of-type(1)
+    background-color rgb(240, 240, 240)
+
+  td, th
+    border-width 1px
+    border-color rgb(222, 222, 222)
+    border-style solid
+
+  a
+    text-decoration underline
+    color black
+
+  .reject
+    position relative
+    @extends .btn-danger
+    size(30px)
+
+    &::after
+      content '\f00d'
+      font-family 'FontAwesome'
+      position absolute
+      font-size 14px
+      color white
+      centralizer(true, true)
+
+  .accept
+    position relative
+    @extends .btn-success
+    size(30px)
+
+    &::after
+      content '\f00c'
+      font-family 'FontAwesome'
+      position absolute
+      font-size 14px
+      color white
+      centralizer(true, true)
+
+  .approved
+    color $btn-success-bg
+
+  .rejected
+    color $btn-danger-bg

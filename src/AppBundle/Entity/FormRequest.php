@@ -31,7 +31,7 @@ class FormRequest
     /**
      * @var string
      * @Assert\NotBlank()
-     * @Assert\Choice({FormRequest::TYPE})
+     * @Assert\Choice(FormRequest::TYPE)
      * @ORM\Column(type="string", length=25)
      * @Groups({"Detail"})
      */

@@ -1,0 +1,55 @@
+centralizer($horizontal = true, $vertical = true)
+  position absolute
+
+  if ($horizontal and $vertical)
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
+
+  else if ($horizontal)
+    left 50%
+    transform translate(-50%, 0)
+
+  else if ($vertical)
+    top 50%
+    transform translate(0, -50%)
+
+media($width)
+  @media screen and (max-width: $width)
+    {block}
+
+my-opacity($opacity)
+  opacity: $opacity
+  filter opacity($opacity)
+
+placeholder()
+
+  &::-webkit-input-placeholder
+    {block}
+
+  &:-moz-placeholder
+    {block}
+
+  &::-moz-placeholder
+    {block}
+
+  &:-ms-input-placeholder
+    {block}
+
+size($w, $h = $w)
+  width $w
+  height $h
+
+center($h)
+  margin $h auto
+
+text-beautifier()
+  overflow hidden
+  word-break keep-all
+  text-overflow ellipsis
+
+cols($lg, $md, $sm, $xs)
+  make-xs-column($xs)
+  make-sm-column($sm)
+  make-md-column($md)
+  make-lg-column($lg)

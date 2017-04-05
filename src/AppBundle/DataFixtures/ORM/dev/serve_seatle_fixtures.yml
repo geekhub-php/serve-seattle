@@ -530,11 +530,31 @@ AppBundle\Entity\Survey\SurveyQuestion:
 AppBundle\Entity\Survey\Survey:
     survey1:
         type: '@survey_type1'
-        status: 'submited'
+        status: 'submitted'
         user: '@intern1'
     survey2:
         type: '@survey_type1'
         user: '@intern2'
+    survey3:
+        type: '@survey_type2'
+        status: 'submitted'
+        user: '@intern1'
+    survey4:
+        type: '@survey_type3'
+        status: 'submitted'
+        user: '@intern1'
+    survey5:
+        type: '@survey_type4'
+        status: 'submitted'
+        user: '@intern1'
+    survey6:
+        type: '@survey_type4'
+        status: 'submitted'
+        user: '@intern2'
+    survey7:
+        type: '@survey_type4'
+        status: 'submitted'
+        user: '@intern3'
 
 AppBundle\Entity\Survey\SurveyAnswer:
     survey_answer1:
@@ -583,7 +603,7 @@ AppBundle\Entity\Survey\SurveyAnswer:
          content: Good experience
 
 AppBundle\Entity\FormRequest:
-    request{1..10}:
+    request{1..15}:
         type: 'sick day'
         user: '@intern*'
         status: 'pending'

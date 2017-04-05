@@ -5,28 +5,40 @@
 {% endblock %}
 
 {% block content %}
-    <h1>
-        DashBoard
-    </h1>
+            <div class="page-title">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="row">
+                {% if requestForms %}
+                <div class="col-md-6">
+                    <div class="dashboard-item">
+                        <p class="dashboard-item-title">Request forms</p>
+                        <ul>
+                            {% for request in requestForms %}
+                                <li>
+                                    <span>{{ request.createdAt | date('m/d/Y') }}</span>
+                                    <p>New<a href="{{ path('form_request_list') }}#{{ request.id }}">"{{ request.type | capitalize }}" form</a>submitted by {{ request.user.lastname }} {{ request.user.firstname }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
 
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="well">
-                <h3>Request forms</h3>
-                <p>
-                    1/20/2017
-                    New "Overnight Guest" form submitted by Whitney Houston
-                </p>
+                {% if surveys %}
+                <div class="col-md-6">
+                    <div class="dashboard-item">
+                        <p class="dashboard-item-title">Surveys</p>
+                        <ul>
+                            {% for survey in surveys %}
+                            <li>
+                                <span>{{ survey.updatedAt | date('m/d/Y') }}</span>
+                                <p>New<a href="{{ path('survey', {'id' : survey.id}) }}">submission</a>on "Your Experience so Far: {{ survey.type.name | capitalize }} Survey (1/15/2017)" from {{ survey.user.firstname }} {{ survey.user.lastname }}</p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
             </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="well">
-                <h3>Surveys forms</h3>
-                <p>
-                    1/20/2017
-                    New "Overnight Guest" form submitted by Whitney Houston
-                </p>
-            </div>
-        </div>
-    </div>
 {% endblock %}

@@ -4,100 +4,94 @@
     Surveys
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('/css/bootstrap-datepicker.css') }}" />
+{% endblock %}
+
 {% block content %}
 
-    <h3>New survey</h3>
-    <ul>
-        {% for type in survey_types %}
-            <li><a href="{{ path('survey_create', {'survey_type': type.getName }) }}">{{ type.getName|capitalize }} Survey</a></li>
-        {% endfor %}
-    </ul>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <input type="submit" value="Filter"/>
-    {{ form_end(form) }}
-    {% if filter_type is defined %}
-        <h3>{{ filter_type.getName|capitalize }} surveys</h3>
-        {% for survey in surveys %}
-            {%  if survey.getType.getName == 'internship' %}
-                {% if survey.isReviewed %}
-                <ul style="font-weight: normal">
-                {% else %}
-                <ul style="font-weight: bold">
-                {% endif %}
-                    <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                    <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
-                </ul>
-            {% endif %}
-        {% endfor %}
-    {% else %}
-    {% if types.int %}
-       <h3>Internship surveys</h3>
-    {% endif %}
-    {% for survey in surveys %}
-        {% if survey.getType.getName == 'internship' %}
-            {% if survey.isReviewed %}
-                <ul style="font-weight: normal">
-            {% else %}
-                <ul style="font-weight: bold">
-            {% endif %}
-                 <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                 <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
-                 <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
-             </ul>
-        {% endif %}
-    {% endfor %}
-    {% if types.sp %}
-        <h3>Speaker surveys</h3>
-    {% endif %}
-        {% for survey in surveys %}
-            {% if survey.getType.getName == 'speaker' %}
-                {% if survey.isReviewed %}
-                    <ul style="font-weight: normal">
-                {% else %}
-                    <ul style="font-weight: bold">
-                {% endif %}
-                    <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                    <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
-                    <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
-                </ul>
-            {% endif %}
-        {% endfor %}
-    {% if types.ex %}
-        <h3>Exit surveys</h3>
-    {% endif %}
-    {% for survey in surveys %}
-        {% if survey.getType.getName == 'exit' %}
-            {% if survey.isReviewed %}
-                <ul style="font-weight: normal">
-            {% else %}
-                <ul style="font-weight: bold">
-            {% endif %}
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
-            </ul>
-        {% endif %}
-    {% endfor %}
-    {% if types.sr %}
-        <h3>Supervisor surveys</h3>
-    {% endif %}
-    {% for survey in surveys %}
-        {% if survey.getType.getName == 'supervisor' %}
-            {% if survey.isReviewed %}
-                <ul style="font-weight: normal">
-            {% else %}
-                <ul style="font-weight: bold">
-            {% endif %}
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}"><time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.getUpdatedAt|date("m/d/Y") }}</time></a></li>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</a></li>
-                <li><a href="{{ path('survey', {'id': survey.getId }) }}">{{ survey.getType.getName }}</a></li>
-            </ul>
-        {% endif %}
-    {% endfor %}
-    {% endif %}
-    <ul class="pager">
-        {{ knp_pagination_render(surveys) }}
-    </ul>
+    <div class="page-title">
+        <h1>Surveys</h1>
+    </div>
 
+    {{ form_start(filterForm) }}
+    <table class="filter pull-left">
+        <thead>
+        <tr>
+            <th>Filter by date</th>
+            <th>by Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td valign="center">
+                <div class="input-daterange input-group" id="datepicker">
+                    {{ form_widget(filterForm.start) }}
+                    <span class="input-group-addon">to</span>
+                    {{ form_widget(filterForm.end) }}
+                </div>
+            </td>
+            <td>
+                {{ form_widget(filterForm.type) }}
+            </td>
+            <td>
+                <button type="submit">Filter</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {{ form_end(filterForm) }}
+    <div class="dropdown pull-right">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            New Survey
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            {% for type in types %}
+                <li><a href="{{ path('survey_create', {'survey_type': type.getName }) }}">{{ type.getName|capitalize }} Survey</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% for type in types %}
+        {% if type.surveys is not empty  %}
+        <table class="request-table table-striped">
+        <caption>{{ type.name | capitalize }} surveys</caption>
+        <thead>
+        <tr>
+            <th>Date Submitted</th>
+            <th>Intern Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for survey in surveys %}
+            {% if type == survey.type %}
+                <tr {% if survey.isReviewed == false %} style="font-weight: bold" {% endif %}>
+                    <td>
+                        <a href="{{ path('survey', {'id': survey.getId }) }}">
+                            <time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.updatedAt|date("m/d/Y") }}</time>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('survey', {'id': survey.getId }) }}">
+                            {{ survey.user.firstname }} {{ survey.user.lastname }}
+                        </a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+        </table>
+        {% endif %}
+    {% endfor %}
+    <div class="text-center">
+        {{ knp_pagination_render(surveys) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        $('.input-daterange').datepicker({
+            clearBtn: true
+        });
+    </script>
 {% endblock %}

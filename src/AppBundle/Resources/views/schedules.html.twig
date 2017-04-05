@@ -1,0 +1,414 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('/css/fullcalendar.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/fullcalendar.print.min.css') }}" media="print">
+{% endblock %}
+
+{% block title %}
+    Dashboards
+{% endblock %}
+
+{% block content %}
+    <div class="page-title">
+        <h1>Schedules</h1>
+        <div id='calendar'></div>
+    </div>
+
+    <!--event modal-->
+    <div id="eventModal" class="popup modal fade in" tabindex="1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="modal-header">
+                    <h3 class="text-center">Add event</h3>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="input-group">
+                    <form action="" id="formNewEvent">
+                        <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Title"
+                                name="name"
+                                id="eventTitle"
+                        >
+                        <input
+                                required
+                                type="text"
+                                class="form-control"
+                                placeholder="Event location"
+                                id="eventLocation"
+                        >
+                        <input
+                                required
+                                type="datetime-local"
+                                placeholder="Event start"
+                                class="form-control"
+                                id="eventStart"
+                        >
+                        <input
+                                required
+                                type="datetime-local"
+                                class="form-control"
+                                placeholder="Event end "
+                                id="eventEnd"
+                        >
+                        <textarea
+                                required
+                                id="eventDescription"
+                                class="form-control"
+                                placeholder="Description"
+                                rows="5">
+                        </textarea>
+                        <div class="select">
+                            <h3 class="id-users text-center">ID-users</h3>
+                            <select class="form-control" id="select-user">
+                            </select>
+                        </div>
+                        <button class="btn btn-success" id="submitEvent" type="submit">
+                            Submit
+                        </button>
+                        <button class="btn btn-danger pull-right" data-dismiss="modal">
+                            Cancel
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--updateEvent modal-->
+    <div id="updateEvent" class="popup modal fade in" tabindex="1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="modal-header">
+                    <h3 class="text-center">Remove event</h3>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="input-group">
+                    <form action="">
+                        <input
+                                required
+                                type="text"
+                                class="form-control"
+                                placeholder="Title"
+                                id="updateTitle"
+                        >
+                        <input
+                                required
+                                type="text"
+                                class="form-control"
+                                placeholder="Event location"
+                                id="updateLocation"
+                        >
+                        <input
+                                required
+                                type="datetime-local"
+                                placeholder="Event start"
+                                class="form-control"
+                                id="updateStart"
+                        >
+                        <input
+                                required
+                                type="datetime-local"
+                                class="form-control"
+                                placeholder="Event end "
+                                id="updateEnd"
+                        >
+                        <textarea
+                                required
+                                id="updateDescription"
+                                class="form-control"
+                                placeholder="Description"
+                                rows="5">
+                        </textarea>
+                        <div class="select">
+                            <h3 class="id-users text-center">ID-users</h3>
+                            <select class="form-control" id="update-user">
+                            </select>
+                        </div>
+                        <button class="btn btn-success" id="updateSubmit" type="submit">
+                            Save change
+                        </button>
+                        <button class="btn btn-warning" data-dismiss="modal" id="removeEventBtn">
+                            Remove
+                        </button>
+                        <button class="btn btn-danger pull-right" data-dismiss="modal">
+                            Cancel
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!--SCRIPTS-->
+    <script src="{{ asset('/js/moment.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('/js/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('/js/gcal.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+
+//  New Event
+            var eventModal = $('#eventModal');
+            var eventTitle = $('#eventTitle');
+            var eventStart = $('#eventStart');
+            var eventEnd = $('#eventEnd');
+            var eventLocation = $('#eventLocation');
+            var eventDescription = $('#eventDescription');
+            var eventUser = $('#select-user');
+            var eventSubmit = $('#submitEvent');
+
+//  Update Event
+            var updateEvent = $('#updateEvent');
+            var updateTitle = $('#updateTitle');
+            var updateStart = $('#updateStart');
+            var updateEnd = $('#updateEnd');
+            var updateLocation = $('#updateLocation');
+            var updateDescription = $('#updateDescription');
+            var updateUser = $('#update-user');
+            var updateSubmit = $('#updateSubmit');
+
+//        Calendar
+            var calendar = $('#calendar');
+            var removeEventBtn = $('#removeEventBtn');
+            var currentEvent;
+//  Format date
+            var date = new Date();
+            moment(date).format();
+
+            $('#formNewEvent').validate({
+                rules: {
+                    name: {
+                        required: true
+                    }
+                }
+            });
+
+            calendar.fullCalendar({
+                googleCalendarApiKey: 'AIzaSyCvhIy1Sbln1q5m48C_ojM-KKl9JSoNdRc',
+                customButtons: {
+                    newEvent: {
+                        text: 'New event',
+                        click: function (event) {
+
+                            eventTitle.val('');
+                            eventDescription.val('');
+                            eventLocation.val('');
+                            eventStart.val();
+                            eventEnd.val();
+                            eventModal.modal('show');
+                            eventTitle.focus();
+
+                            var userList = {
+                                "async": true,
+                                "crossDomain": true,
+                                "url": "http://104.236.31.247/app_dev.php/users-list",
+                                "method": "GET",
+                                "headers": {
+                                    "content-type": "application/json",
+                                    "authorization": "Basic YWRtaW5Ac2VydmUtc2VhdHRsZS5jb206YWRtaW4="
+                                },
+                                "processData": false
+                            };
+
+                            $.ajax(userList).done(function (response) {
+                                response.users.forEach(function (elem, index) {
+                                    eventUser.append('<option value="' + elem.id + '">' + elem.firstName + ' ' + elem.lastName + '</option>')
+                                })
+                            });
+                        }
+                    }
+                },
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay, newEvent'
+                },
+                navLinks: true, // can click day/week names to navigate views
+                selectable: true,
+                selectHelper: true,
+                editable: true,
+                eventRender: function (event, element) {
+                    element.find('.fc-title').append('<div class="hr-line-solid-no-margin"><span style="font-size: 10px">' + event.description + '</span></div>');
+                },
+                eventClick: function (event, element) {
+                    currentEvent = event;
+
+                    updateTitle.val(event.title);
+                    updateDescription.val(event.description);
+                    updateLocation.val(event.location);
+                    updateStart.val(event.start);
+                    updateEnd.val(event.end);
+                    updateEvent.modal('show');
+                    updateTitle.focus();
+
+                    var updateUserList = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "http://104.236.31.247/app_dev.php/users-list",
+                        "method": "GET",
+                        "headers": {
+                            "content-type": "application/json",
+                            "authorization": "Basic YWRtaW5Ac2VydmUtc2VhdHRsZS5jb206YWRtaW4="
+                        },
+                        "processData": false
+                    };
+
+                    $.ajax(updateUserList).done(function (response) {
+                        response.users.forEach(function (elem, index) {
+                            updateUser.append('<option value="' + elem.id + '">' + elem.firstName + ' ' + elem.lastName + '</option>')
+                        })
+                    });
+
+                },
+                eventLimit: true, // allow "more" link when too many events
+                events: function (start, end, timezone, callback) {
+
+                    $.ajax({
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "http://104.236.31.247/app_dev.php/schedule/events?singleEvents=1",
+                        "method": "GET",
+                        "headers": {
+                            "content-type": "application/json",
+                            "authorization": "Basic YWRtaW5Ac2VydmUtc2VhdHRsZS5jb206YWRtaW4=",
+                            "cache-control": "no-cache"
+                        },
+                        "processData": false,
+                        success: function (data) {
+                            var events = [];
+                            data.events.forEach(function (elem, index) {
+                                events.push({
+                                    "user": elem.user,
+                                    "title": elem.title,
+                                    "description": elem.description,
+                                    "location": elem.location,
+                                    "start": elem.start,
+                                    "end": elem.end,
+                                    "id": elem.id
+                                })
+                            });
+                            callback(events);
+                        }
+                    });
+                }
+            });
+
+            eventSubmit.on('click', function (e) {
+                e.preventDefault();
+                doSubmit();
+            });
+
+            updateSubmit.on('click', function (e) {
+                e.preventDefault();
+                updateEventSubmit(currentEvent);
+            });
+
+            removeEventBtn.on('click', function (e) {
+                e.preventDefault();
+                removeEvent(currentEvent);
+            });
+
+            function doSubmit() {
+                var eventData = {
+                    "event": {
+                        "user": eventUser.val(),
+                        "summary": eventTitle.val(),
+                        "description": eventDescription.val(),
+                        "location": eventLocation.val(),
+                        "start": eventStart.val() + ':00-07:00',
+                        "end": eventEnd.val() + ':00-07:00'
+                    }
+                };
+
+                var newEvent = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "http://104.236.31.247/app_dev.php/schedule/events",
+                    "method": "POST",
+                    "headers": {
+                        "content-type": "application/json",
+                        "authorization": "Basic YWRtaW5Ac2VydmUtc2VhdHRsZS5jb206YWRtaW4=",
+                        "cache-control": "no-cache"
+                    },
+                    "processData": false,
+                    "data": JSON.stringify(eventData)
+                };
+
+                $.ajax(newEvent).done(function (response) {
+                    console.log(response);
+                });
+
+                setTimeout("window.location.reload()", 3500);
+
+                eventModal.modal('hide');
+//            calendar.fullCalendar( 'renderEvent', event , true );
+            }
+
+            function updateEventSubmit(event) {
+                var eventData = {
+                    "event": {
+                        "user": updateUser.val(),
+                        "summary": updateTitle.val(),
+                        "description": updateDescription.val(),
+                        "location": updateLocation.val(),
+                        "start": updateStart.val() + ':00-07:00',
+                        "end": updateEnd.val() + ':00-07:00'
+                    }
+                };
+
+                var update = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+                    "method": "PATCH",
+                    "headers": {
+                        "content-type": "application/json",
+                        "authorization": "Basic YWRtaW5Ac2VydmUtc2VhdHRsZS5jb206YWRtaW4=",
+                        "cache-control": "no-cache"
+                    },
+                    "processData": false,
+                    "data": JSON.stringify(eventData)
+                };
+
+                $.ajax(update).done(function (response) {
+                    console.log(response);
+                });
+
+                setTimeout("window.location.reload()",3500);
+                updateEvent.modal('hide');
+                $('#calendar').fullCalendar('updateEvent', event.id);
+
+            }
+
+            function removeEvent(event) {
+                var removeEvent = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+                    "method": "DELETE",
+                    "headers": {
+                        "content-type": "application/json",
+                        "authorization": "Basic YWRtaW5Ac2VydmUtc2VhdHRsZS5jb206YWRtaW4=",
+                        "cache-control": "no-cache"
+                    },
+                    "processData": false
+                };
+
+                $.ajax(removeEvent).done(function (response) {
+                    console.log(response);
+                });
+
+                calendar.fullCalendar('removeEvents', event.id);
+            }
+        });
+    </script>
+{% endblock %}

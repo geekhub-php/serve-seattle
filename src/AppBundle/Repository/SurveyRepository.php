@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\DTO\SurveyFilter;
+use AppBundle\Entity\Survey\Survey;
 
 /**
  * SurveyRepository.
@@ -12,34 +13,41 @@ use AppBundle\Entity\DTO\SurveyFilter;
  */
 class SurveyRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findSurveyByStatus($status)
+    public function selectSurveysByParams($filter)
     {
-        $query = $this->createQueryBuilder('s')
-            ->where('s.status = :status')
-            ->setParameter('status', $status)
-            ->orderBy('s.type', 'ASC')
-            ->addOrderBy('s.updatedAt', 'DESC')
-            ->getQuery();
+        $query = $this->createQueryBuilder('Surveys')
+            ->select('s, t, u')
+            ->from('AppBundle:Survey\Survey', 's')
+            ->join('s.type', 't')
+            ->join('s.user', 'u')
+            ->where('s.status = ?1')
+            ->setParameter('1', 'submitted')
+            ->orderBy('s.updatedAt', 'DESC');
 
-        return $query->getResult();
+        if ($filter->type && $filter->type != 'All') {
+            $query->andWhere('t.name = ?2')
+                ->setParameter('2', $filter->type)
+            ;
+        }
+
+        if ($filter->start && $filter->end) {
+            $query->andWhere('s.createdAt BETWEEN ?3 AND ?4')
+                ->setParameter('3', $filter->getStart())
+                ->setParameter('4', $filter->getEnd());
+        }
+
+        return $query->getQuery()->getResult();
     }
-    public function findSurveyByParams(SurveyFilter $parameters)
+
+    public function selectLastSurveys()
     {
-        $type = $parameters->getType();
-        $start = $parameters->getStart();
-        $endDay = $parameters->getEnd();
-        $end = date_time_set($endDay, 23, 59, 59);
-
         $query = $this->createQueryBuilder('s')
-            ->where('s.type = :type')
-            ->andWhere('s.updatedAt >= :start')
-            ->andWhere('s.updatedAt <= :end')
-            ->andWhere('s.status = :status')
-            ->setParameters(array('type' => $type, 'start' => $start, 'end' => $end, 'status' => 'submited'))
-            ->orderBy('s.updatedAt', 'DESC')
-            ->getQuery();
+            ->where('s.status = ?1')
+            ->setParameter('1', 'submitted')
+            ->orderBy('s.updatedAt', "DESC")
+            ->setMaxResults(5);
 
-        return $query->getResult();
+        return $query->getQuery()->getResult();
     }
 
     public function findSurveyByUser($user)

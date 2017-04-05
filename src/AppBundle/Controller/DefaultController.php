@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\FormRequest;
+use AppBundle\Entity\Survey\Survey;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -16,6 +18,22 @@ class DefaultController extends Controller
      * @Template("@App/dashboard.html.twig")
      */
     public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $surveys = $em->getRepository(Survey::class)->selectLastSurveys();
+        $requestForms = $em->getRepository(FormRequest::class)->selectLastRequestForms();
+        return [
+            'surveys' => $surveys,
+            'requestForms' => $requestForms,
+        ];
+    }
+
+    /**
+     * @Route("/schedule", name="calendar")
+     * @Template("@App/schedules.html.twig")
+     */
+    public function calendarAction()
     {
         return [];
     }

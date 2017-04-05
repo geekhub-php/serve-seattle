@@ -6,29 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SurveyControllerTest extends WebTestCase
 {
-    public function testSurveys()
+
+    public function testSurvey()
     {
         exec('./bin/console d:d:c --env=test');
         exec('./bin/console d:s:c --env=test');
         exec('./bin/console h:f:l -n --env=test');
 
-        $client = static::createClient();
-
-        $crawler = $client->request('GET', '/surveys', array(), array(), array(
-            'PHP_AUTH_USER' => 'admin@serve-seattle.com',
-            'PHP_AUTH_PW' => 'admin',
-        ));
-
-        $form = $crawler->selectButton('Filter')->form();
-        $form['survey_filter[type]']->select('1');
-
-        $client->followRedirects();
-        $client->submit($form);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    }
-
-    public function testSurvey()
-    {
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/surveys/1', array(), array(), array(

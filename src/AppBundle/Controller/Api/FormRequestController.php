@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/form_request", name="form_requests")
+ * @Route("/form-request", name="form_requests")
  */
 class FormRequestController extends JsonController
 {
@@ -33,7 +33,7 @@ class FormRequestController extends JsonController
                 10
             );
 
-        return $this->json($requestForms);
+        return $this->json(['requestForms' => $requestForms]);
     }
 
     /**
@@ -73,6 +73,11 @@ class FormRequestController extends JsonController
             'Hello, '.$formRequest->getUser()->getFirstName().'. Your form request was created.'
         );
 
-        return $this->json('Request form created', 200);
+        return $this->json([
+            'success' => [
+                'code' => 200,
+                'message' => 'Request form created.'
+            ]
+        ], 200);
     }
 }

@@ -33,9 +33,7 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $filter = new Filter();
         $filterForm = $this->createForm(UserFilterType::class, $filter)
-            ->add('Search', SubmitType::class, [
-                'attr' => ['class' => 'fa fa-search'],
-            ]);
+            ->add('Search', SubmitType::class);
         $filterForm->handleRequest($request);
         $users = $this->get('knp_paginator')->paginate(
             $em->getRepository(User::class)->selectUsersByParams($filter),
