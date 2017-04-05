@@ -537,15 +537,6 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * Remove survey
-     *
-     * @param Survey $survey
-     */
-    public function removeSurvey(Survey $survey)
-    {
-        $this->surveys->removeElement($survey);
-    }
 
     /**
      * Get surveys
