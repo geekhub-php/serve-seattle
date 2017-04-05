@@ -51,6 +51,7 @@ gulp.task("image", function () {
 gulp.task('js', function() {
     gulp.src([
         'bower_components/bootstrap/dist/js/bootstrap.min.js',
+        'bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
         'node_modules/moment/min/moment.min.js',
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/jquery-validation/dist/jquery.validate.min.js',
