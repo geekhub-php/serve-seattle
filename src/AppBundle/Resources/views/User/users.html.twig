@@ -5,81 +5,87 @@
 {% endblock %}
 
 {% block content %}
-    <h1>
-        Users
-    </h1>
-    <div>
-        {{ form(filterForm) }}
-        <a href="{{ path('add_user') }}" class="pull-right">
-            <i class="fa fa-plus"></i>
-            Add
-        </a>
+
+    <div class="page-title">
+        <h1>Users</h1>
     </div>
-    <div class="row">
+
+    <table class="filter">
+        <thead>
+        <tr>
+            <th>Filter by name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{ form_start(filterForm) }}
+        <tr>
+            <td valign="center">
+
+                {{ form_widget(filterForm.name) }}
+            </td>
+            <td>
+                {{ form_widget(filterForm.Search) }}
+            </td>
+        </tr>
+        {{ form_end(filterForm) }}
+        </tbody>
+    </table>
+
+    <a href="{{ path('add_user') }}" class="pull-right">
+        <i class="fa fa-plus"></i>
+        Add
+    </a>
+
     {% if users|length %}
-        <table class="table">
+    <table class="request-table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>E-mail</th>
+            <th>{{ knp_pagination_sortable(users, 'Last Name', 'u.lastName') }} <span class="caret"></span></th>
+            <th>First Name</th>
+            <th>{{ knp_pagination_sortable(users, 'Registration date', 'u.createdAt') }} <span class="caret"></span></th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
             <tr>
-                <th>
-                    #
-                </th>
-                <th>
-                    E-mail
-                </th>
-                <th>
-                    {{ knp_pagination_sortable(users, 'Last Name', 'u.lastName') }}
-                </th>
-                <th>
-                    First Name
-                </th>
-                <th>
-                    {{ knp_pagination_sortable(users, 'Registration date', 'u.createdAt') }}
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Actions
-                </th>
+                <td>
+                    {{ user.id }}
+                </td>
+                <td>
+                    {{ user.email }}
+                </td>
+                <td>
+                    {{ user.lastName | capitalize }}
+                </td>
+                <td>
+                    {{ user.firstName | capitalize }}
+                </td>
+                <td>
+                    {{ user.createdAt | date('m/d/Y') }}
+                </td>
+                <td>
+                    {% if activationForm[user.id] is defined %}
+                        {{ form(activationForm[user.id]) }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('edit_user', {'id': user.id}) }}">
+                        <i class="fa fa-pencil"></i>edit
+                    </a>
+                </td>
             </tr>
-            {% for user in users %}
-                <tr>
-                    <td>
-                        {{ user.id }}
-                    </td>
-                    <td>
-                        {{ user.email }}
-                    </td>
-                    <td>
-                        {{ user.lastName | capitalize }}
-                    </td>
-                    <td>
-                        {{ user.firstName | capitalize }}
-                    </td>
-                    <td>
-                        {{ user.createdAt | date('m/d/Y') }}
-                    </td>
-                    <td>
-                        {% if activationForm[user.id] is defined %}
-                            {{ form(activationForm[user.id]) }}
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{{ path('edit_user', {'id': user.id}) }}">
-                            <i class="fa fa-pencil"></i>edit
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        <ul class="pager">
-            {{ knp_pagination_render(users) }}
-        </ul>
-    {% else %}
-        <h1>
-            Nothing found
-        </h1>
-    {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-center">
+        {{ knp_pagination_render(users) }}
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

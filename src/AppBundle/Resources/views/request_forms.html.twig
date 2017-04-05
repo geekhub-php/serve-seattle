@@ -83,11 +83,11 @@
         {% endfor %}
         </tbody>
     </table>
-        <ul class="pager">
-            {{ knp_pagination_render(formRequests) }}
-        </ul>
-    {% endif %}
+    <div class="text-center">
+        {{ knp_pagination_render(formRequests) }}
     </div>
+    {% endif %}
+
 {% endblock %}
 
 {% block javascripts %}

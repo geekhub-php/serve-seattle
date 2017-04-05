@@ -79,7 +79,7 @@ const uglify = require('gulp-uglify');
 const imagemin = require('gulp-imagemin');
 const browserify = require('browserify');
 
-gulp.task("default", ["image", "js", "stylus", "watch"]);
+gulp.task("default", ["css", "image", "js", "stylus", "watch"]);
 
 //Styles_task
 
@@ -98,6 +98,16 @@ gulp.task("stylus", function () {
         .pipe(gulp.dest('./web/css/'));
 });
 
+gulp.task('css', function() {
+    return gulp.src([
+        'bower_components/font-awesome/css/font-awesome.css',
+        'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
+        'node_modules/fullcalendar/dist/fullcalendar.min.css',
+        'node_modules/fullcalendar/dist/fullcalendar.print.min.css',
+        'web-src/css/**/*.css'
+    ])
+        .pipe(gulp.dest('web/css/'));
+});
 //Image_compress_task
 
 gulp.task("image", function () {
@@ -109,19 +119,26 @@ gulp.task("image", function () {
 //Compiling_JS_task
 
 gulp.task('js', function() {
-    gulp.src('./web-src/scripts/*.js')
+    gulp.src([
+        'bower_components/bootstrap/dist/js/bootstrap.min.js',
+        'node_modules/moment/min/moment.min.js',
+        'node_modules/jquery/dist/jquery.min.js',
+        'node_modules/jquery-validation/dist/jquery.validate.min.js',
+        'node_modules/fullcalendar/dist/fullcalendar.min.js',
+        'node_modules/fullcalendar/dist/gcal.min.js',
+        './web-src/scripts/*.js'
+    ])
         .pipe(uglify())
         .pipe(gulp.dest('./web/js/'))
 });
 
-gulp.task('clean', function () {
-    return gulp.src(['web/css/*', 'web/js/*', 'web/fonts/*', 'font-awesome', 'web/img/*'])
-        .pipe(clean());
-});
+// gulp.task('clean', function () {
+//     return gulp.src(['web/css/*', 'web/js/*', 'web/fonts/*', 'font-awesome', 'web/img/*'])
+//         .pipe(clean());
+// });
 
 //Watch_task
 
 gulp.task("watch", function () {
     gulp.watch('./web-src/**/*.styl', ['stylus']);
-    gulp.watch(['web-src/scripts/*.js'], ['js']);
 });

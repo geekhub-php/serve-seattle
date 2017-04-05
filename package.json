@@ -23,7 +23,6 @@
     "bower": "^1.8.0",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
-    "gulp-uglify": "^2.0.1",
     "bootstrap-styl": "^5.0.8",
     "fullcalendar": "^3.2.0",
     "gulp-cssmin": "^0.1.7",
@@ -32,11 +31,10 @@
     "gulp-rename": "^1.2.2",
     "gulp-stylus": "^2.6.0",
     "jquery-ui": "^1.12.1",
+    "jquery-validation": "^1.16.0",
     "nib": "^1.1.2"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.18.0",
-    "babelify": "^7.3.0",
     "browserify": "^13.1.1",
     "browserify-gulp": "^1.0.0",
     "gulp-connect": "^5.0.0",

@@ -21,6 +21,15 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/schedule", name="calendar")
+     * @Template("@App/schedules.html.twig")
+     */
+    public function calendarAction()
+    {
+        return [];
+    }
+
+    /**
      * @Route("/login", name="login")
      *
      * @return array
