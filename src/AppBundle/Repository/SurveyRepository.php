@@ -16,11 +16,13 @@ class SurveyRepository extends \Doctrine\ORM\EntityRepository
     public function selectSurveysByParams($filter)
     {
         $query = $this->createQueryBuilder('Surveys')
-            ->select('s')
+            ->select('s, t, u')
             ->from('AppBundle:Survey\Survey', 's')
             ->join('s.type', 't')
+            ->join('s.user', 'u')
             ->where('s.status = ?1')
             ->setParameter('1', 'submitted')
+            ->orderBy('s.updatedAt', 'DESC')
         ;
 
         if ($filter->type && $filter->type != 'All') {
@@ -37,36 +39,6 @@ class SurveyRepository extends \Doctrine\ORM\EntityRepository
         }
 
         return $query->getQuery()->getResult();
-    }
-
-    public function findSurveyByStatus($status)
-    {
-        $query = $this->createQueryBuilder('s')
-            ->where('s.status = :status')
-            ->setParameter('status', $status)
-            ->orderBy('s.type', 'ASC')
-            ->addOrderBy('s.updatedAt', 'DESC')
-            ->getQuery();
-
-        return $query->getResult();
-    }
-    public function findSurveyByParams(SurveyFilter $parameters)
-    {
-        $type = $parameters->getType();
-        $start = $parameters->getStart();
-        $endDay = $parameters->getEnd();
-        $end = date_time_set($endDay, 23, 59, 59);
-
-        $query = $this->createQueryBuilder('s')
-            ->where('s.type = :type')
-            ->andWhere('s.updatedAt >= :start')
-            ->andWhere('s.updatedAt <= :end')
-            ->andWhere('s.status = :status')
-            ->setParameters(array('type' => $type, 'start' => $start, 'end' => $end, 'status' => 'submited'))
-            ->orderBy('s.updatedAt', 'DESC')
-            ->getQuery();
-
-        return $query->getResult();
     }
 
     public function findSurveyByUser($user)

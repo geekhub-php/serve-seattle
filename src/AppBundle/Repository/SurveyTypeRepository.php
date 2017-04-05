@@ -10,4 +10,27 @@ namespace AppBundle\Repository;
  */
 class SurveyTypeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function selectSurveyTypesByParams($filter)
+    {
+       $query = $this->createQueryBuilder('SurveyTypes')
+            ->select('t , s')
+            ->from('AppBundle:Survey\SurveyType', 't')
+            ->join('t.surveys', 's')
+            ->andWhere('s.status = ?3')
+            ->setParameter('3', 'submitted');
+
+        if ($filter->type && $filter->type != 'All') {
+            $query->andWhere('t.name = ?2')
+                ->setParameter('2', $filter->type);
+        }
+
+        if ($filter->start && $filter->end) {
+            $query->andWhere('s.updatedAt BETWEEN ?4 AND ?5')
+                ->setParameter('4', $filter->getStart())
+                ->setParameter('5', $filter->getEnd())
+            ;
+        }
+
+        return $query->getQuery()->getResult();
+    }
 }

@@ -52,7 +52,7 @@
         </ul>
     </div>
     {% for type in types %}
-        {% if type.surveys is not empty %}
+        {% if type.surveys is not empty  %}
         <table class="request-table table-striped">
         <caption>{{ type.name | capitalize }} surveys</caption>
         <thead>
@@ -64,12 +64,16 @@
         <tbody>
         {% for survey in surveys %}
             {% if type == survey.type %}
-                <tr>
+                <tr {% if survey.isReviewed == false %} style="font-weight: bold" {% endif %}>
                     <td>
-                        <time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.updatedAt|date("m/d/Y") }}</time>
+                        <a href="{{ path('survey', {'id': survey.getId }) }}">
+                            <time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.updatedAt|date("m/d/Y") }}</time>
+                        </a>
                     </td>
                     <td>
-                        {{ survey.user.firstname }} {{ survey.user.lastname }}
+                        <a href="{{ path('survey', {'id': survey.getId }) }}">
+                            {{ survey.user.firstname }} {{ survey.user.lastname }}
+                        </a>
                     </td>
                 </tr>
             {% endif %}
@@ -88,6 +92,7 @@
     <script type="text/javascript" src="/js/bootstrap-datepicker.min.js"></script>
     <script>
         $('.input-daterange').datepicker({
+            clearBtn: true
         });
     </script>
 {% endblock %}

@@ -45,7 +45,6 @@ class Survey
 
     /**
      * @var bool
-     * @Assert\NotBlank()
      * @Assert\Type("bool")
      * @ORM\Column(type="boolean")
      */
