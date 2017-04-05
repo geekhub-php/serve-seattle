@@ -22,8 +22,7 @@ class SurveyRepository extends \Doctrine\ORM\EntityRepository
             ->join('s.user', 'u')
             ->where('s.status = ?1')
             ->setParameter('1', 'submitted')
-            ->orderBy('s.updatedAt', 'DESC')
-        ;
+            ->orderBy('s.updatedAt', 'DESC');
 
         if ($filter->type && $filter->type != 'All') {
             $query->andWhere('t.name = ?2')
@@ -34,14 +33,14 @@ class SurveyRepository extends \Doctrine\ORM\EntityRepository
         if ($filter->start && $filter->end) {
             $query->andWhere('s.createdAt BETWEEN ?3 AND ?4')
                 ->setParameter('3', $filter->getStart())
-                ->setParameter('4', $filter->getEnd())
-            ;
+                ->setParameter('4', $filter->getEnd());
         }
 
         return $query->getQuery()->getResult();
     }
 
-    public function selectLastSurveys(){
+    public function selectLastSurveys()
+    {
         $query = $this->createQueryBuilder('s')
             ->where('s.status = ?1')
             ->setParameter('1', 'submitted')

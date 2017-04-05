@@ -41,7 +41,8 @@ class FormRequestRepository extends \Doctrine\ORM\EntityRepository
         return $query->getQuery();
     }
 
-    public function selectLastRequestForms(){
+    public function selectLastRequestForms()
+    {
         $query = $this->createQueryBuilder('r')
             ->where('r.status = ?1')
             ->setParameter('1', 'pending')
@@ -50,5 +51,4 @@ class FormRequestRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getQuery()->getResult();
     }
-
 }

@@ -12,7 +12,7 @@ class SurveyTypeRepository extends \Doctrine\ORM\EntityRepository
 {
     public function selectSurveyTypesByParams($filter)
     {
-       $query = $this->createQueryBuilder('SurveyTypes')
+        $query = $this->createQueryBuilder('SurveyTypes')
             ->select('t , s')
             ->from('AppBundle:Survey\SurveyType', 't')
             ->join('t.surveys', 's')
