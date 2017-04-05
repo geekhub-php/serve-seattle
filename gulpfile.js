@@ -79,7 +79,7 @@ const uglify = require('gulp-uglify');
 const imagemin = require('gulp-imagemin');
 const browserify = require('browserify');
 
-gulp.task("default", ["css", "image", "js", "stylus", "watch"]);
+gulp.task("default", ["css", "fonts", "image", "js", "stylus"]);
 
 //Styles_task
 
@@ -100,7 +100,6 @@ gulp.task("stylus", function () {
 
 gulp.task('css', function() {
     return gulp.src([
-        'bower_components/font-awesome/css/font-awesome.css',
         'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
         'node_modules/fullcalendar/dist/fullcalendar.min.css',
         'node_modules/fullcalendar/dist/fullcalendar.print.min.css',
@@ -132,10 +131,12 @@ gulp.task('js', function() {
         .pipe(gulp.dest('./web/js/'))
 });
 
-// gulp.task('clean', function () {
-//     return gulp.src(['web/css/*', 'web/js/*', 'web/fonts/*', 'font-awesome', 'web/img/*'])
-//         .pipe(clean());
-// });
+gulp.task('fonts', function () {
+    return gulp.src([
+        'bower_components/font-awesome/**'
+    ])
+        .pipe(gulp.dest('./web/fonts/'))
+});
 
 //Watch_task
 

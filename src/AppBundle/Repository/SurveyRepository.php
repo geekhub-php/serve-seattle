@@ -41,6 +41,16 @@ class SurveyRepository extends \Doctrine\ORM\EntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function selectLastSurveys(){
+        $query = $this->createQueryBuilder('s')
+            ->where('s.status = ?1')
+            ->setParameter('1', 'submitted')
+            ->orderBy('s.updatedAt', "DESC")
+            ->setMaxResults(5);
+
+        return $query->getQuery()->getResult();
+    }
+
     public function findSurveyByUser($user)
     {
         $query = $this->createQueryBuilder('s')

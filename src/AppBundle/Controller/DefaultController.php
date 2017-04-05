@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\FormRequest;
+use AppBundle\Entity\Survey\Survey;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,7 +19,14 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return [];
+        $em = $this->getDoctrine()->getManager();
+
+        $surveys = $em->getRepository(Survey::class)->selectLastSurveys();
+        $requestForms = $em->getRepository(FormRequest::class)->selectLastRequestForms();
+        return [
+            'surveys' => $surveys,
+            'requestForms' => $requestForms,
+        ];
     }
 
     /**

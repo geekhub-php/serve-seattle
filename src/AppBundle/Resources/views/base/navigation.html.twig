@@ -27,8 +27,7 @@
                 <li class="{{ 'admin_info' in app.request.get('_route') ? 'active' : '' }}">
                     <a href="{{ path('admin_info') }}">Hi, {{ app.user.userName }}</a>
                 </li>
-                <a href="{{ path('logout') }}">Sign out</a>
-                <button class="btn btn-primary navbar-btn">Button</button>
+                <a class="btn btn-primary navbar-btn" href="{{ path('logout') }}">Sign out</a>
             </ul>
         </div>
     </nav>

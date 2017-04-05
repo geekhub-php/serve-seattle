@@ -57,7 +57,7 @@
         </thead>
         <tbody>
         {% for formRequest in formRequests %}
-            <tr>
+            <tr id="{{ formRequest.id }}">
                 <td>
                     {{ formRequest.createdAt | date('m/d/Y') }}
                 </td>

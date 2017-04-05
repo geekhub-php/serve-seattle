@@ -42,6 +42,7 @@ class FormRequestController extends Controller
             $request->query->getInt('page', 1),
             10
         );
+
         $approveForms = [];
 
         foreach ($formRequests as $formRequest) {
