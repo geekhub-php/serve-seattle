@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormRequestFilterType extends AbstractType
@@ -31,6 +30,7 @@ class FormRequestFilterType extends AbstractType
                 'format' => 'MM/dd/yyyy',
             ])
             ->add('type', ChoiceType::class, [
+                'attr' => ['class' => 'input-sm form-control'],
                 'choices' => [
                     'All' => 'All',
                     'Personal Day' => 'Personal Day',
@@ -39,13 +39,15 @@ class FormRequestFilterType extends AbstractType
                 ],
             ])
             ->add('decision', ChoiceType::class, [
+                'attr' => ['class' => 'input-sm form-control'],
                 'choices' => [
                     'All' => 'All',
                     'Approved' => 'approved',
                     'Rejected' => 'rejected',
                     'No Decision' => 'pending',
                 ],
-            ]);
+            ])
+        ;
     }
 
     /**
@@ -55,7 +57,6 @@ class FormRequestFilterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Filter::class,
-            'method' => Request::METHOD_GET,
             'csrf_protection' => false,
         ]);
     }

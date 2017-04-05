@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Request Forms
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css" />
+{% endblock %}
+
+{% block content %}
+    <div class="page-title">
+        <h1>Request forms</h1>
+    </div>
+
+    {{ form_start(filterForm) }}
+    <table class="filter">
+        <thead>
+        <tr>
+            <th>Filter by date</th>
+            <th>by Type</th>
+            <th>by Decision</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td valign="center">
+                <div class="input-daterange input-group" id="datepicker">
+                {{ form_widget(filterForm.start) }}
+                <span class="input-group-addon">to</span>
+                {{ form_widget(filterForm.end) }}
+                </div>
+            </td>
+            <td>
+                {{ form_widget(filterForm.type) }}
+            </td>
+            <td>
+                {{ form_widget(filterForm.decision) }}
+            </td>
+            <td>
+                {{ form_widget(filterForm.Search) }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {{ form_end(filterForm) }}
+
+    {% if formRequests|length %}
+    <table class="request-table table-striped">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Intern Name</th>
+            <th>Request type</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for formRequest in formRequests %}
+            <tr>
+                <td>
+                    {{ formRequest.createdAt | date('m/d/Y') }}
+                </td>
+                <td>
+                    {{ formRequest.user.lastName }}
+                    {{ formRequest.user.firstName }}
+                </td>
+                <td>
+                    {{ formRequest.type | capitalize }}
+                </td>
+                <td>
+                    {% if formRequest.status == 'pending' %}
+                        {% if approveForms[formRequest.id] %}
+                            {{ form(approveForms[formRequest.id]) }}
+                            {#<button class="btn reject"></button>#}
+                            {#<button class="btn accept"></button>#}
+                        {% endif %}
+                    {% else %}
+                        {{ formRequest.status | capitalize }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <ul class="pager">
+            {{ knp_pagination_render(formRequests) }}
+        </ul>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        $('.input-daterange').datepicker({
+            clearBtn: true
+        });
+        $('document').ready(function () {
+            $('input[type=radio]').click(function() {
+                if (confirm("Are you really want to approve/reject?")){
+                    this.parentNode.parentNode.parentNode.parentNode.submit();
+                } else {
+                    return false;
+                }
+            })
+        });
+    </script>
+{% endblock %}

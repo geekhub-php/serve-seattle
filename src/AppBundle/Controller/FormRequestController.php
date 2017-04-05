@@ -23,7 +23,7 @@ class FormRequestController extends Controller
 {
     /**
      * @Route("", name="form_request_list")
-     * @Template("@App/FormRequest/list.html.twig")
+     * @Template("@App/request_forms.html.twig")
      *
      * @param Request $request
      *

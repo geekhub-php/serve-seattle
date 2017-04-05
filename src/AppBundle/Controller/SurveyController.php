@@ -6,7 +6,7 @@ use AppBundle\Entity\Survey\SurveyAnswer;
 use AppBundle\Entity\Survey\SurveyType;
 use AppBundle\Entity\Survey\Survey;
 use AppBundle\Entity\DTO\Filter;
-use AppBundle\Form\SurveyFilterType;
+use AppBundle\Form\DTO\SurveyFilterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
