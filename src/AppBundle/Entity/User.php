@@ -466,16 +466,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Get enabled.
-     *
-     * @return bool
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
      * Add event.
      *
      * @param \AppBundle\Entity\Event $event
