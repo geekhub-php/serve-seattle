@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * @Route("/form-request", name="form_requests")
@@ -63,7 +64,15 @@ class FormRequestController extends JsonController
             'json',
             ['object_to_populate' => $formRequest]
         );
-
+        $errors = $this->get('validator')->validate($formRequest);
+        if ($errors->count()) {
+            $outErrors = [];
+            /** @var ConstraintViolation $error */
+            foreach ($errors as $error) {
+                $outErrors[$error->getPropertyPath()] = $error->getMessage();
+            }
+            throw new JsonHttpException(400, 'Bad Request', $outErrors);
+        }
         $em->persist($formRequest);
         $em->flush();
 
@@ -76,8 +85,8 @@ class FormRequestController extends JsonController
         return $this->json([
             'success' => [
                 'code' => 200,
-                'message' => 'Request form created.'
-            ]
+                'message' => 'Request form created.',
+            ],
         ], 200);
     }
 }

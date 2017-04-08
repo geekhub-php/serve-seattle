@@ -149,7 +149,7 @@ class SurveyType
     }
 
     /**
-     * Add section
+     * Add section.
      *
      * @param \AppBundle\Entity\Survey\SurveyTypeSection $section
      *
@@ -163,7 +163,7 @@ class SurveyType
     }
 
     /**
-     * Remove section
+     * Remove section.
      *
      * @param \AppBundle\Entity\Survey\SurveyTypeSection $section
      */
@@ -173,7 +173,7 @@ class SurveyType
     }
 
     /**
-     * Add survey
+     * Add survey.
      *
      * @param \AppBundle\Entity\Survey\Survey $survey
      *
@@ -187,7 +187,7 @@ class SurveyType
     }
 
     /**
-     * Remove survey
+     * Remove survey.
      *
      * @param \AppBundle\Entity\Survey\Survey $survey
      */

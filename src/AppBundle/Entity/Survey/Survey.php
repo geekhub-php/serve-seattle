@@ -221,7 +221,7 @@ class Survey
     }
 
     /**
-     * Add answer
+     * Add answer.
      *
      * @param \AppBundle\Entity\Survey\SurveyAnswer $answer
      *
@@ -235,7 +235,7 @@ class Survey
     }
 
     /**
-     * Remove answer
+     * Remove answer.
      *
      * @param \AppBundle\Entity\Survey\SurveyAnswer $answer
      */

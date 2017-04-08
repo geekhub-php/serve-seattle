@@ -466,9 +466,9 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Get enabled
+     * Get enabled.
      *
-     * @return boolean
+     * @return bool
      */
     public function getEnabled()
     {
@@ -476,7 +476,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Add event
+     * Add event.
      *
      * @param \AppBundle\Entity\Event $event
      *
@@ -490,7 +490,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Remove event
+     * Remove event.
      *
      * @param \AppBundle\Entity\Event $event
      */
@@ -500,7 +500,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Add formRequest
+     * Add formRequest.
      *
      * @param \AppBundle\Entity\FormRequest $formRequest
      *
@@ -514,7 +514,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Remove formRequest
+     * Remove formRequest.
      *
      * @param \AppBundle\Entity\FormRequest $formRequest
      */
@@ -524,7 +524,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Add survey
+     * Add survey.
      *
      * @param Survey $survey
      *
@@ -537,9 +537,8 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-
     /**
-     * Get surveys
+     * Get surveys.
      *
      * @return ArrayCollection
      */

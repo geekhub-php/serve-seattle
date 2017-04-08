@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SurveyControllerTest extends WebTestCase
 {
-
     public function testSurvey()
     {
         exec('./bin/console d:d:c --env=test');
