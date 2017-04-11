@@ -40,6 +40,9 @@ class DefaultController extends JsonController
         if (!$user) {
             throw new JsonHttpException(400, 'Bad credentials');
         }
+        if (!$user->isEnabled()) {
+            throw new JsonHttpException(400, 'Account is not enabled.');
+        }
 
         $result = $this->get('security.encoder_factory')
             ->getEncoder($user)
