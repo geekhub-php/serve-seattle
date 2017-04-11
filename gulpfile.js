@@ -34,7 +34,7 @@ gulp.task("stylus", function () {
 
 gulp.task('calendar_print', function() {
     return gulp.src([
-        'node_modules/fullcalendar/dist/fullcalendar.print.min.css',
+        'node_modules/fullcalendar/dist/fullcalendar.print.min.css'
     ])
         .pipe(gulp.dest('./web/css/'));
 });
