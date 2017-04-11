@@ -466,23 +466,13 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Get enabled
-     *
-     * @return boolean
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
      * Add event
      *
-     * @param \AppBundle\Entity\Event $event
+     * @param Event $event
      *
      * @return User
      */
-    public function addEvent(\AppBundle\Entity\Event $event)
+    public function addEvent(Event $event)
     {
         $this->events[] = $event;
 
@@ -492,9 +482,9 @@ class User implements UserInterface, \Serializable
     /**
      * Remove event
      *
-     * @param \AppBundle\Entity\Event $event
+     * @param Event $event
      */
-    public function removeEvent(\AppBundle\Entity\Event $event)
+    public function removeEvent(Event $event)
     {
         $this->events->removeElement($event);
     }
@@ -502,11 +492,11 @@ class User implements UserInterface, \Serializable
     /**
      * Add formRequest
      *
-     * @param \AppBundle\Entity\FormRequest $formRequest
+     * @param FormRequest $formRequest
      *
      * @return User
      */
-    public function addFormRequest(\AppBundle\Entity\FormRequest $formRequest)
+    public function addFormRequest(FormRequest $formRequest)
     {
         $this->formRequests[] = $formRequest;
 
@@ -516,9 +506,9 @@ class User implements UserInterface, \Serializable
     /**
      * Remove formRequest
      *
-     * @param \AppBundle\Entity\FormRequest $formRequest
+     * @param FormRequest $formRequest
      */
-    public function removeFormRequest(\AppBundle\Entity\FormRequest $formRequest)
+    public function removeFormRequest(FormRequest $formRequest)
     {
         $this->formRequests->removeElement($formRequest);
     }
