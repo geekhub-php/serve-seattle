@@ -4,9 +4,6 @@
     Request Forms
 {% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('/css/bootstrap-datepicker.css') }}" />
-{% endblock %}
 
 {% block content %}
     <div class="page-title">
@@ -91,9 +88,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
-        $('.input-daterange').datepicker({
+        $(".input-daterange").datepicker({
             clearBtn: true
         });
         $('document').ready(function () {
