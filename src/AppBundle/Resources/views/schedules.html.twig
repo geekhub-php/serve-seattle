@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('/css/fullcalendar.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/fullcalendar.print.min.css') }}" media="print">
-{% endblock %}
-
 {% block title %}
     Dashboards
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('/css/fullcalendar.print.min.css') }}" media="print">
 {% endblock %}
 
 {% block content %}
@@ -146,13 +145,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <!--SCRIPTS-->
-    <script src="{{ asset('/js/moment.min.js') }}"></script>
-    <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('/js/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('/js/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('/js/gcal.min.js') }}"></script>
-
     <script>
         $(document).ready(function () {
 
