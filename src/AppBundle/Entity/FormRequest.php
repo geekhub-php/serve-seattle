@@ -68,7 +68,8 @@ class FormRequest
     /**
      * @var string
      *
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(min="5", max="100")
      * @Groups({"Detail"})
      */
     private $reason;
