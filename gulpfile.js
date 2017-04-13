@@ -4,7 +4,6 @@ const stylus = require("gulp-stylus");
 const cssmin = require("gulp-cssmin");
 const plumber = require("gulp-plumber");
 const bootstrap = require("bootstrap-styl");
-const source = require('vinyl-source-stream');
 const uglify = require('gulp-uglify');
 const clean = require('gulp-clean');
 const concat = require('gulp-concat');
@@ -20,6 +19,7 @@ gulp.task("stylus", function () {
             './web-src/styl/index.styl',
             'web-src/css/**/*.css',
             'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
+            'node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
             'node_modules/fullcalendar/dist/fullcalendar.min.css'
         ])
         .pipe(plumber())
@@ -56,7 +56,8 @@ gulp.task('js', function() {
         'node_modules/fullcalendar/dist/fullcalendar.min.js',
         'node_modules/fullcalendar/dist/gcal.min.js',
         'node_modules/jquery-validation/dist/jquery.validate.min.js',
-        'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js'
+        'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
+        'node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'
     ])
         .pipe(uglify())
         .pipe(concat('app.min.js'))
@@ -66,7 +67,8 @@ gulp.task('js', function() {
 gulp.task('fonts', function () {
     return gulp.src([
         'node_modules/font-awesome/css/*',
-        'node_modules/font-awesome/fonts/*'
+        'node_modules/font-awesome/fonts/*',
+        'node_modules/bootstrap/dist/fonts/*'
     ])
         .pipe(gulp.dest('./web/fonts/'))
 });

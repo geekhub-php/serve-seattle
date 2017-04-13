@@ -24,9 +24,9 @@
     text-decoration underline
     color black
 
-  .reject
+  .rejected
     position relative
-    @extends .btn-danger
+    @extends .btn, .btn-danger
     size(30px)
 
     &::after
@@ -37,9 +37,9 @@
       color white
       centralizer(true, true)
 
-  .accept
+  .approved
     position relative
-    @extends .btn-success
+    @extends .btn, .btn-success
     size(30px)
 
     &::after
@@ -49,9 +49,3 @@
       font-size 14px
       color white
       centralizer(true, true)
-
-  .approved
-    color $btn-success-bg
-
-  .rejected
-    color $btn-danger-bg
