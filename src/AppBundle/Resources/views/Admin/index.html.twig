@@ -7,11 +7,11 @@
 {% block content %}
     <div class="col-sm-6">
         <h1>
-            {{ admin.username }}
+           Username: {{ admin.username }}
         </h1>
-        {{ admin.email }}
+        E-mail:  {{ admin.email }}
     </div>
     <div class="col-sm-6">
-        {{ form(editForm) }}
+        {{ form(editForm, {'attr': {'class': 'edit_form'}}) }}
     </div>
 {% endblock %}

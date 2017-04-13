@@ -5,5 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    {{ form(form) }}
+    <div class="col-sm-6 col-sm-offset-3">
+        {{ form(form, {'attr': {'class': 'edit_form'}}) }}
+    </div>
 {% endblock %}
