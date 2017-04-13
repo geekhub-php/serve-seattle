@@ -71,8 +71,8 @@
                 </td>
                 <td>
                     {% if formRequest.status == 'pending' %}
-                        <button class="btn reject"></button>
-                        <button class="btn accept"></button>
+                        <button class="rejected"></button>
+                        <button class="accepted"></button>
                     {% else %}
                         {{ formRequest.status | capitalize }}
                     {% endif %}
