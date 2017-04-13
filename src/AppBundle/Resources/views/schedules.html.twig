@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('/css/fullcalendar.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/css/fullcalendar.print.min.css') }}" media="print">
-{% endblock %}
-
 {% block title %}
     Dashboards
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('/css/fullcalendar.print.min.css') }}" media="print">
 {% endblock %}
 
 {% block content %}
@@ -14,7 +13,6 @@
         <h1>Schedules</h1>
         <div id='calendar'></div>
     </div>
-
     <!--event modal-->
     <div id="eventModal" class="popup modal fade in" tabindex="1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="container-fluid">
@@ -38,26 +36,32 @@
                                 type="text"
                                 class="form-control"
                                 placeholder="Event location"
+                                name="location"
                                 id="eventLocation"
                         >
                         <input
                                 required
-                                type="datetime-local"
+                                type="text"
                                 placeholder="Event start"
                                 class="form-control"
+                                name="start"
                                 id="eventStart"
+                                onkeydown="return false"
                         >
                         <input
                                 required
-                                type="datetime-local"
+                                type="text"
                                 class="form-control"
+                                name="end"
                                 placeholder="Event end "
                                 id="eventEnd"
+                                onkeydown="return false"
                         >
                         <textarea
                                 required
                                 id="eventDescription"
                                 class="form-control"
+                                name="description"
                                 placeholder="Description"
                                 rows="5">
                         </textarea>
@@ -83,18 +87,19 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="modal-header">
-                    <h3 class="text-center">Remove event</h3>
+                    <h3 class="text-center">Edit event</h3>
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="input-group">
-                    <form action="">
+                    <form action="" id="formUpdateEvent">
                         <input
                                 required
                                 type="text"
                                 class="form-control"
                                 placeholder="Title"
                                 id="updateTitle"
+                                name="name"
                         >
                         <input
                                 required
@@ -102,25 +107,31 @@
                                 class="form-control"
                                 placeholder="Event location"
                                 id="updateLocation"
+                                name="location"
                         >
                         <input
                                 required
-                                type="datetime-local"
+                                type="text"
                                 placeholder="Event start"
                                 class="form-control"
                                 id="updateStart"
+                                onkeydown="return false"
+                                name="start"
                         >
                         <input
                                 required
-                                type="datetime-local"
+                                type="text"
                                 class="form-control"
                                 placeholder="Event end "
                                 id="updateEnd"
+                                onkeydown="return false"
+                                name="end"
                         >
                         <textarea
                                 required
                                 id="updateDescription"
                                 class="form-control"
+                                name="description"
                                 placeholder="Description"
                                 rows="5">
                         </textarea>
@@ -146,13 +157,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <!--SCRIPTS-->
-    <script src="{{ asset('/js/moment.min.js') }}"></script>
-    <script src="{{ asset('/js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('/js/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('/js/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('/js/gcal.min.js') }}"></script>
-
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     <script>
         $(document).ready(function () {
 
@@ -181,15 +187,28 @@
             var removeEventBtn = $('#removeEventBtn');
             var currentEvent;
 //  Format date
-            var date = new Date();
-            moment(date).format();
 
             $('#formNewEvent').validate({
                 rules: {
-                    name: {
-                        required: true
-                    }
+                    name: "required",
+                    start: "required",
+                    end: "required",
+                    location: "required",
+                    description: "required"
                 }
+            });
+            $('#formUpdateEvent').validate({
+                rules: {
+                    name: "required",
+                    start: "required",
+                    end: "required",
+                    location: "required",
+                    description: "required"
+                }
+            });
+
+            $('#eventStart, #eventEnd,#updateStart, #updateEnd').datetimepicker({
+                format: "DD.MM.YYYY HH:mm"
             });
 
             calendar.fullCalendar({
@@ -209,8 +228,9 @@
 
                             var userList = {
                                 "async": true,
-                                "crossDomain": true,
-                                "url": "http://104.236.31.247/app_dev.php/users-list",
+//                                "crossDomain": true,
+//                                "url": "http://104.236.31.247/app_dev.php/users-list",
+                                "url": Routing.generate('users-list'),
                                 "method": "GET",
                                 "headers": {
                                     "content-type": "application/json",
@@ -236,24 +256,29 @@
                 selectable: true,
                 selectHelper: true,
                 editable: true,
+                timeFormat: 'H:mm',
                 eventRender: function (event, element) {
                     element.find('.fc-title').append('<div class="hr-line-solid-no-margin"><span style="font-size: 10px">' + event.description + '</span></div>');
                 },
                 eventClick: function (event, element) {
                     currentEvent = event;
-
                     updateTitle.val(event.title);
                     updateDescription.val(event.description);
                     updateLocation.val(event.location);
-                    updateStart.val(event.start);
-                    updateEnd.val(event.end);
+                    updateStart.val(event.start.format("DD.MM.YYYY HH:mm"));
+                    if(event.end == null) {
+                        updateEnd.val(event.start.format("DD.MM.YYYY HH:mm"));
+                    } else {
+                        updateEnd.val(event.end.format("DD.MM.YYYY HH:mm"));
+                    }
                     updateEvent.modal('show');
                     updateTitle.focus();
 
                     var updateUserList = {
                         "async": true,
-                        "crossDomain": true,
-                        "url": "http://104.236.31.247/app_dev.php/users-list",
+//                        "crossDomain": true,
+//                        "url": "http://104.236.31.247/app_dev.php/users-list",
+                        "url": Routing.generate('users-list'),
                         "method": "GET",
                         "headers": {
                             "content-type": "application/json",
@@ -264,18 +289,24 @@
 
                     $.ajax(updateUserList).done(function (response) {
                         response.users.forEach(function (elem, index) {
-                            updateUser.append('<option value="' + elem.id + '">' + elem.firstName + ' ' + elem.lastName + '</option>')
+                            updateUser.append('<option value="' + elem.id + '">' + elem.firstName + ' ' + elem.lastName +
+                                '</option>');
                         })
                     });
 
                 },
                 eventLimit: true, // allow "more" link when too many events
                 events: function (start, end, timezone, callback) {
+                    var view = $('#calendar').fullCalendar('getView'),
+                        start = view.start._d.toISOString(),
+                        end = view.end._d.toISOString();
 
                     $.ajax({
                         "async": true,
-                        "crossDomain": true,
-                        "url": "http://104.236.31.247/app_dev.php/schedule/events?singleEvents=1",
+//                        "crossDomain": true,
+//                        "url": "http://104.236.31.247/app_dev.php/schedule/events?singleEvents=1&timeMin=" + start +
+//                        "&timeMax=" + end,
+                        "url": Routing.generate('events-list', {singleEvents: 1, timeMin: start, timeMax: end}),
                         "method": "GET",
                         "headers": {
                             "content-type": "application/json",
@@ -286,15 +317,10 @@
                         success: function (data) {
                             var events = [];
                             data.events.forEach(function (elem, index) {
-                                events.push({
-                                    "user": elem.user,
-                                    "title": elem.title,
-                                    "description": elem.description,
-                                    "location": elem.location,
-                                    "start": elem.start,
-                                    "end": elem.end,
-                                    "id": elem.id
-                                })
+                                events.push(elem);
+                                var time = moment.duration("07:00:00");
+                                events[index].start = (moment(elem.start).subtract(time).toISOString());
+                                events[index].end = (moment(elem.end).subtract(time).toISOString());
                             });
                             callback(events);
                         }
@@ -304,12 +330,16 @@
 
             eventSubmit.on('click', function (e) {
                 e.preventDefault();
-                doSubmit();
+                if ($('#formNewEvent').valid()) {
+                    doSubmit();
+                }
             });
 
             updateSubmit.on('click', function (e) {
                 e.preventDefault();
-                updateEventSubmit(currentEvent);
+                if ($('#formUpdateEvent').valid()) {
+                    updateEventSubmit(currentEvent);
+                }
             });
 
             removeEventBtn.on('click', function (e) {
@@ -324,15 +354,16 @@
                         "summary": eventTitle.val(),
                         "description": eventDescription.val(),
                         "location": eventLocation.val(),
-                        "start": eventStart.val() + ':00-07:00',
-                        "end": eventEnd.val() + ':00-07:00'
+                        "start": moment(eventStart.val(),"DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00',
+                        "end": moment(eventEnd.val(),"DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00'
                     }
                 };
 
                 var newEvent = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://104.236.31.247/app_dev.php/schedule/events",
+//                    "url": "http://104.236.31.247/app_dev.php/schedule/events",
+                    "url": Routing.generate('new-event'),
                     "method": "POST",
                     "headers": {
                         "content-type": "application/json",
@@ -345,12 +376,9 @@
 
                 $.ajax(newEvent).done(function (response) {
                     console.log(response);
+                    setTimeout("window.location.reload()", 500);
                 });
-
-                setTimeout("window.location.reload()", 3500);
-
                 eventModal.modal('hide');
-//            calendar.fullCalendar( 'renderEvent', event , true );
             }
 
             function updateEventSubmit(event) {
@@ -360,15 +388,16 @@
                         "summary": updateTitle.val(),
                         "description": updateDescription.val(),
                         "location": updateLocation.val(),
-                        "start": updateStart.val() + ':00-07:00',
-                        "end": updateEnd.val() + ':00-07:00'
+                        "start": moment(updateStart.val(),"DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00',
+                        "end": moment(updateEnd.val(),"DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00'
                     }
                 };
 
                 var update = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+//                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+                    "url": Routing.generate('edit-event', {id: event.id}),
                     "method": "PATCH",
                     "headers": {
                         "content-type": "application/json",
@@ -381,11 +410,12 @@
 
                 $.ajax(update).done(function (response) {
                     console.log(response);
-                });
+                    setTimeout("window.location.reload()", 500);
 
-                setTimeout("window.location.reload()",3500);
+                });
                 updateEvent.modal('hide');
                 $('#calendar').fullCalendar('updateEvent', event.id);
+
 
             }
 
@@ -393,7 +423,8 @@
                 var removeEvent = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+//                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+                    "url": Routing.generate('remove-event', {id: event.id}),
                     "method": "DELETE",
                     "headers": {
                         "content-type": "application/json",

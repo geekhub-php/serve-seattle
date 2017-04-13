@@ -11,8 +11,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class FormRequestController.
@@ -63,36 +63,43 @@ class FormRequestController extends Controller
     }
 
     /**
-     * @Route("/form_request/approve/{id}", name="form_approve")
+     * @Route("/form_request/approve", name="form_approve")
      *
      * @Method("PUT")
      *
      * @param Request     $request
-     * @param FormRequest $formRequest
      *
-     * @return RedirectResponse
+     * @return Response|false
      */
-    public function activationAction(Request $request, FormRequest $formRequest)
+    public function activationAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(FormRequestType::class, $formRequest, [
-            'method' => 'PUT',
-            'action' => $this->generateUrl('form_approve', ['id' => $formRequest->getId()]),
-        ]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em->persist($formRequest);
-                $em->flush();
-                $this->get('app.email_notification')->sendNotification(
-                    $formRequest->getUser()->getEmail(),
-                    'Form request action',
-                    'Hello, '.$formRequest->getUser()->getFirstName().'. 
-                    Your form request was '.$formRequest->getStatus().'.'
-                );
-            }
+        $status = $request->request->get('status');
+        $id = $request->request->get('id');
+
+        if (!$status || !$id) {
+            return false;
         }
 
-        return $this->redirect($this->generateUrl('form_request_list'));
+        $em = $this->getDoctrine()->getManager();
+        $formRequest = $em->getRepository(FormRequest::class)->find($id);
+        if (!$formRequest) {
+            return false;
+        }
+
+        if ($status !== 'approved' && $status !== 'rejected') {
+            return false;
+        }
+
+        $formRequest->setStatus($status);
+        $em->flush();
+
+        $this->get('app.email_notification')->sendNotification(
+            $formRequest->getUser()->getEmail(),
+            'Form request action',
+            'Hello, '.$formRequest->getUser()->getFirstName().'.
+            Your form request was '.$formRequest->getStatus().'.'
+        );
+
+         return new Response($status);
     }
 }

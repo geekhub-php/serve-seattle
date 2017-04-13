@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Mcfedr\JsonFormBundle\McfedrJsonFormBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new AppBundle\AppBundle()
         ];
 
