@@ -65,6 +65,15 @@ class FormRequest
      */
     private $date;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Length(min="5", max="100")
+     * @Groups({"Detail"})
+     */
+    private $reason;
+
     public function __construct()
     {
         $this->setStatus('pending');
@@ -178,4 +187,25 @@ class FormRequest
     {
         return $this->date;
     }
+
+    /**
+     * @return string
+     */
+    public function getReason()
+    {
+        return $this->reason;
+    }
+
+    /**
+     * @param string $reason
+     *
+     * @return $this
+     */
+    public function setReason($reason)
+    {
+        $this->reason = $reason;
+
+        return $this;
+    }
+
 }

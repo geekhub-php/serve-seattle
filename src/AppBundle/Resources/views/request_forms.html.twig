@@ -67,12 +67,12 @@
                     {{ formRequest.type | capitalize }}
                 </td>
                 <td>
-                    {{ formRequest.reason }}
+                    {{ formRequest.reason | capitalize }}
                 </td>
                 <td>
                     {% if formRequest.status == 'pending' %}
-                        <button class="approved"></button>
-                        <button class="rejected"></button>
+                        <button class="btn reject"></button>
+                        <button class="btn accept"></button>
                     {% else %}
                         {{ formRequest.status | capitalize }}
                     {% endif %}
