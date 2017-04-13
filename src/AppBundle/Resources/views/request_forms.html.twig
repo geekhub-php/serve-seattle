@@ -49,6 +49,7 @@
             <th>Date</th>
             <th>Intern Name</th>
             <th>Request type</th>
+            <th>Reason</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -64,6 +65,9 @@
                 </td>
                 <td>
                     {{ formRequest.type | capitalize }}
+                </td>
+                <td>
+                    {{ formRequest.reason | capitalize }}
                 </td>
                 <td>
                     {% if formRequest.status == 'pending' %}
