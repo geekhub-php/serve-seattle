@@ -49,6 +49,7 @@
             <th>Date</th>
             <th>Intern Name</th>
             <th>Request type</th>
+            <th>Reason</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -66,9 +67,12 @@
                     {{ formRequest.type | capitalize }}
                 </td>
                 <td>
+                    {{ formRequest.reason }}
+                </td>
+                <td>
                     {% if formRequest.status == 'pending' %}
-                        <button class="btn accept"></button>
-                        <button class="btn reject"></button>
+                        <button class="approved"></button>
+                        <button class="rejected"></button>
                     {% else %}
                         {{ formRequest.status | capitalize }}
                     {% endif %}
@@ -91,23 +95,24 @@
         });
         $('document').ready(function () {
             $('tr button').click(function() {
-                if (confirm("Are you really want to approve/reject?")){
-                    console.log(this.parentNode.parentNode.id);
+                if (confirm("Are you really want to approve/reject?")) {
                     var id = this.parentNode.parentNode.id;
+                    var status = this.className;
+                    var tr = this.parentNode;
+                    console.log(tr);
                     var request = $.ajax({
                         url: "{{ path('form_approve') }}",
                         method: "PUT",
-                        data: { status : 'approved', 'id': id },
+                        data: { 'status' : status, 'id': id },
                         dataType: "html"
                     });
 
-                    request.done(function(response) {
-                       alert(response);
-                    });
+                    tr.innerHTML = status.replace(/\b\w/g, function(l){ return l.toUpperCase() });
 
                     request.fail(function( jqXHR, textStatus ) {
-                        alert( "Request failed: " + textStatus );
+                        tr.innerHTML = "error";
                     });
+
                 } else {
                     return false;
                 }
