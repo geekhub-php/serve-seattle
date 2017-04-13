@@ -76,7 +76,7 @@ class FormRequestController extends Controller
         $status = $request->request->get('status');
         $id = $request->request->get('id');
 
-        if(!$status || !$id){
+        if (!$status || !$id) {
             return false;
         }
 
@@ -93,12 +93,12 @@ class FormRequestController extends Controller
         $formRequest->setStatus($status);
         $em->flush();
 
-         $this->get('app.email_notification')->sendNotification(
-                $formRequest->getUser()->getEmail(),
-                'Form request action',
-                'Hello, '.$formRequest->getUser()->getFirstName().'.
-                Your form request was '.$formRequest->getStatus().'.'
-         );
+        $this->get('app.email_notification')->sendNotification(
+            $formRequest->getUser()->getEmail(),
+            'Form request action',
+            'Hello, '.$formRequest->getUser()->getFirstName().'.
+            Your form request was '.$formRequest->getStatus().'.'
+        );
 
          return new Response($status);
     }

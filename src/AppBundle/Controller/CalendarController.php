@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CalendarController extends JsonController
 {
     /**
-     * @Route("/")
+     * @Route("/", name="events-list", options={"expose"=true})
      * @Method("GET")
      *
      * @return JsonResponse
@@ -38,7 +38,7 @@ class CalendarController extends JsonController
 
     /**
      * @param Request $request
-     * @Route("")
+     * @Route("", name="new-event", options={"expose"=true})
      * @Method("POST")
      *
      * @return JsonResponse
@@ -82,7 +82,7 @@ class CalendarController extends JsonController
 
     /**
      * @param $id
-     * @Route("/{id}")
+     * @Route("/{id}", name="single-event", options={"expose"=true})
      * @Method("GET")
      *
      * @return JsonResponse
@@ -105,7 +105,7 @@ class CalendarController extends JsonController
     }
 
     /**
-     * @Route("/user/{id}")
+     * @Route("/user/{id}", name="user-events", options={"expose"=true})
      * @Method("GET")
      *
      * @return JsonResponse
@@ -134,7 +134,7 @@ class CalendarController extends JsonController
 
     /**
      * @param $id
-     * @Route("/{id}")
+     * @Route("/{id}", name="remove-event", options={"expose"=true})
      * @Method("DELETE")
      *
      * @return JsonResponse
@@ -155,7 +155,7 @@ class CalendarController extends JsonController
     /**
      * @param Request $request
      * @Method("PATCH")
-     * @Route("/{id}")
+     * @Route("/{id}", name="edit-event", options={"expose"=true})
      *
      * @return JsonResponse
      */

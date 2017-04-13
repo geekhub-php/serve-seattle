@@ -33,7 +33,7 @@
                             {% for survey in surveys %}
                             <li>
                                 <span>{{ survey.updatedAt | date('m/d/Y') }}</span>
-                                <p>New<a href="{{ path('survey', {'id' : survey.id}) }}">submission</a>on "Your Experience so Far: {{ survey.type.name | capitalize }} Survey (1/15/2017)" from {{ survey.user.firstname }} {{ survey.user.lastname }}</p>
+                                <p>New<a href="{{ path('survey', {'id' : survey.id}) }}">submission</a>on "Your Experience so Far: {{ survey.type.name | capitalize }} Survey" from {{ survey.user.firstname }} {{ survey.user.lastname }}</p>
                             </li>
                             {% endfor %}
                         </ul>

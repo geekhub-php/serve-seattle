@@ -157,8 +157,9 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     <script>
-
         $(document).ready(function () {
 
 //  New Event
@@ -227,8 +228,9 @@
 
                             var userList = {
                                 "async": true,
-                                "crossDomain": true,
-                                "url": "http://104.236.31.247/app_dev.php/users-list",
+//                                "crossDomain": true,
+//                                "url": "http://104.236.31.247/app_dev.php/users-list",
+                                "url": Routing.generate('users-list'),
                                 "method": "GET",
                                 "headers": {
                                     "content-type": "application/json",
@@ -274,8 +276,9 @@
 
                     var updateUserList = {
                         "async": true,
-                        "crossDomain": true,
-                        "url": "http://104.236.31.247/app_dev.php/users-list",
+//                        "crossDomain": true,
+//                        "url": "http://104.236.31.247/app_dev.php/users-list",
+                        "url": Routing.generate('users-list'),
                         "method": "GET",
                         "headers": {
                             "content-type": "application/json",
@@ -300,9 +303,10 @@
 
                     $.ajax({
                         "async": true,
-                        "crossDomain": true,
-                        "url": "http://104.236.31.247/app_dev.php/schedule/events?singleEvents=1&timeMin=" + start +
-                        "&timeMax=" + end,
+//                        "crossDomain": true,
+//                        "url": "http://104.236.31.247/app_dev.php/schedule/events?singleEvents=1&timeMin=" + start +
+//                        "&timeMax=" + end,
+                        "url": Routing.generate('events-list', {singleEvents: 1, timeMin: start, timeMax: end}),
                         "method": "GET",
                         "headers": {
                             "content-type": "application/json",
@@ -358,7 +362,8 @@
                 var newEvent = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://104.236.31.247/app_dev.php/schedule/events",
+//                    "url": "http://104.236.31.247/app_dev.php/schedule/events",
+                    "url": Routing.generate('new-event'),
                     "method": "POST",
                     "headers": {
                         "content-type": "application/json",
@@ -391,7 +396,8 @@
                 var update = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+//                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+                    "url": Routing.generate('edit-event', {id: event.id}),
                     "method": "PATCH",
                     "headers": {
                         "content-type": "application/json",
@@ -417,7 +423,8 @@
                 var removeEvent = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+//                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
+                    "url": Routing.generate('remove-event', {id: event.id}),
                     "method": "DELETE",
                     "headers": {
                         "content-type": "application/json",
