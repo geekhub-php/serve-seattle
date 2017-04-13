@@ -67,11 +67,8 @@
                 </td>
                 <td>
                     {% if formRequest.status == 'pending' %}
-                        {% if approveForms[formRequest.id] %}
-                            {{ form(approveForms[formRequest.id]) }}
-                            {#<button class="btn reject"></button>#}
-                            {#<button class="btn accept"></button>#}
-                        {% endif %}
+                        <button class="btn accept"></button>
+                        <button class="btn reject"></button>
                     {% else %}
                         {{ formRequest.status | capitalize }}
                     {% endif %}
@@ -93,9 +90,24 @@
             clearBtn: true
         });
         $('document').ready(function () {
-            $('input[type=radio]').click(function() {
+            $('tr button').click(function() {
                 if (confirm("Are you really want to approve/reject?")){
-                    this.parentNode.parentNode.parentNode.parentNode.submit();
+                    console.log(this.parentNode.parentNode.id);
+                    var id = this.parentNode.parentNode.id;
+                    var request = $.ajax({
+                        url: "{{ path('form_approve') }}",
+                        method: "PUT",
+                        data: { status : 'approved', 'id': id },
+                        dataType: "html"
+                    });
+
+                    request.done(function(response) {
+                       alert(response);
+                    });
+
+                    request.fail(function( jqXHR, textStatus ) {
+                        alert( "Request failed: " + textStatus );
+                    });
                 } else {
                     return false;
                 }

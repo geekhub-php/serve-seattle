@@ -63,36 +63,39 @@ class FormRequestController extends Controller
     }
 
     /**
-     * @Route("/form_request/approve/{id}", name="form_approve")
+     * @Route("/form_request/approve", name="form_approve")
      *
      * @Method("PUT")
      *
      * @param Request     $request
      * @param FormRequest $formRequest
      *
-     * @return RedirectResponse
      */
-    public function activationAction(Request $request, FormRequest $formRequest)
+    public function activationAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(FormRequestType::class, $formRequest, [
-            'method' => 'PUT',
-            'action' => $this->generateUrl('form_approve', ['id' => $formRequest->getId()]),
-        ]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em->persist($formRequest);
-                $em->flush();
-                $this->get('app.email_notification')->sendNotification(
-                    $formRequest->getUser()->getEmail(),
-                    'Form request action',
-                    'Hello, '.$formRequest->getUser()->getFirstName().'. 
-                    Your form request was '.$formRequest->getStatus().'.'
-                );
-            }
-        }
+        $status = $request->request->get('status');
+        $id = $request->request->get('id');
+        $response = ['status' => $status, 'id' => $id];
+        return $this->json(['response' => $response]);
+//        $em = $this->getDoctrine()->getManager();
+//        $form = $this->createForm(FormRequestType::class, $formRequest, [
+//            'method' => 'PUT',
+//            'action' => $this->generateUrl('form_approve', ['id' => $formRequest->getId()]),
+//        ]);
+//        $form->handleRequest($request);
+//        if ($form->isSubmitted()) {
+//            if ($form->isValid()) {
+//                $em->persist($formRequest);
+//                $em->flush();
+//                $this->get('app.email_notification')->sendNotification(
+//                    $formRequest->getUser()->getEmail(),
+//                    'Form request action',
+//                    'Hello, '.$formRequest->getUser()->getFirstName().'.
+//                    Your form request was '.$formRequest->getStatus().'.'
+//                );
+//            }
+//        }
 
-        return $this->redirect($this->generateUrl('form_request_list'));
+//        return $this->redirect($this->generateUrl('form_request_list'));
     }
 }

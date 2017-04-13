@@ -35,7 +35,6 @@
     "gulp-uglify": "^2.1.1",
     "jquery-ui": "^1.12.1",
     "jquery-validation": "^1.16.0",
-    "nib": "^1.1.2",
-    "vinyl-source-stream": "^1.1.0"
+    "nib": "^1.1.2"
   }
 }

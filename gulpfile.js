@@ -4,7 +4,6 @@ const stylus = require("gulp-stylus");
 const cssmin = require("gulp-cssmin");
 const plumber = require("gulp-plumber");
 const bootstrap = require("bootstrap-styl");
-const source = require('vinyl-source-stream');
 const uglify = require('gulp-uglify');
 const clean = require('gulp-clean');
 const concat = require('gulp-concat');
