@@ -2,7 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\DTO\SurveyFilter;
 use AppBundle\Entity\Survey\Survey;
 
 /**
@@ -44,7 +43,7 @@ class SurveyRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder('s')
             ->where('s.status = ?1')
             ->setParameter('1', 'submitted')
-            ->orderBy('s.updatedAt', "DESC")
+            ->orderBy('s.updatedAt', 'DESC')
             ->setMaxResults(5);
 
         return $query->getQuery()->getResult();

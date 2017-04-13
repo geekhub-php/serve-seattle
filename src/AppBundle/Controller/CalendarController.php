@@ -183,17 +183,4 @@ class CalendarController extends JsonController
 
         return $this->json(['event' => $event]);
     }
-
-    /**
-     * FOR DEV ONLY.
-     *
-     * @Method("PUT")
-     * @Route("/clear")
-     */
-    public function clearAction()
-    {
-        $result = $this->get('app.google_calendar')->clear();
-
-        return $this->json($result);
-    }
 }

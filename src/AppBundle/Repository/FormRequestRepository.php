@@ -46,7 +46,7 @@ class FormRequestRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder('r')
             ->where('r.status = ?1')
             ->setParameter('1', 'pending')
-            ->orderBy('r.updatedAt', "DESC")
+            ->orderBy('r.updatedAt', 'DESC')
             ->setMaxResults(5);
 
         return $query->getQuery()->getResult();

@@ -5,11 +5,12 @@ AppBundle\Entity\User:
         plainPassword: intern1
         apiToken: 1
     intern2:
-        firstName: intern2
+        firstName: <name()>
+        lastName: <lastName()>
         email: intern2\@seattle.com
         plainPassword: intern2
         apiToken: 2
-        linkExpiredAt: <dateTime('2050-02-02')>
+        linkExpiredAt: <dateTimeBetween('now', '+2 days')>
     intern3:
         firstName: intern3
         email: <email()>

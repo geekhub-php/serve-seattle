@@ -480,7 +480,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Remove event
+     * Remove event.
      *
      * @param Event $event
      */
@@ -490,7 +490,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Add formRequest
+     * Add formRequest.
      *
      * @param FormRequest $formRequest
      *
@@ -504,7 +504,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Remove formRequest
+     * Remove formRequest.
      *
      * @param FormRequest $formRequest
      */
@@ -514,7 +514,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Add survey
+     * Add survey.
      *
      * @param Survey $survey
      *
@@ -527,9 +527,8 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-
     /**
-     * Get surveys
+     * Get surveys.
      *
      * @return ArrayCollection
      */

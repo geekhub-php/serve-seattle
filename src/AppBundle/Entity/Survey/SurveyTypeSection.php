@@ -200,7 +200,7 @@ class SurveyTypeSection
     }
 
     /**
-     * Add question
+     * Add question.
      *
      * @param \AppBundle\Entity\Survey\SurveyQuestion $question
      *
@@ -214,7 +214,7 @@ class SurveyTypeSection
     }
 
     /**
-     * Remove question
+     * Remove question.
      *
      * @param \AppBundle\Entity\Survey\SurveyQuestion $question
      */

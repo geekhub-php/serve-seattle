@@ -23,6 +23,7 @@ class DefaultController extends Controller
 
         $surveys = $em->getRepository(Survey::class)->selectLastSurveys();
         $requestForms = $em->getRepository(FormRequest::class)->selectLastRequestForms();
+
         return [
             'surveys' => $surveys,
             'requestForms' => $requestForms,

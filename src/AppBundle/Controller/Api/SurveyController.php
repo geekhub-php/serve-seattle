@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\ConstraintViolation;
 
 class SurveyController extends Controller
 {
@@ -78,8 +79,14 @@ class SurveyController extends Controller
             'json',
             array('object_to_populate' => $survey)
         );
-        if (!$survey) {
-            throw new JsonHttpException(404, 'Not valid Survey');
+        $errors = $this->get('validator')->validate($survey);
+        if ($errors->count()) {
+            $outErrors = [];
+            /** @var ConstraintViolation $error */
+            foreach ($errors as $error) {
+                $outErrors[$error->getPropertyPath()] = $error->getMessage();
+            }
+            throw new JsonHttpException(400, 'Bad Request', $outErrors);
         }
         $em->persist($survey);
         $em->flush();
