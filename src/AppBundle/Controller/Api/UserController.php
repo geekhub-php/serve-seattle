@@ -92,4 +92,33 @@ class UserController extends Controller
 
         return $this->json(['message' => "You've got an update link on you email. Check your email"], 201);
     }
+
+    /**
+     * @Route("/email")
+     * @Method({"PUT"})
+     */
+    public function emailAction(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $this->get('serializer')
+            ->deserialize($request->getContent(), User::class, 'json', [
+                AbstractNormalizer::OBJECT_TO_POPULATE => $user
+            ]);
+        $errors = $this->get('validator')->validate($user);
+        if ($errors->count()) {
+            $outErrors = [];
+
+            /** @var ConstraintViolation $error */
+            foreach ($errors as $error) {
+                $outErrors[$error->getPropertyPath()] = $error->getMessage();
+            }
+
+            throw new JsonHttpException(400, 'Bad Request', $outErrors);
+        }
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->json(['user' => $this->getUser()], 200, [], [AbstractNormalizer::GROUPS => ['Short']]);
+    }
 }
