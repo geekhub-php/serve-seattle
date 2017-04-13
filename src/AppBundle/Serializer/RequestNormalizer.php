@@ -50,6 +50,7 @@ class RequestNormalizer extends ObjectNormalizer
             'id' => $request->getId(),
             'type' => $request->getType(),
             'status' => $request->getStatus(),
+            'reason' => $request->getReason(),
             'date' => $request->getDate(),
             'createdAt' => $request->getCreatedAt(),
             'updatedAt' => $request->getUpdatedAt(),
@@ -75,6 +76,7 @@ class RequestNormalizer extends ObjectNormalizer
         $request = $context[ObjectNormalizer::OBJECT_TO_POPULATE];
 
         $request->setDate($data['date']);
+        $request->setReason($data['reason']);
 
         return $request;
     }

@@ -158,7 +158,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/users-list")
+     * @Route("/users-list", name="users-list", options={"expose"=true})
      *
      * @Method("GET")
      *

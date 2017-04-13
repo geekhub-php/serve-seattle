@@ -4,9 +4,6 @@
     Request Forms
 {% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('/css/bootstrap-datepicker.css') }}" />
-{% endblock %}
 
 {% block content %}
     <div class="page-title">
@@ -52,6 +49,7 @@
             <th>Date</th>
             <th>Intern Name</th>
             <th>Request type</th>
+            <th>Reason</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -69,12 +67,12 @@
                     {{ formRequest.type | capitalize }}
                 </td>
                 <td>
+                    {{ formRequest.reason | capitalize }}
+                </td>
+                <td>
                     {% if formRequest.status == 'pending' %}
-                        {% if approveForms[formRequest.id] %}
-                            {{ form(approveForms[formRequest.id]) }}
-                            {#<button class="btn reject"></button>#}
-                            {#<button class="btn accept"></button>#}
-                        {% endif %}
+                        <button class="approved"></button>
+                        <button class="rejected"></button>
                     {% else %}
                         {{ formRequest.status | capitalize }}
                     {% endif %}
@@ -91,15 +89,30 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
-        $('.input-daterange').datepicker({
+        $(".input-daterange").datepicker({
             clearBtn: true
         });
         $('document').ready(function () {
-            $('input[type=radio]').click(function() {
-                if (confirm("Are you really want to approve/reject?")){
-                    this.parentNode.parentNode.parentNode.parentNode.submit();
+            $('tr button').click(function() {
+                if (confirm("Are you really want to approve/reject?")) {
+                    var id = this.parentNode.parentNode.id;
+                    var status = this.className;
+                    var tr = this.parentNode;
+                    console.log(tr);
+                    var request = $.ajax({
+                        url: "{{ path('form_approve') }}",
+                        method: "PUT",
+                        data: { 'status' : status, 'id': id },
+                        dataType: "html"
+                    });
+
+                    tr.innerHTML = status.replace(/\b\w/g, function(l){ return l.toUpperCase() });
+
+                    request.fail(function( jqXHR, textStatus ) {
+                        tr.innerHTML = "error";
+                    });
+
                 } else {
                     return false;
                 }
