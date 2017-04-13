@@ -207,5 +207,4 @@ class FormRequest
 
         return $this;
     }
-
 }
