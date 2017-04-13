@@ -43,21 +43,8 @@ class FormRequestController extends Controller
             10
         );
 
-        $approveForms = [];
-
-        foreach ($formRequests as $formRequest) {
-            if ($formRequest->getStatus() == 'pending') {
-                $approveForms[$formRequest->getId()] = $this->createForm(FormRequestType::class, $formRequest, [
-                    'method' => 'PUT',
-                    'action' => $this->generateUrl('form_approve', ['id' => $formRequest->getId()]),
-                ])
-                    ->createView();
-            }
-        }
-
         return [
             'formRequests' => $formRequests,
-            'approveForms' => $approveForms,
             'filterForm' => $filterForm->createView(),
         ];
     }
