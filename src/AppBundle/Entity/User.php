@@ -36,7 +36,8 @@ class User implements UserInterface, \Serializable
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
-     *     message="Your name cannot contain a number"
+     *     message="Your name cannot contain a number",
+     *     groups={"registration"}
      * )
      * @Assert\Type("string")
      * @Assert\Length(
@@ -54,7 +55,8 @@ class User implements UserInterface, \Serializable
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
-     *     message="Your lastname cannot contain a number"
+     *     message="Your lastname cannot contain a number",
+     *     groups={"registration"}
      * )
      * @Assert\Type("string")
      * @Assert\Length(
