@@ -223,11 +223,11 @@ class Survey
     /**
      * Add answer.
      *
-     * @param \AppBundle\Entity\Survey\SurveyAnswer $answer
+     * @param SurveyAnswer $answer
      *
      * @return Survey
      */
-    public function addAnswer(\AppBundle\Entity\Survey\SurveyAnswer $answer)
+    public function addAnswer(SurveyAnswer $answer)
     {
         $this->answers[] = $answer;
 
@@ -237,10 +237,20 @@ class Survey
     /**
      * Remove answer.
      *
-     * @param \AppBundle\Entity\Survey\SurveyAnswer $answer
+     * @param SurveyAnswer $answer
      */
-    public function removeAnswer(\AppBundle\Entity\Survey\SurveyAnswer $answer)
+    public function removeAnswer(SurveyAnswer $answer)
     {
         $this->answers->removeElement($answer);
+    }
+
+    /**
+     * Get reviewed
+     *
+     * @return boolean
+     */
+    public function getReviewed()
+    {
+        return $this->reviewed;
     }
 }

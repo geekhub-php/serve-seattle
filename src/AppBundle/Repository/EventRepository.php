@@ -21,10 +21,11 @@ class EventRepository extends \Doctrine\ORM\EntityRepository
 
     public function selectNotExpiredByUser($user)
     {
-        return $this->createQueryBuilder('event')
-            ->andWhere('event.user = :user')
+        return $this->createQueryBuilder('e')
+            ->join('e.user', 'user')
+            ->andWhere('user = :user')
             ->setParameter('user', $user)
-            ->andWhere('event.expiredAt >= :date')
+            ->andWhere('e.expiredAt >= :date')
             ->setParameter('date', new \DateTime())
             ->getQuery()
             ->getResult();

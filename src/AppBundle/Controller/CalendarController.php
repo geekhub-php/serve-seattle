@@ -60,21 +60,28 @@ class CalendarController extends JsonController
             throw new JsonHttpException(412, 'Event has not been created');
         }
         $em = $this->getDoctrine()->getManager();
-        /** @var User $user */
-        $user = $em->getRepository('AppBundle:User')
-            ->find($dtoEvent->getUser());
 
-        if (!$user) {
-            throw new JsonHttpException(404, 'User not found.');
+        $users = [];
+        foreach ($dtoEvent->getUser() as $item => $value) {
+            $user = $em->getRepository('AppBundle:User')
+                ->find($value);
+            if (!$user) {
+                throw new JsonHttpException(404, "User with id $value not found.");
+            } else {
+                $users[] = $user;
+            }
         }
+
         $event = new Event();
         $event->setGoogleId($result->id);
-        $event->setUser($user);
+        foreach ($users as $user) {
+            $event->addUser($user);
+        }
         $event->setExpiredAt(new \DateTime($result->getEnd()->dateTime));
-        $user->setEvent($event);
 
-        $em->persist($user);
+        $em->persist($event);
         $em->flush();
+
         $event = new DtoEvent($result);
 
         return $this->json(['event' => $event]);

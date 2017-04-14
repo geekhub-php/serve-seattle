@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -43,9 +44,14 @@ class Event implements \JsonSerializable
 
     /**
      * @var
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="events", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="events", cascade={"persist"})
      */
     private $user;
+
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
 
     public function jsonSerialize()
     {
@@ -107,23 +113,33 @@ class Event implements \JsonSerializable
     }
 
     /**
-     * Set user.
+     * Add user
      *
      * @param User $user
      *
      * @return Event
      */
-    public function setUser(User $user)
+    public function addUser(User $user)
     {
-        $this->user = $user;
+        $this->user[] = $user;
 
         return $this;
     }
 
     /**
-     * Get user.
+     * Remove user
      *
-     * @return User
+     * @param User $user
+     */
+    public function removeUser(User $user)
+    {
+        $this->user->removeElement($user);
+    }
+
+    /**
+     * Get user
+     *
+     * @return ArrayCollection
      */
     public function getUser()
     {

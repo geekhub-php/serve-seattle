@@ -135,7 +135,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var ArrayCollection[Event]
-     * @ORM\OneToMany(targetEntity="Event", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="Event", mappedBy="user", cascade={"persist", "remove"})
      * @Groups({"Detail"})
      */
     private $events;
@@ -386,7 +386,7 @@ class User implements UserInterface, \Serializable
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            $event->setUser($this);
+            $event->addUser($this);
         }
 
         return $this;
@@ -535,5 +535,25 @@ class User implements UserInterface, \Serializable
     public function getSurveys()
     {
         return $this->surveys;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Remove survey
+     *
+     * @param \AppBundle\Entity\Survey\Survey $survey
+     */
+    public function removeSurvey(\AppBundle\Entity\Survey\Survey $survey)
+    {
+        $this->surveys->removeElement($survey);
     }
 }

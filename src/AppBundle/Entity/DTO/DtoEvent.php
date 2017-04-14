@@ -8,8 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DtoEvent implements \JsonSerializable
 {
     /**
-     * @var User
-     * @var Assert\NotBlank
+     * @Assert\NotBlank()
      */
     private $user;
 
@@ -20,12 +19,12 @@ class DtoEvent implements \JsonSerializable
     private $location;
 
     /**
-     * @var Assert\NotBlank
+     * @Assert\NotBlank()
      */
     private $start;
 
     /**
-     * @var Assert\NotBlank
+     * @Assert\NotBlank()
      */
     private $end;
 
@@ -47,9 +46,12 @@ class DtoEvent implements \JsonSerializable
     public function jsonSerialize()
     {
         $description = json_decode($this->description, true);
-
+        $users = [];
+        foreach ($description['user'] as $key => $value) {
+            $users[] = $value;
+        }
         return [
-            'user' => (int) $description['user'],
+            'user' => $users,
             'title' => $this->summary,
             'description' => $description['description'],
             'location' => $this->location,
