@@ -12,8 +12,8 @@ class EventRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findByGoogleId($id)
     {
-        return $this->createQueryBuilder('event')
-            ->andWhere('event.googleId = :id')
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.googleId = :id')
             ->setParameter('id', $id)
             ->getQuery()
             ->getSingleResult();
