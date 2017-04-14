@@ -87,6 +87,6 @@ class FormRequestController extends Controller
             Your form request was '.$formRequest->getStatus().'.'
         );
 
-         return new Response($status);
+        return new Response($status);
     }
 }
