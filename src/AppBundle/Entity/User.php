@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * User.
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
- * @UniqueEntity("email")
+ * @UniqueEntity(fields={"email"}, groups={"registration"})
  */
 class User implements UserInterface, \Serializable
 {
