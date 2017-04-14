@@ -47,8 +47,8 @@ class DtoEvent implements \JsonSerializable
     {
         $description = json_decode($this->description, true);
         $users = [];
-        foreach ($description['user'] as $user => $id) {
-            $users[] = $id;
+        foreach ($description['user'] as $user) {
+            $users[] = $user;
         }
         return [
             'user' => $users,

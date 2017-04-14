@@ -65,11 +65,10 @@ class CalendarController extends JsonController
         foreach ($dtoEvent->getUser() as $user => $id) {
             $user = $em->getRepository('AppBundle:User')
                 ->find($id);
-            if ($user) {
-                $users[] = $user;
-            } else {
+            if (!$user) {
                 throw new JsonHttpException(404, "User with id $id not found.");
             }
+            $users[] = $user;
         }
 
         $event = new Event();
