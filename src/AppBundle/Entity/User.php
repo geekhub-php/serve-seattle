@@ -536,24 +536,4 @@ class User implements UserInterface, \Serializable
     {
         return $this->surveys;
     }
-
-    /**
-     * Get enabled
-     *
-     * @return boolean
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * Remove survey
-     *
-     * @param \AppBundle\Entity\Survey\Survey $survey
-     */
-    public function removeSurvey(\AppBundle\Entity\Survey\Survey $survey)
-    {
-        $this->surveys->removeElement($survey);
-    }
 }
