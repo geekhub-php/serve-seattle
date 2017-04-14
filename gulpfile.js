@@ -20,7 +20,8 @@ gulp.task("stylus", function () {
             'web-src/css/**/*.css',
             'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
             'node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-            'node_modules/fullcalendar/dist/fullcalendar.min.css'
+            'node_modules/fullcalendar/dist/fullcalendar.min.css',
+            'node_modules/font-awesome/css/font-awesome.min.css'
         ])
         .pipe(plumber())
         .pipe( stylus({
@@ -66,7 +67,6 @@ gulp.task('js', function() {
 
 gulp.task('fonts', function () {
     return gulp.src([
-        'node_modules/font-awesome/css/*',
         'node_modules/font-awesome/fonts/*',
         'node_modules/bootstrap/dist/fonts/*'
     ])

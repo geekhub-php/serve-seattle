@@ -94,7 +94,7 @@
             clearBtn: true
         });
         $('document').ready(function () {
-            $('tr button').click(function() {
+            $('.request-table tr button').click(function() {
                 if (confirm("Are you really want to approve/reject?")) {
                     var id = this.parentNode.parentNode.id;
                     var status = this.className;

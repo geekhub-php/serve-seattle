@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Dashboards
+    Schedules
 {% endblock %}
 
 {% block stylesheets %}
@@ -228,8 +228,6 @@
 
                             var userList = {
                                 "async": true,
-//                                "crossDomain": true,
-//                                "url": "http://104.236.31.247/app_dev.php/users-list",
                                 "url": Routing.generate('users-list'),
                                 "method": "GET",
                                 "headers": {
@@ -276,8 +274,6 @@
 
                     var updateUserList = {
                         "async": true,
-//                        "crossDomain": true,
-//                        "url": "http://104.236.31.247/app_dev.php/users-list",
                         "url": Routing.generate('users-list'),
                         "method": "GET",
                         "headers": {
@@ -303,9 +299,6 @@
 
                     $.ajax({
                         "async": true,
-//                        "crossDomain": true,
-//                        "url": "http://104.236.31.247/app_dev.php/schedule/events?singleEvents=1&timeMin=" + start +
-//                        "&timeMax=" + end,
                         "url": Routing.generate('events-list', {singleEvents: 1, timeMin: start, timeMax: end}),
                         "method": "GET",
                         "headers": {
@@ -361,8 +354,6 @@
 
                 var newEvent = {
                     "async": true,
-                    "crossDomain": true,
-//                    "url": "http://104.236.31.247/app_dev.php/schedule/events",
                     "url": Routing.generate('new-event'),
                     "method": "POST",
                     "headers": {
@@ -395,8 +386,6 @@
 
                 var update = {
                     "async": true,
-                    "crossDomain": true,
-//                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
                     "url": Routing.generate('edit-event', {id: event.id}),
                     "method": "PATCH",
                     "headers": {
@@ -422,8 +411,6 @@
             function removeEvent(event) {
                 var removeEvent = {
                     "async": true,
-                    "crossDomain": true,
-//                    "url": "http://104.236.31.247/app_dev.php/schedule/events/" + event.id,
                     "url": Routing.generate('remove-event', {id: event.id}),
                     "method": "DELETE",
                     "headers": {

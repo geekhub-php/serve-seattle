@@ -44,8 +44,8 @@
         <tr>
             <th>ID</th>
             <th>E-mail</th>
-            <th>{{ knp_pagination_sortable(users, 'Last Name', 'u.lastName') }} <span class="caret"></span></th>
             <th>First Name</th>
+            <th>{{ knp_pagination_sortable(users, 'Last Name', 'u.lastName') }} <span class="caret"></span></th>
             <th>{{ knp_pagination_sortable(users, 'Registration date', 'u.createdAt') }} <span class="caret"></span></th>
             <th>Status</th>
             <th>Actions</th>
@@ -61,10 +61,10 @@
                     {{ user.email }}
                 </td>
                 <td>
-                    {{ user.lastName | capitalize }}
+                    {{ user.firstName | capitalize }}
                 </td>
                 <td>
-                    {{ user.firstName | capitalize }}
+                    {{ user.lastName | capitalize }}
                 </td>
                 <td>
                     {{ user.createdAt | date('m/d/Y') }}
