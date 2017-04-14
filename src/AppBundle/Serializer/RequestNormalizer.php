@@ -75,12 +75,7 @@ class RequestNormalizer extends ObjectNormalizer
         /** @var FormRequest $request */
         $request = $context[ObjectNormalizer::OBJECT_TO_POPULATE];
 
-        if (\DateTime::createFromFormat(\DateTime::RFC3339, $data['date']) !== false) {
-            $date = new \DateTime($data['date']);
-        } else {
-            $date = false;
-        }
-        $request->setDate($date);
+        $request->setDate($data['date']);
         $request->setReason($data['reason']);
 
         return $request;

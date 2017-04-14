@@ -174,7 +174,11 @@ class FormRequest
      */
     public function setDate($date)
     {
-        $this->date = $date;
+        if (\DateTime::createFromFormat(\DateTime::RFC3339, $date) == false) {
+            $this->date = false;
+            return $this;
+        }
+        $this->date = new \DateTime($date);
 
         return $this;
     }
