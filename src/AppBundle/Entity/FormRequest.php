@@ -174,7 +174,7 @@ class FormRequest
      */
     public function setDate($date)
     {
-        $this->date = new \DateTime($date);
+        $this->date = $date;
 
         return $this;
     }
