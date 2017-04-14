@@ -243,14 +243,4 @@ class Survey
     {
         $this->answers->removeElement($answer);
     }
-
-    /**
-     * Get reviewed
-     *
-     * @return boolean
-     */
-    public function getReviewed()
-    {
-        return $this->reviewed;
-    }
 }
