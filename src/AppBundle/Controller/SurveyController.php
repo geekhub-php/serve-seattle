@@ -97,8 +97,8 @@ class SurveyController extends Controller
             return $this->redirectToRoute('surveys');
         }
 
-        return $this->render('@App/surveyform.html.twig', array(
-            'form' => $form->createView(),
+        return $this->render('@App/survey.html.twig', array(
+            'form' => $form->createView(), 'survey' => $survey, 'question_answers' => null
         ));
     }
 

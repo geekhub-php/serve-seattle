@@ -34,7 +34,8 @@
         "google/apiclient": "^2.1",
         "mcfedr/json-form": "^3.2",
         "aws/aws-sdk-php": "^3.24",
-        "nelmio/cors-bundle": "^1.5"
+        "nelmio/cors-bundle": "^1.5",
+        "friendsofsymfony/jsrouting-bundle": "^1.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

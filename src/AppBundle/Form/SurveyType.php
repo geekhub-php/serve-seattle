@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +28,11 @@ class SurveyType extends AbstractType
             ->add('user', EntityType::class, array(
                 'class' => 'AppBundle:User',
                 'label' => 'Choose intern',
-                'choice_label' => 'firstName',
+                'choice_label' => function ($user) {
+                    /** @var User $user */
+                    $userName = $user->getFirstName().' '.$user->getLastName();
+                    return $userName;
+                },
             ))
         ;
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
