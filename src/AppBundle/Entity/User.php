@@ -32,17 +32,18 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var string
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"registration", "edit"})
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
      *     message="Your name cannot contain a number",
-     *     groups={"registration"}
+     *     groups={"registration", "edit"}
      * )
      * @Assert\Type("string")
      * @Assert\Length(
      *      min = 2,
-     *      max = 190
+     *      max = 190,
+     *     groups={"registration", "edit"}
      * )
      * @ORM\Column(type="string", length=190)
      * @Groups({"Default", "Short", "Detail"})
@@ -51,16 +52,17 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var string
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"registration", "edit"})
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
      *     message="Your lastname cannot contain a number",
-     *     groups={"registration"}
+     *     groups={"registration", "edit"}
      * )
-     * @Assert\Type("string")
+     * @Assert\Type("string", groups={"registration", "edit"})
      * @Assert\Length(
-     *      max = 190
+     *     max = 190,
+     *     groups={"registration", "edit"}
      * )
      * @ORM\Column(type="string", length=190, nullable=true)
      * @Groups({"Default", "Short", "Detail"})
@@ -81,12 +83,14 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var string
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"registration", "edit"})
      * @Assert\Email(
+     *     groups={"registration", "edit"}
      * )
-     * @Assert\Type("string")
+     * @Assert\Type("string", groups={"registration", "edit"})
      * @Assert\Length(
-     *      max = 250
+     *     max = 250,
+     *     groups={"registration", "edit"}
      * )
      * @ORM\Column(type="string", length=250, unique=true)
      * @Groups({"Short", "Detail"})
@@ -101,9 +105,10 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var string
-     * @Assert\Type("string")
+     * @Assert\Type("string", groups={"registration", "edit"})
      * @Assert\Length(
-     *      max = 255
+     *     max = 255,
+     *     groups={"registration", "edit"}
      * )
      * @Assert\NotBlank(groups={"registration"})
      */
