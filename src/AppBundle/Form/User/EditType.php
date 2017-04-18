@@ -2,9 +2,12 @@
 
 namespace AppBundle\Form\User;
 
+use AppBundle\Entity\S3\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -66,7 +69,24 @@ class EditType extends AbstractType
                 ],
                 'required' => false,
             ])
-        ;
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
+                $user = $event->getData();
+
+                if ($user instanceof User && $user->getImage()) {
+                    /** @var Image $image */
+                    $image = $user->getImage();
+                    $form = $event->getForm();
+                    $form->add('image', TextType::class, [
+                        'attr' => [
+                        'placeholder' => 'image',
+                        'class' => 'form-control',
+                    ],
+                        'label' => false,
+                        'required' => false,
+                        'data' => $image->getUrl()
+                    ]);
+                }
+            });
     }
 
     public function configureOptions(OptionsResolver $resolver)
