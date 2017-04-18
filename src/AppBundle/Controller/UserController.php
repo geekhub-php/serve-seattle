@@ -133,14 +133,6 @@ class UserController extends Controller
             'method' => 'POST',
             'validation_groups' => 'edit',
         ])
-            ->add('image', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'image',
-                    'class' => 'form-control',
-                ],
-                'label' => false,
-                'required' => false,
-            ])
             ->add('Save', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-primary'],
             ]);
