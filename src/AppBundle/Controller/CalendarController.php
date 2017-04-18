@@ -174,19 +174,19 @@ class CalendarController extends JsonController
         }
 
         $dtoEvent = new DtoEvent();
+        foreach ($data['event']['user'] as $userId) {
+            $user = $this->getDoctrine()->getRepository('AppBundle:User')
+                ->find($userId);
+            if (!$user) {
+                throw new JsonHttpException(404, "User with id $userId not found.");
+            }
+        }
         $form = $this->createForm(EventType::class, $dtoEvent);
         $this->handleJsonForm($form, $request);
         $result = $this->get('app.google_calendar')
             ->editEvent($dtoEvent, $id, $request->query->all());
-        $event = new DtoEvent($result);
+        $this->getDoctrine()->getManager()->flush();
 
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($dtoEvent->getUser());
-        /** @var Event $ev */
-        $ev = $this->getDoctrine()->getRepository(Event::class)->findByGoogleId($id);
-        $ev->setUser($user);
-        $em->flush();
-
-        return $this->json(['event' => $event]);
+        return $this->json(['event' => new DtoEvent($result)]);
     }
 }

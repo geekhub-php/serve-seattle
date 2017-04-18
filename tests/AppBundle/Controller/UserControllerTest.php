@@ -100,8 +100,8 @@ class UserControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/user/edit/'.$userid);
         $form = $crawler->selectButton('Save')->form();
         $client->submit($form, [
-            'edit[lastName]' => 'test1',
-            'edit[firstName]' => 'test1',
+            'edit[lastName]' => 'testtest',
+            'edit[firstName]' => 'testtest',
             'edit[email]' => 'test123@gmail.com',
             'edit[plainPassword][first]' => 'test1',
             'edit[plainPassword][second]' => 'test1',
