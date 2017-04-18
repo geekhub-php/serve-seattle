@@ -10,7 +10,12 @@
         <div class="col-sm-6">
             <div class="well">
                 <h3>{{ survey.getType.getName|capitalize }} survey</h3>
+                {% if app.request.get('_route') == 'survey_create' %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                {% else %}
                 <h5>Intern name: {{ survey.getUser.getFirstName }} {{ survey.getUser.getLastName }}</h5>
+                {% endif %}
                 {% if survey.getType.getDescription() %}
                     <p>{{ survey.getType.getDescription() }}</p>
                 {% endif %}
@@ -41,6 +46,9 @@
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
                     <input type="submit" value="Delete survey"/>
+                    {{ form_end(form) }}
+                {% elseif app.request.attributes.get('_route') == 'survey_create'%}
+                    <input type="submit" value="Create survey"/>
                     {{ form_end(form) }}
                 {% endif %}
 
