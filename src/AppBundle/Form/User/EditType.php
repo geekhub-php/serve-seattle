@@ -68,26 +68,7 @@ class EditType extends AbstractType
                     'label' => false,
                 ],
                 'required' => false,
-            ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
-                $user = $event->getData();
-
-                if ($user instanceof User && $user->getImage()) {
-                    /** @var Image $image */
-                    $image = $user->getImage();
-                    $form = $event->getForm();
-                    $form->add('image', TextType::class, [
-                        'attr' => [
-                        'placeholder' => 'image',
-                        'class' => 'form-control',
-                    ],
-                        'label' => false,
-                        'required' => false,
-                        'disabled' => true,
-                        'data' => $image->getUrl()
-                    ]);
-                }
-            });
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
