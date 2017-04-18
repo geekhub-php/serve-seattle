@@ -54,14 +54,8 @@ class CalendarController extends JsonController
         $dtoEvent = new DtoEvent();
         $form = $this->createForm(EventType::class, $dtoEvent);
         $this->handleJsonForm($form, $request);
-        $result = $this->get('app.google_calendar')
-            ->createEvent($dtoEvent, $request->query->all());
-        if (!$result) {
-            throw new JsonHttpException(412, 'Event has not been created');
-        }
-        $em = $this->getDoctrine()->getManager();
-
         $users = [];
+        $em = $this->getDoctrine()->getManager();
         foreach ($dtoEvent->getUser() as $user => $id) {
             $user = $em->getRepository('AppBundle:User')
                 ->find($id);
@@ -69,6 +63,11 @@ class CalendarController extends JsonController
                 throw new JsonHttpException(404, "User with id $id not found.");
             }
             $users[] = $user;
+        }
+        $result = $this->get('app.google_calendar')
+            ->createEvent($dtoEvent, $request->query->all());
+        if (!$result) {
+            throw new JsonHttpException(412, 'Event has not been created');
         }
 
         $event = new Event();

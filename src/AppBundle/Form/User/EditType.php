@@ -2,9 +2,14 @@
 
 namespace AppBundle\Form\User;
 
+use AppBundle\Entity\S3\Image;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -64,9 +69,8 @@ class EditType extends AbstractType
                     ],
                     'label' => false,
                 ],
-                'required' => false,
-            ])
-        ;
+                'required' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -74,6 +78,7 @@ class EditType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
             'validation_groups' => ['registration', 'edit'],
+            'attr' => ['novalidate' => 'novalidate']
         ]);
     }
 }
