@@ -20,6 +20,7 @@ gulp.task("stylus", function () {
             'web-src/css/**/*.css',
             'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css',
             'node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+            'node_modules/bootstrap-select/dist/css/bootstrap-select.min.css',
             'node_modules/fullcalendar/dist/fullcalendar.min.css',
             'node_modules/font-awesome/css/font-awesome.min.css'
         ])
@@ -58,7 +59,8 @@ gulp.task('js', function() {
         'node_modules/fullcalendar/dist/gcal.min.js',
         'node_modules/jquery-validation/dist/jquery.validate.min.js',
         'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
-        'node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'
+        'node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+        'node_modules/bootstrap-select/dist/js/bootstrap-select.min.js'
     ])
         .pipe(uglify())
         .pipe(concat('app.min.js'))

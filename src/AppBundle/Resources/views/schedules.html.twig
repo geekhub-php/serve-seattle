@@ -64,11 +64,16 @@
                                 name="description"
                                 placeholder="Description"
                                 rows="5">
-                        </textarea>
-                        <div class="select">
-                            <h3 class="id-users text-center">ID-users</h3>
-                            <select class="form-control" id="select-user">
-                            </select>
+                    </textarea>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <h3 class="id-users text-center">ID-users</h3>
+                                    <select id="select-user" class="selectpicker form-control" multiple
+                                            data-live-search="true">
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <button class="btn btn-success" id="submitEvent" type="submit">
                             Submit
@@ -134,11 +139,16 @@
                                 name="description"
                                 placeholder="Description"
                                 rows="5">
-                        </textarea>
-                        <div class="select">
-                            <h3 class="id-users text-center">ID-users</h3>
-                            <select class="form-control" id="update-user">
-                            </select>
+                    </textarea>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <h3 class="id-users text-center">ID-users</h3>
+                                    <select id="update-user" class="selectpicker form-control" multiple
+                                            data-live-search="true">
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <button class="btn btn-success" id="updateSubmit" type="submit">
                             Save change
@@ -182,7 +192,7 @@
             var updateUser = $('#update-user');
             var updateSubmit = $('#updateSubmit');
 
-//        Calendar
+//  Calendar
             var calendar = $('#calendar');
             var removeEventBtn = $('#removeEventBtn');
             var currentEvent;
@@ -207,6 +217,26 @@
                 }
             });
 
+            $.ajax({
+                "async": true,
+                "url": Routing.generate('users-list'),
+                "method": "GET",
+                "headers": {
+                    "content-type": "application/json",
+                    "authorization": "Basic YWRtaW5Ac2VydmUtc2VhdHRsZS5jb206YWRtaW4="
+                },
+                "processData": false
+            }).done(function (response) {
+                console.log('ok');
+                response.users.forEach(function (elem, index) {
+                    updateUser.append('<option value="' + elem.id + '">' + elem.firstName + ' ' + elem.lastName +
+                        '</option>');
+                    eventUser.append('<option value="' + elem.id + '">' + elem.firstName + ' ' + elem.lastName +
+                        '</option>');
+                });
+                $('.selectpicker').selectpicker('refresh');
+            });
+
             $('#eventStart, #eventEnd,#updateStart, #updateEnd').datetimepicker({
                 format: "DD.MM.YYYY HH:mm"
             });
@@ -217,7 +247,6 @@
                     newEvent: {
                         text: 'New event',
                         click: function (event) {
-
                             eventTitle.val('');
                             eventDescription.val('');
                             eventLocation.val('');
@@ -225,23 +254,6 @@
                             eventEnd.val();
                             eventModal.modal('show');
                             eventTitle.focus();
-
-                            var userList = {
-                                "async": true,
-                                "url": Routing.generate('users-list'),
-                                "method": "GET",
-                                "headers": {
-                                    "content-type": "application/json",
-                                    "authorization": "Basic YWRtaW5Ac2VydmUtc2VhdHRsZS5jb206YWRtaW4="
-                                },
-                                "processData": false
-                            };
-
-                            $.ajax(userList).done(function (response) {
-                                response.users.forEach(function (elem, index) {
-                                    eventUser.append('<option value="' + elem.id + '">' + elem.firstName + ' ' + elem.lastName + '</option>')
-                                })
-                            });
                         }
                     }
                 },
@@ -264,31 +276,13 @@
                     updateDescription.val(event.description);
                     updateLocation.val(event.location);
                     updateStart.val(event.start.format("DD.MM.YYYY HH:mm"));
-                    if(event.end == null) {
+                    if (event.end == null) {
                         updateEnd.val(event.start.format("DD.MM.YYYY HH:mm"));
                     } else {
                         updateEnd.val(event.end.format("DD.MM.YYYY HH:mm"));
                     }
                     updateEvent.modal('show');
                     updateTitle.focus();
-
-                    var updateUserList = {
-                        "async": true,
-                        "url": Routing.generate('users-list'),
-                        "method": "GET",
-                        "headers": {
-                            "content-type": "application/json",
-                            "authorization": "Basic YWRtaW5Ac2VydmUtc2VhdHRsZS5jb206YWRtaW4="
-                        },
-                        "processData": false
-                    };
-
-                    $.ajax(updateUserList).done(function (response) {
-                        response.users.forEach(function (elem, index) {
-                            updateUser.append('<option value="' + elem.id + '">' + elem.firstName + ' ' + elem.lastName +
-                                '</option>');
-                        })
-                    });
 
                 },
                 eventLimit: true, // allow "more" link when too many events
@@ -347,8 +341,8 @@
                         "summary": eventTitle.val(),
                         "description": eventDescription.val(),
                         "location": eventLocation.val(),
-                        "start": moment(eventStart.val(),"DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00',
-                        "end": moment(eventEnd.val(),"DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00'
+                        "start": moment(eventStart.val(), "DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00',
+                        "end": moment(eventEnd.val(), "DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00'
                     }
                 };
 
@@ -375,12 +369,12 @@
             function updateEventSubmit(event) {
                 var eventData = {
                     "event": {
-                        "user": updateUser.val(),
+                        "user": updateUser.val(eventUser.val()),
                         "summary": updateTitle.val(),
                         "description": updateDescription.val(),
                         "location": updateLocation.val(),
-                        "start": moment(updateStart.val(),"DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00',
-                        "end": moment(updateEnd.val(),"DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00'
+                        "start": moment(updateStart.val(), "DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00',
+                        "end": moment(updateEnd.val(), "DD.MM.YYYY HH:mm").format("YYYY-MM-DDTHH:mm:ss") + '-07:00'
                     }
                 };
 
