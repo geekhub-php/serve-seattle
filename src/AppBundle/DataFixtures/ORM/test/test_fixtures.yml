@@ -1,6 +1,7 @@
 AppBundle\Entity\User:
     intern1:
-        firstName: intern1
+        firstName: intern
+        lastName: intern
         email: intern1\@seattle.com
         plainPassword: intern1
         apiToken: 1

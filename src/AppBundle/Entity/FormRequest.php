@@ -175,7 +175,7 @@ class FormRequest
     public function setDate($date)
     {
         try {
-            $this->date = \DateTime::createFromFormat(\DATE_RFC3339, $date);
+            $this->date = date_create_from_format(\DATE_RFC3339, $date);
         } catch (\Exception $e) {
             $this->date = false;
         }

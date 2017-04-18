@@ -7,8 +7,8 @@ AppBundle\Entity\Admin:
 AppBundle\Entity\User:
     intern1:
         firstName: <firstName()>
-        email: intern1\@seattle.com
         lastName: <lastName()>
+        email: intern1\@seattle.com
         plainPassword: intern1
     intern2:
         firstName: <firstName()>
