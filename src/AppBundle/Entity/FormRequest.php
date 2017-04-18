@@ -61,6 +61,7 @@ class FormRequest
      * @var \DateTime
      * @Assert\DateTime()
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan("+2 days")
      * @Groups({"Detail"})
      */
     private $date;
