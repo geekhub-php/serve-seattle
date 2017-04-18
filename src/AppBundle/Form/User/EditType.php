@@ -83,6 +83,7 @@ class EditType extends AbstractType
                     ],
                         'label' => false,
                         'required' => false,
+                        'disabled' => true,
                         'data' => $image->getUrl()
                     ]);
                 }
