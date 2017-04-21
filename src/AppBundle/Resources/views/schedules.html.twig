@@ -271,6 +271,7 @@
                     element.find('.fc-title').append('<div class="hr-line-solid-no-margin"><span style="font-size: 10px">' + event.description + '</span></div>');
                 },
                 eventClick: function (event, element) {
+                    updateUser.selectpicker('val', event.user);
                     currentEvent = event;
                     updateTitle.val(event.title);
                     updateDescription.val(event.description);
