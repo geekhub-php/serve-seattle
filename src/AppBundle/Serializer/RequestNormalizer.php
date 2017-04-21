@@ -3,7 +3,6 @@
 namespace AppBundle\Serializer;
 
 use AppBundle\Entity\FormRequest;
-use AppBundle\Exception\JsonHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\Serializer\Exception\LogicException;
@@ -66,7 +65,7 @@ class RequestNormalizer extends ObjectNormalizer
      * @param null   $format
      * @param array  $context
      *
-     * @return FormRequest|JsonHttpException
+     * @return FormRequest
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
@@ -76,7 +75,7 @@ class RequestNormalizer extends ObjectNormalizer
         /** @var FormRequest $request */
         $request = $context[ObjectNormalizer::OBJECT_TO_POPULATE];
 
-        if (array_key_exists('date', $data)) {
+        if (isset($data['date'])) {
             $request->setDate($data['date']);
         }
         if (isset($data['reason'])) {
