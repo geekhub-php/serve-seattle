@@ -64,6 +64,11 @@ class FormRequestController extends JsonController
             'json',
             ['object_to_populate' => $formRequest]
         );
+
+        if (is_null($formRequest->getDate())) {
+            throw new JsonHttpException(404, 'Date is required');
+        }
+
         $errors = $this->get('validator')->validate($formRequest);
         if ($errors->count()) {
             $outErrors = [];
