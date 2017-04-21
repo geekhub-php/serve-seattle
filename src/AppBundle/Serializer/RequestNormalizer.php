@@ -76,7 +76,7 @@ class RequestNormalizer extends ObjectNormalizer
         $request = $context[ObjectNormalizer::OBJECT_TO_POPULATE];
 
         $request->setDate($data['date']);
-        if (isset($data['reason'])){
+        if (isset($data['reason'])) {
             $request->setReason($data['reason']);
         }
 
