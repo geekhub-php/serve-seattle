@@ -98,6 +98,7 @@
             <div class="row-fluid">
                 <div class="input-group">
                     <form action="" id="formUpdateEvent">
+                        <label for="updateTitle">Title</label>
                         <input
                                 required
                                 type="text"
@@ -106,6 +107,7 @@
                                 id="updateTitle"
                                 name="name"
                         >
+                        <label for="updateLocation">Location</label>
                         <input
                                 required
                                 type="text"
@@ -114,6 +116,7 @@
                                 id="updateLocation"
                                 name="location"
                         >
+                        <label for="updateStart">Event start</label>
                         <input
                                 required
                                 type="text"
@@ -123,6 +126,7 @@
                                 onkeydown="return false"
                                 name="start"
                         >
+                        <label for="updateEnd">Event end</label>
                         <input
                                 required
                                 type="text"
@@ -132,6 +136,7 @@
                                 onkeydown="return false"
                                 name="end"
                         >
+                        <label for="updateDescription">Description</label>
                         <textarea
                                 required
                                 id="updateDescription"
@@ -143,7 +148,7 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="form-group">
-                                    <h3 class="id-users text-center">ID-users</h3>
+                                    <h3 class="id-users text-center">Users</h3>
                                     <select id="update-user" class="selectpicker form-control" multiple
                                             data-live-search="true">
                                     </select>
@@ -370,7 +375,7 @@
             function updateEventSubmit(event) {
                 var eventData = {
                     "event": {
-                        "user": updateUser.val(eventUser.val()),
+                        "user": updateUser.val(),
                         "summary": updateTitle.val(),
                         "description": updateDescription.val(),
                         "location": updateLocation.val(),
