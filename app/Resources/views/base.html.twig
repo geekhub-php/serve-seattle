@@ -22,6 +22,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
     </head>
     <body>
+    {% block header %}{% endblock %}
     {% if app.user %}
         {% include '@App/base/navigation.html.twig' %}
     {% endif %}
