@@ -3,7 +3,19 @@
 {% block title %}
     Login
 {% endblock %}
-
+{% block header %}
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ path('homepage') }}">
+                        <img src="{{ asset('/img/SS_logo.jpeg') }}">
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+{% endblock %}
 {% block content %}
     <div class="row text-center center-block">
         <div class="col-sm-4 col-sm-offset-4">

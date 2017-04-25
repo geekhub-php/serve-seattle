@@ -25,7 +25,7 @@
                     <a href="{{ path('users_list') }}">Users</a>
                 </li>
                 <li class="{{ 'admin_info' in app.request.get('_route') ? 'active' : '' }}">
-                    <a href="{{ path('admin_info') }}">Hi, {{ app.user.userName }}</a>
+                    <a href="{{ path('admin_info') }}">Hi, Sam!</a>
                 </li>
                 <a class="btn btn-default navbar-btn" href="{{ path('logout') }}">Sign out</a>
             </ul>
