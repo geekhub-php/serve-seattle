@@ -27,9 +27,6 @@ AppBundle\Entity\Survey\SurveyType:
         description: The purpose of this survey is to collect feedback about Serve Seattle's team members internship experience. Please be honest about your experience because this feedback will be used to help improve the program.
     survey_type2:
         name: speaker
-        description: A quick survey to find out who were your favorite speakers so far at Serve Seattle. Your opinion really helps us craft the curriculum for future years so be honest!
-                     1 star = bad.
-                     5 stars = awesome
     survey_type3:
         name: exit
     survey_type4:
@@ -148,380 +145,326 @@ AppBundle\Entity\Survey\SurveyQuestion:
          surveyTypeSection: '@survey_type_section1'
          orderNumber: 11
     survey_quest12:
-         title: Chris Gough (Incarnational Ministry)
+         title: Name of speaker
          surveyTypeSection: '@survey_type_section2'
          orderNumber: 1
-         variants: ['1','2','3','4','5']
     survey_quest13:
-         title: Maggie Breen (Homelessness)
+         title: How much did you enjoy this speaker?
          surveyTypeSection: '@survey_type_section2'
          orderNumber: 2
-         variants: ['1','2','3','4','5']
+         variants: ['1','2','3','4','5','6','7','8','9','10']
     survey_quest14:
-          title: Mark Warren (Personality Profiles)
+          title: Should we have this speaker back?
           surveyTypeSection: '@survey_type_section2'
           orderNumber: 3
-          variants: ['1','2','3','4','5']
+          variants: ['Yes','No','Maybe']
     survey_quest15:
-          title: Teylar Greer (Racial Identity)
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 4
-          variants: ['1','2','3','4','5']
+         title: Comments
+         surveyTypeSection: '@survey_type_section2'
+         orderNumber: 4
     survey_quest16:
-          title: Kurt Willems (Missional Church)
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 5
-          variants: ['1','2','3','4','5']
-    survey_quest17:
-          title: Melissa & Kyle (Crucial Conversations)
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 6
-          variants: ['1','2','3','4','5']
-    survey_quest18:
-          title: Emily Jamieson (Worship)
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 7
-          variants: ['1','2','3','4','5']
-    survey_quest19:
-          title: Bob Ekblad (Missions at the Margins)
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 8
-          variants: ['1','2','3','4','5']
-    survey_quest20:
-          title: Chris Peppler (Unity in the Church)
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 9
-          variants: ['1','2','3','4','5']
-    survey_quest21:
-          title: Mike Johnson (Addiction & Healing)
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 10
-          variants: ['1','2','3','4','5']
-    survey_quest22:
-          title: Kyle Reynolds (Evangelism)
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 11
-          variants: ['1','2','3','4','5']
-    survey_quest23:
-          title: Mark Lamb (God's heart for refugees)
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 12
-          variants: ['1','2','3','4','5']
-    survey_quest24:
-          title: Who did you like least?
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 13
-    survey_quest25:
-          title: Who did you like best?
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 14
-    survey_quest26:
-          title: Comments, suggestions, ideas, or complaints?
-          surveyTypeSection: '@survey_type_section2'
-          orderNumber: 15
-    survey_quest27:
           title: Ceilz Aquilar (God is a missionary)
           surveyTypeSection: '@survey_type_section3'
           orderNumber: 1
           variants: ['1','2','3','4','5','6','7','8','N/A']
-    survey_quest28:
+    survey_quest17:
            title: Kyle & Melissa(Love language & Sacred pathways)
            surveyTypeSection: '@survey_type_section3'
            orderNumber: 2
            variants: ['1','2','3','4','5','6','7','8','N/A']
-    survey_quest29:
+    survey_quest18:
            title: Ron Ruthruff (We are missionaries)
            surveyTypeSection: '@survey_type_section3'
            orderNumber: 3
            variants: ['1','2','3','4','5','6','7','8','N/A']
-    survey_quest30:
+    survey_quest19:
            title: Dating, Love, & Sex Panel disscussion
            surveyTypeSection: '@survey_type_section3'
            orderNumber: 4
            variants: ['1','2','3','4','5','6','7','8','N/A']
-    survey_quest31:
+    survey_quest20:
            title: Jeff Lilley (God is active)"I don't know and that's ok"
            surveyTypeSection: '@survey_type_section3'
            orderNumber: 5
            variants: ['1','2','3','4','5','6','7','8','N/A']
-    survey_quest32:
+    survey_quest21:
            title: Stephanie Harris(Testimony & REST)
            surveyTypeSection: '@survey_type_section3'
            orderNumber: 6
            variants: ['1','2','3','4','5','6','7','8','N/A']
-    survey_quest33:
+    survey_quest22:
            title: Mark Lamb(Dignity)
            surveyTypeSection: '@survey_type_section3'
            orderNumber: 7
            variants: ['1','2','3','4','5','6','7','8','N/A']
-    survey_quest34:
+    survey_quest23:
            title: Tony Kriz(Evangelism & more)
            surveyTypeSection: '@survey_type_section3'
            orderNumber: 8
            variants: ['1','2','3','4','5','6','7','8','N/A']
-    survey_quest35:
+    survey_quest24:
            title: Seattle Art Museum exercise (People are valuable)
            surveyTypeSection: '@survey_type_section4'
            orderNumber: 1
            variants: ['1','2','3','4','5','6','7','N/A']
-    survey_quest36:
+    survey_quest25:
            title: Walk The Line clip discussion (Responding generously)
            surveyTypeSection: '@survey_type_section4'
            orderNumber: 2
            variants: ['1','2','3','4','5','6','7','N/A']
-    survey_quest37:
+    survey_quest26:
            title: Hiking Rattlesnake Ridge (Responding generously)
            surveyTypeSection: '@survey_type_section4'
            orderNumber: 3
            variants: ['1','2','3','4','5','6','7','N/A']
-    survey_quest38:
+    survey_quest27:
            title: Geocaching (God is a missionary)
            surveyTypeSection: '@survey_type_section4'
            orderNumber: 4
            variants: ['1','2','3','4','5','6','7','N/A']
-    survey_quest39:
+    survey_quest28:
            title: Trinity iconography (God is relational)
            surveyTypeSection: '@survey_type_section4'
            orderNumber: 5
            variants: ['1','2','3','4','5','6','7','N/A']
-    survey_quest40:
+    survey_quest29:
            title: In or Out exercise (We are missionaries & relational)
            surveyTypeSection: '@survey_type_section4'
            orderNumber: 6
            variants: ['1','2','3','4','5','6','7','N/A']
-    survey_quest41:
+    survey_quest30:
            title: Prayer time at Gasworks park(God is active)
            surveyTypeSection: '@survey_type_section4'
            orderNumber: 7
            variants: ['1','2','3','4','5','6','7','N/A']
-    survey_quest42:
+    survey_quest31:
            title: My supervisor
            surveyTypeSection: '@survey_type_section5'
            orderNumber: 1
            variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest43:
+    survey_quest32:
            title: My role
            surveyTypeSection: '@survey_type_section5'
            orderNumber: 2
            variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest44:
+    survey_quest33:
            title: My coworkers
            surveyTypeSection: '@survey_type_section5'
            orderNumber: 3
            variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest45:
+    survey_quest34:
            title: The meaningfulness of my job
            surveyTypeSection: '@survey_type_section5'
            orderNumber: 4
            variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest46:
+    survey_quest35:
            title: Overall experience
            surveyTypeSection: '@survey_type_section5'
            orderNumber: 5
            variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest47:
+    survey_quest36:
            title: Please list the name of your internship and any additonal comments.
            surveyTypeSection: '@survey_type_section5'
            orderNumber: 6
-    survey_quest48:
+    survey_quest37:
            title: My room(bed, furniture, lighting, etc)
            surveyTypeSection: '@survey_type_section6'
            orderNumber: 1
            variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest49:
+    survey_quest38:
            title: The bathroom
            surveyTypeSection: '@survey_type_section6'
            orderNumber: 2
            variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest50:
+    survey_quest39:
             title: Healthiness of the food
             surveyTypeSection: '@survey_type_section6'
             orderNumber: 3
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest51:
+    survey_quest40:
             title: Taste of the food
             surveyTypeSection: '@survey_type_section6'
             orderNumber: 4
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest52:
+    survey_quest41:
             title: Availability of the food
             surveyTypeSection: '@survey_type_section6'
             orderNumber: 5
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest53:
+    survey_quest42:
             title: Diverse food options
             surveyTypeSection: '@survey_type_section6'
             orderNumber: 6
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest54:
+    survey_quest43:
             title: Common areas
             surveyTypeSection: '@survey_type_section6'
             orderNumber: 7
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest55:
+    survey_quest44:
             title: Cleanliness
             surveyTypeSection: '@survey_type_section6'
             orderNumber: 8
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest56:
+    survey_quest45:
             title: Safety
             surveyTypeSection: '@survey_type_section6'
             orderNumber: 9
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest57:
+    survey_quest46:
             title: Loving enviroment
             surveyTypeSection: '@survey_type_section6'
             orderNumber: 10
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest58:
+    survey_quest47:
             title: Additional Comments
             surveyTypeSection: '@survey_type_section6'
             orderNumber: 11
-    survey_quest59:
+    survey_quest48:
             title: Honest and interesting conversation
             surveyTypeSection: '@survey_type_section7'
             orderNumber: 1
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest60:
+    survey_quest49:
             title: Trusting enviroment where I could be myself
             surveyTypeSection: '@survey_type_section7'
             orderNumber: 2
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest61:
+    survey_quest50:
             title: Fun
             surveyTypeSection: '@survey_type_section7'
             orderNumber: 3
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest62:
+    survey_quest51:
             title: Focused direction and goals
             surveyTypeSection: '@survey_type_section7'
             orderNumber: 4
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest63:
+    survey_quest52:
             title: Additional Comments
             surveyTypeSection: '@survey_type_section7'
             orderNumber: 5
-    survey_quest64:
+    survey_quest53:
             title: Monday Huddle
             surveyTypeSection: '@survey_type_section8'
             orderNumber: 1
-    survey_quest65:
+    survey_quest54:
             title: Search & Rescue
             surveyTypeSection: '@survey_type_section8'
             orderNumber: 2
-    survey_quest66:
+    survey_quest55:
             title: Prayer and worship
             surveyTypeSection: '@survey_type_section8'
             orderNumber: 3
-    survey_quest67:
+    survey_quest56:
             title: Orientation week
             surveyTypeSection: '@survey_type_section8'
             orderNumber: 4
-    survey_quest68:
+    survey_quest57:
             title: Suncadia retreat
             surveyTypeSection: '@survey_type_section8'
             orderNumber: 5
-    survey_quest69:
+    survey_quest58:
             title: Saturday Fun days
             surveyTypeSection: '@survey_type_section8'
             orderNumber: 6
-    survey_quest70:
+    survey_quest59:
             title: Other?
             surveyTypeSection: '@survey_type_section8'
             orderNumber: 7
-    survey_quest71:
+    survey_quest60:
             title: 'Week 1: Our uniqueness & shame'
             surveyTypeSection: '@survey_type_section9'
             orderNumber: 1
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest72:
+    survey_quest61:
             title: 'Week 2: Who we actually are & stengths finders'
             surveyTypeSection: '@survey_type_section9'
             orderNumber: 2
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest73:
+    survey_quest62:
             title: 'Week 3: Meyers Briggs'
             surveyTypeSection: '@survey_type_section9'
             orderNumber: 3
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest74:
+    survey_quest63:
             title: 'Week 4: Body image panel discussion'
             surveyTypeSection: '@survey_type_section9'
             orderNumber: 4
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest75:
+    survey_quest64:
             title: 'Week 5: Calling & Next steps'
             surveyTypeSection: '@survey_type_section9'
             orderNumber: 5
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest76:
+    survey_quest65:
             title: Additional Comments
             surveyTypeSection: '@survey_type_section9'
             orderNumber: 6
-    survey_quest77:
+    survey_quest66:
             title: Compassion toward those you were serving
             surveyTypeSection: '@survey_type_section10'
             orderNumber: 1
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest78:
+    survey_quest67:
             title: Understanding of urban issues
             surveyTypeSection: '@survey_type_section10'
             orderNumber: 2
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest79:
+    survey_quest68:
             title: Personal life change and growing in your relationship with God
             surveyTypeSection: '@survey_type_section10'
             orderNumber: 3
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest80:
+    survey_quest69:
             title: Empowered to serve your community back home
             surveyTypeSection: '@survey_type_section10'
             orderNumber: 4
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest81:
+    survey_quest70:
             title: Additional Comments
             surveyTypeSection: '@survey_type_section10'
             orderNumber: 5
-    survey_quest82:
+    survey_quest71:
             title: Would you recommend Serve Seattle to your friends?
             surveyTypeSection: '@survey_type_section11'
             orderNumber: 1
-    survey_quest83:
+    survey_quest72:
             title:  Please write a 1-2 sentence quote about your experience at Serve Seattle. Include your name if you'd like. We'll post your quote on our website and social media.
             surveyTypeSection: '@survey_type_section12'
             orderNumber: 1
-    survey_quest84:
+    survey_quest73:
             title: Internship Site:
             surveyTypeSection: '@survey_type_section13'
             orderNumber: 1
-    survey_quest85:
+    survey_quest74:
             title: Internship Title:
             surveyTypeSection: '@survey_type_section13'
             orderNumber: 2
-    survey_quest86:
+    survey_quest75:
             title: Name of supervisor:
             surveyTypeSection: '@survey_type_section13'
             orderNumber: 3
-    survey_quest87:
+    survey_quest76:
             title: Name of intern:
             surveyTypeSection: '@survey_type_section13'
             orderNumber: 4
-    survey_quest88:
+    survey_quest77:
             title: Overall Experience
             surveyTypeSection: '@survey_type_section14'
             orderNumber: 1
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest89:
+    survey_quest78:
             title: Individual Intern Experience (Was your intern teachable & reliable? Did they add value to your team?)
             surveyTypeSection: '@survey_type_section14'
             orderNumber: 2
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest90:
+    survey_quest79:
             title: Serve Seattle Staff Experience (Did we communicate well & equip you as a supervisor?)
             surveyTypeSection: '@survey_type_section14'
             orderNumber: 3
             variants: ['1','2','3','4','5','6','7','8','9','10']
-    survey_quest91:
+    survey_quest80:
             title: Any additional feedback or suggestions for our Serve Seattle staff?
             surveyTypeSection: '@survey_type_section15'
             orderNumber: 1
