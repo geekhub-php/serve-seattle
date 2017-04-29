@@ -15,7 +15,7 @@ AppBundle\Entity\User:
         lastName: <lastName()>
         email: <email()>
         plainPassword: intern2
-    intern3:
+    intern{3..30}:
         firstName: <firstName()>
         lastName: <lastName()>
         email: <email()>
