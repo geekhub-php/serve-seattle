@@ -6,6 +6,11 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('/css/fullcalendar.print.min.css') }}" media="print">
+    <style>
+        .btn-group>.btn {
+            position: absolute; !important;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
