@@ -31,6 +31,7 @@ class SurveyController extends Controller
 
         $surveys = $em->getRepository(Survey::class)->selectSurveysByParams($filter);
         $types = $em->getRepository(SurveyType::class)->selectSurveyTypesByParams($filter);
+        $surveyTypes = $em->getRepository(SurveyType::class)->findAll();
 
         return [
             'surveys' => $this->get('knp_paginator')
@@ -41,6 +42,7 @@ class SurveyController extends Controller
                 ),
             'types' => $types,
             'filterForm' => $filterForm->createView(),
+            'surveyTypes' => $surveyTypes
         ];
     }
 
