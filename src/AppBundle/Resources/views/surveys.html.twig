@@ -42,8 +42,8 @@
             New Survey
             <span class="caret"></span></button>
         <ul class="dropdown-menu">
-            {% for new in addSurvey %}
-                <li><a href="{{ path('survey_create', {'survey_type': new.getName }) }}">{{ new.getName|capitalize }} Survey</a></li>
+            {% for surveyType in surveyTypes %}
+                <li><a href="{{ path('survey_create', {'survey_type': surveyType.getName }) }}">{{ surveyType.getName|capitalize }} Survey</a></li>
             {% endfor %}
         </ul>
     </div>
