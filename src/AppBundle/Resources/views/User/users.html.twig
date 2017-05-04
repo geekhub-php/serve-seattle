@@ -47,7 +47,7 @@
             <th>First Name</th>
             <th>{{ knp_pagination_sortable(users, 'Last Name', 'u.lastName') }} <span class="caret"></span></th>
             <th>{{ knp_pagination_sortable(users, 'Registration date', 'u.createdAt') }} <span class="caret"></span></th>
-            <th>Status</th>
+            <th>{{ knp_pagination_sortable(users, 'Status', 'u.enabled') }} <span class="caret"></span></th>
             <th>Actions</th>
         </tr>
         </thead>
