@@ -107,7 +107,7 @@ class SurveyNormalizer extends ObjectNormalizer
         if ($surveyQuestions !== $questions) {
             throw new LogicException('Wrong json content');
         }
-        $survey->setStatus('submited');
+        $survey->setStatus('submitted');
         $this->doctrine->getManager()->persist($survey);
         $this->doctrine->getManager()->flush();
 
