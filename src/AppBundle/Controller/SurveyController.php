@@ -42,7 +42,7 @@ class SurveyController extends Controller
                 ),
             'types' => $types,
             'filterForm' => $filterForm->createView(),
-            'addSurvey' => $surveyTypes
+            'surveyTypes' => $surveyTypes
         ];
     }
 
