@@ -28,9 +28,9 @@
                     {% endif %}
                     {% for question in section.getQuestions() %}
                         <p><b>{{ question.getTitle() }}</b></p>
-                        {% if question.getVariants() %}
+                        {% if question.getVariants() and question.getId != '60' %}
                             {% for variant in question.getVariants() %}
-                                {% if question_answers and question_answers[question.getId] == variant %}
+                                {% if question_answers and question_answers[question.getId] == variant  %}
                                      <input type="checkbox" checked disabled>{{ variant }}
                                 {% else %}
                                     <input type="checkbox"  disabled>{{ variant }}

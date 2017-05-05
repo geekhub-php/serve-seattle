@@ -82,7 +82,7 @@ class SurveyAnswerNormalizer extends ObjectNormalizer
         if (!in_array($question, $survey->getQuestions())) {
             throw new LogicException('Wrong question id');
         }
-        if ($question->getVariants() && $question->getId() != '71') {
+        if ($question->getVariants() && $question->getId() != '60') {
             if (!in_array($data['content'], $question->getVariants())) {
                 throw new LogicException('Wrong variants');
             }
