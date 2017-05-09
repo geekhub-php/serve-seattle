@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Surveys
+{% endblock %}
+
+{% block content %}
+
+    <div class="page-title">
+        <h1>Surveys</h1>
+    </div>
+
+    {{ form_start(filterForm) }}
+    <table class="filter pull-left">
+        <thead>
+        <tr>
+            <th>Filter by date</th>
+            <th>by Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td valign="center">
+                <div class="input-daterange input-group" id="datepicker">
+                    {{ form_widget(filterForm.start) }}
+                    <span class="input-group-addon">to</span>
+                    {{ form_widget(filterForm.end) }}
+                </div>
+            </td>
+            <td>
+                {{ form_widget(filterForm.type) }}
+            </td>
+            <td>
+                <button type="submit">Filter</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {{ form_end(filterForm) }}
+    <div class="dropdown pull-right">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            New Survey
+            <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            {% for surveyType in surveyTypes %}
+                <li><a href="{{ path('survey_create', {'survey_type': surveyType.getName }) }}">{{ surveyType.getName|capitalize }} Survey</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% for type in types %}
+        {% if type.surveys is not empty  %}
+        <table class="request-table table-striped">
+        <caption>{{ type.name | capitalize }} surveys</caption>
+        <thead>
+        <tr>
+            <th>Date Submitted</th>
+            <th>Intern Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for survey in surveys %}
+            {% if type == survey.type %}
+                <tr {% if survey.isReviewed == false %} style="font-weight: bold" {% endif %}>
+                    <td>
+                        <a href="{{ path('survey', {'id': survey.getId }) }}">
+                            <time datetime="{{ survey.getUpdatedAt|date('c') }}">{{ survey.updatedAt|date("m/d/Y") }}</time>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('survey', {'id': survey.getId }) }}">
+                            {{ survey.user.firstname }} {{ survey.user.lastname }}
+                        </a>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+        </table>
+        {% endif %}
+    {% endfor %}
+    <div class="text-center">
+        {{ knp_pagination_render(surveys) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('.input-daterange').datepicker({
+            clearBtn: true
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{
+  "name": "serve-seattle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geekhub-php/serve-seattle.git"
+  },
+  "author": "GeekHub",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/geekhub-php/serve-seattle/issues"
+  },
+  "homepage": "https://github.com/geekhub-php/serve-seattle#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-datepicker": "^1.6.4",
+    "bootstrap-select": "^1.12.2",
+    "bootstrap-styl": "^5.0.8",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "font-awesome": "^4.7.0",
+    "fullcalendar": "^3.2.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-stylus": "^2.6.0",
+    "gulp-uglify": "^2.1.1",
+    "jquery-ui": "^1.12.1",
+    "jquery-validation": "^1.16.0",
+    "nib": "^1.1.2"
+  }
+}

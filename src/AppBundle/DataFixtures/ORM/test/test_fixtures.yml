@@ -1,0 +1,115 @@
+AppBundle\Entity\User:
+    intern1:
+        firstName: intern
+        lastName: intern
+        email: intern1\@seattle.com
+        plainPassword: intern1
+        apiToken: 1
+    intern2:
+        firstName: <name()>
+        lastName: <lastName()>
+        email: intern2\@seattle.com
+        plainPassword: intern2
+        apiToken: 2
+        linkExpiredAt: <dateTimeBetween('now', '+2 days')>
+    intern3:
+        firstName: intern3
+        email: <email()>
+        plainPassword: intern3
+
+AppBundle\Entity\Admin:
+    admin:
+        userName: admin
+        email: admin@serve-seattle.com
+        plainPassword: admin
+
+AppBundle\Entity\Survey\SurveyType:
+    survey_type1:
+        name: internship
+        description: The purpose of this survey is to collect feedback about Serve Seattle's team members internship experience. Please be honest about your experience because this feedback will be used to help improve the program.
+    survey_type2:
+        name: speaker
+        description: A quick survey to find out who were your favorite speakers so far at Serve Seattle. Your opinion really helps us craft the curriculum for future years so be honest!
+                     1 star = bad.
+                     5 stars = awesome
+    survey_type3:
+        name: exit
+    survey_type4:
+        name: supervisor
+
+AppBundle\Entity\Survey\SurveyTypeSection:
+    survey_type_section1:
+        orderNumber: 1
+        surveyType: '@survey_type1'
+    survey_type_section2:
+        orderNumber: 1
+        surveyType: '@survey_type2'
+
+
+AppBundle\Entity\Survey\SurveyQuestion:
+    survey_quest_text1:
+        title: Full Name
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 1
+    survey_quest_text2:
+        title: Internship Title
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 2
+    survey_quest_text3:
+        title: Internship Site
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 3
+    survey_quest_choice1:
+        title: How well did your internship meet your expectations?
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 4
+        variants: ['1','2','3','4','5','6','7','8','9','10']
+    survey_quest_choice2:
+        title: Did you feel equipped by what your Supervisor gave you?
+        surveyTypeSection: '@survey_type_section1'
+        orderNumber: 5
+        variants: ['1','2','3','4','5','6','7','8','9','10']
+
+
+AppBundle\Entity\Survey\Survey:
+    survey1:
+        type: '@survey_type1'
+        status: 'submited'
+        user: '@intern1'
+    survey2:
+        type: '@survey_type1'
+        user: '@intern2'
+
+AppBundle\Entity\Survey\SurveyAnswer:
+    survey_answer1:
+        survey: '@survey1'
+        question: '@survey_quest_text1'
+        content: John
+    survey_answer2:
+        survey: '@survey1'
+        question: '@survey_quest_text2'
+        content: Title
+    survey_answer3:
+        survey: '@survey1'
+        question: '@survey_quest_text3'
+        content: Site
+    survey_answer4:
+        survey: '@survey1'
+        question: '@survey_quest_choice1'
+        content: 10
+    survey_answer5:
+        survey: '@survey1'
+        question: '@survey_quest_choice2'
+        content: 5
+
+AppBundle\Entity\FormRequest:
+    request{1..10}:
+        type: 'sick day'
+        user: '@intern*'
+        status: 'pending'
+        date: <iso8601()>
+
+
+
+
+

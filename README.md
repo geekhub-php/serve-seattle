@@ -1,1 +1,1 @@
-# serve-seattle
+# serve-seattle [![Build Status](https://travis-ci.org/geekhub-php/serve-seattle.svg?branch=dev)](https://travis-ci.org/geekhub-php/serve-seattle) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/geekhub-php/serve-seattle/badges/quality-score.png?b=dev)](https://scrutinizer-ci.com/g/geekhub-php/serve-seattle/?branch=dev) [![Code Coverage](https://scrutinizer-ci.com/g/geekhub-php/serve-seattle/badges/coverage.png?b=dev)](https://scrutinizer-ci.com/g/geekhub-php/serve-seattle/?branch=dev)

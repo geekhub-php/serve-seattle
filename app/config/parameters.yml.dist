@@ -1,0 +1,25 @@
+parameters:
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     symfony
+    database_user:     root
+    database_password: ~
+
+
+    aws_secret: fake-aws-secret
+    aws_key: fake-aws-key
+    aws_region: us-west-2
+    aws_s3_bucket: serve-seattle-bucket
+    aws_s3_prefix: dev-prefix
+
+
+    mailer_transport:  smtp
+    mailer_host: email-smtp.us-west-2.amazonaws.com
+    mailer_port: 587
+    mailer_encryption: tls
+    mailer_user: fake-aws-user
+    mailer_password: fake-aws-password
+    mailer_from: ~
+    google_credentials_path: '%kernel.root_dir%/config/credentials/credentials.json'
+
+    secret:            ThisTokenIsNotSoSecretChangeIt

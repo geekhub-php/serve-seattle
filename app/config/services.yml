@@ -1,0 +1,110 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+
+#Exception
+
+      app.exception_listener:
+          class: AppBundle\Exception\ExceptionListener
+          tags:
+              - { name: kernel.event_listener, event: kernel.exception }
+
+      app.json_exception_listener:
+          class: AppBundle\Listener\JsonExceptionListener
+          arguments:
+              - "@logger"
+          tags:
+              - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
+
+#Google_Calendar
+
+      app.google_calendar_factory:
+          class: AppBundle\Services\GoogleClientFactory
+          arguments: ['%google_credentials_path%']
+
+      app.google_calendar:
+          class: AppBundle\Services\GoogleCalendarManager
+          autowire: true
+
+#Security
+
+      app.api_token_authenticator:
+          class: AppBundle\Security\ApiTokenAuthenticator
+
+      app.doctrine_listener:
+          class: AppBundle\Security\PasswordListener
+          arguments: ['@security.password_encoder']
+          tags:
+              - { name: doctrine.event_subscriber }
+#Normalizer
+
+      app.request.normalizer:
+          class: AppBundle\Serializer\RequestNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
+              
+      app.answer.normalizer:
+          class: AppBundle\Serializer\SurveyAnswerNormalizer
+          parent: serializer.normalizer.object
+          arguments: ['@doctrine']
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey.normalizer:
+          class: AppBundle\Serializer\SurveyNormalizer
+          parent: serializer.normalizer.object
+          arguments: ['@doctrine']
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey_type.normalizer:
+          class: AppBundle\Serializer\TypeNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey_type_section.normalizer:
+          class: AppBundle\Serializer\SurveyTypeSectionNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
+      app.survey_question.normalizer:
+          class: AppBundle\Serializer\QuestionNormalizer
+          parent: serializer.normalizer.object
+          tags:
+              -  { name: serializer.normalizer }
+#Aws
+      s3_client:
+          class: Aws\S3\S3Client
+          arguments:
+              -
+                  region: "%aws_region%"
+                  version: "2006-03-01"
+                  signature_version: v4
+                  credentials:
+                      key: "%aws_key%"
+                      secret: "%aws_secret%"
+
+      app.s3_manager:
+          class: AppBundle\Aws\S3Manager
+          arguments:
+              - "@s3_client"
+              - "%aws_s3_bucket%"
+              - "@logger"
+              - "%aws_s3_prefix%"
+
+      app.file.subscriber:
+          class: AppBundle\Listener\ImageSubscriber
+          arguments:
+              - "@app.s3_manager"
+          tags:
+              - { name: doctrine.event_subscriber, connection: default }
+
+# Swift_Mailer
+      app.email_notification:
+          class: AppBundle\Notification\EmailNotification
+          arguments:
+              - "@mailer"
+              - "@twig"
+              - "%mailer_from%"

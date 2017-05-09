@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Admin
+{% endblock %}
+
+{% block content %}
+    <div class="col-sm-6">
+        <h1>
+           Username: {{ admin.username }}
+        </h1>
+        E-mail:  {{ admin.email }}
+    </div>
+    <div class="col-sm-6">
+        {{ form(editForm, {'attr': {'class': 'edit_form'}}) }}
+    </div>
+{% endblock %}

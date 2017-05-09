@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+            <div class="page-title">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="row">
+                {% if requestForms %}
+                <div class="col-md-6">
+                    <div class="dashboard-item">
+                        <p class="dashboard-item-title">Request forms</p>
+                        <ul>
+                            {% for request in requestForms %}
+                                <li>
+                                    <span>{{ request.createdAt | date('m/d/Y') }}</span>
+                                    <p>New<a href="{{ path('form_request_list') }}#{{ request.id }}">"{{ request.type | capitalize }}" form</a>submitted by {{ request.user.lastname }} {{ request.user.firstname }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if surveys %}
+                <div class="col-md-6">
+                    <div class="dashboard-item">
+                        <p class="dashboard-item-title">Surveys</p>
+                        <ul>
+                            {% for survey in surveys %}
+                            <li>
+                                <span>{{ survey.updatedAt | date('m/d/Y') }}</span>
+                                <p>New<a href="{{ path('survey', {'id' : survey.id}) }}">submission</a>on "Your Experience so Far: {{ survey.type.name | capitalize }} Survey" from {{ survey.user.firstname }} {{ survey.user.lastname }}</p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+{% endblock %}
