@@ -87,7 +87,7 @@ class DefaultController extends JsonController
         $surveys = $user->getSurveys();
         $surveys = $surveys->matching(Criteria::create()->where(Criteria::expr()->eq('status', 'current')));
         $array = new ArrayCollection(
-            array_merge($events->toArray(), $requests->toArray(), $surveys->toArray())
+            array_merge($events, $requests->toArray(), $surveys->toArray())
         );
         $news = $array->matching(Criteria::create()->orderBy(array('updatedAt' => Criteria::DESC))->setFirstResult(0)
             ->setMaxResults(3));
