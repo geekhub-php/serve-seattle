@@ -82,7 +82,7 @@ class DefaultController extends JsonController
     public function dashboardAction()
     {
         $user = $this->getUser();
-        $events = $user->getEvents();
+        $events = $this->getDoctrine()->getRepository(Event::class)->selectNotExpiredByUser($this->getUser());;
         $requests = $user->getFormRequests();
         $surveys = $user->getSurveys();
         $surveys = $surveys->matching(Criteria::create()->where(Criteria::expr()->eq('status', 'current')));
