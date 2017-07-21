@@ -82,7 +82,7 @@ class DefaultController extends JsonController
     public function dashboardAction()
     {
         $user = $this->getUser();
-        $events = $this->getDoctrine()->getRepository(Event::class)->selectNotExpiredByUser($this->getUser());
+        $events = $this->getDoctrine()->getRepository(Event::class)->selectNotExpiredByUser($this->getUser(), true);
         $requests = $user->getFormRequests();
         $surveys = $user->getSurveys();
         $surveys = $surveys->matching(Criteria::create()->where(Criteria::expr()->eq('status', 'current')));
@@ -105,7 +105,6 @@ class DefaultController extends JsonController
                 $sortNews['requests'][] = $new;
             }
         }
-        $events = $events->matching(Criteria::create()->setFirstResult(0)->setMaxResults(2));
         $googleEvents = [];
         foreach ($events as $event) {
             $googleEvents[] = $calendar
