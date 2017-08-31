@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\FormRequest;
+use Doctrine\Common\Collections\Criteria;
 use Mcfedr\JsonFormBundle\Controller\JsonController;
 use AppBundle\Exception\JsonHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -29,7 +30,7 @@ class FormRequestController extends JsonController
                 $this->getDoctrine()->getManager()->getRepository(FormRequest::class)->findBy([
                     'user' => $this->getUser(),
                     'status' => $status == 'pending' ? 'pending' : ['approved', 'rejected'],
-                ]),
+                ], ['createdAt' => Criteria::DESC]),
                 $request->query->getInt('page', 1),
                 10
             );
