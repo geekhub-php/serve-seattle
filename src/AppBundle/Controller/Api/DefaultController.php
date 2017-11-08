@@ -153,8 +153,8 @@ class DefaultController extends JsonController
                     'id' => $item->getGoogleEventId(),
                     'location' => $item->getLocation(),
                     'title' => $item->getSummary(),
-                    'start' => $item->getStart()->format('c'),
-                    'end' => $item->getEnd()->format('c'),
+                    'start' => $item->getStart(),
+                    'end' => $item->getEnd(),
                 ];
 
             }
