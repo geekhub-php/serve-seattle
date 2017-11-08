@@ -149,12 +149,12 @@ class DefaultController extends JsonController
                     ->getEventById($new->getGoogleId()));
                 $sortNews[] = [
                     'kind' => 'event',
-                    'description' => $item->getDescription(),
+                    'description' => $item->getSummary(),
                     'id' => $item->getGoogleEventId(),
                     'location' => $item->getLocation(),
                     'title' => $item->getSummary(),
-                    'start' => $item->getStart(),
-                    'end' => $item->getEnd(),
+                    'start' => $item->getStart()->format('c'),
+                    'end' => $item->getEnd()->format('c'),
                 ];
 
             }
