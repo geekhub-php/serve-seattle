@@ -110,7 +110,7 @@ class DtoEvent implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getStart()
     {
@@ -126,7 +126,7 @@ class DtoEvent implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getEnd()
     {
