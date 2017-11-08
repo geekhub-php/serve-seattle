@@ -155,7 +155,7 @@ class DefaultController extends JsonController
             }
             if ($new instanceof Survey) {
                 $sortNews[] = [
-                    'text' => 'You\'ve got a new' . $new->getType()->getName() . 'survey!',
+                    'text' => 'You\'ve got a new ' . $new->getType()->getName() . ' survey!',
                     'date' => $new->getCreatedAt(),
                 ];
             }
