@@ -37,8 +37,8 @@ class DtoEvent implements \JsonSerializable
             $this->description = $event->getDescription();
             $this->summary = $event->getSummary();
             $this->location = $event->getLocation();
-            $this->start = $event->getStart();
-            $this->end = $event->getEnd();
+            $this->start = $event->getStart()->format('c');
+            $this->end = $event->getEnd()->format('c');
             $this->googleEventId = $event->getId();
         }
     }
