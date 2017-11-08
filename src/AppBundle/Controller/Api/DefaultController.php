@@ -140,18 +140,43 @@ class DefaultController extends JsonController
         );
         $news = $array->matching(Criteria::create()->orderBy(array('updatedAt' => Criteria::DESC))->setFirstResult(0)
             ->setMaxResults(3));
-        $sortNews = array_fill_keys(['events', 'surveys', 'requests'], []);
         $calendar = $this->get('app.google_calendar');
+
+        $sortNews = [];
         foreach ($news as $new) {
             if ($new instanceof Event) {
-                $sortNews['events'][] = new DtoEvent($calendar
+                $item = new DtoEvent($calendar
                     ->getEventById($new->getGoogleId()));
+                $sortNews[] = [
+                    'kind' => 'event',
+                    'description' => $item->getDescription(),
+                    'id' => $item->getGoogleEventId(),
+                    'location' => $item->getLocation(),
+                    'title' => $item->getSummary(),
+                    'start' => $item->getStart(),
+                    'end' => $item->getEnd(),
+                ];
+
             }
             if ($new instanceof Survey) {
-                $sortNews['surveys'][] = $new;
+                $sortNews[] = [
+                    'kind' => 'survey',
+                    'id' => $new->getId(),
+                    'type' => $new->getType()->getName(),
+                    'status' => $new->getStatus(),
+                ];
             }
             if ($new instanceof FormRequest) {
-                $sortNews['requests'][] = $new;
+                $sortNews[] = [
+                    'kind' => 'request',
+                    'id' => $new->getId(),
+                    'type' => $new->getType(),
+                    'status' => $new->getStatus(),
+                    'reason' => $new->getReason(),
+                    'date' => $new->getDate(),
+                    'createdAt' => $new->getCreatedAt(),
+                    'updatedAt' => $new->getUpdatedAt(),
+                ];
             }
         }
 
