@@ -148,34 +148,21 @@ class DefaultController extends JsonController
                 $item = new DtoEvent($calendar
                     ->getEventById($new->getGoogleId()));
                 $sortNews[] = [
-                    'kind' => 'event',
-                    'description' => $item->getSummary(),
-                    'id' => $item->getGoogleEventId(),
-                    'location' => $item->getLocation(),
-                    'title' => $item->getSummary(),
-                    'start' => $item->getStart()->getDateTime(),
-                    'end' => $item->getEnd()->getDateTime(),
+                    'text' => 'New Event in your calendar: '. $item->getSummary(),
+                    'date' => $item->getStart()->getDateTime(),
                 ];
 
             }
             if ($new instanceof Survey) {
                 $sortNews[] = [
-                    'kind' => 'survey',
-                    'id' => $new->getId(),
-                    'type' => $new->getType()->getName(),
-                    'status' => $new->getStatus(),
+                    'text' => 'You\'ve got a new' . $new->getType()->getName() . 'survey!',
+                    'date' => $new->getCreatedAt(),
                 ];
             }
             if ($new instanceof FormRequest) {
                 $sortNews[] = [
-                    'kind' => 'request',
-                    'id' => $new->getId(),
-                    'type' => $new->getType(),
-                    'status' => $new->getStatus(),
-                    'reason' => $new->getReason(),
-                    'date' => $new->getDate(),
+                    'text' => 'Your '. $new->getType() .' form has been approved!',
                     'createdAt' => $new->getCreatedAt(),
-                    'updatedAt' => $new->getUpdatedAt(),
                 ];
             }
         }
