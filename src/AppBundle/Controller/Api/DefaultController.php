@@ -149,14 +149,14 @@ class DefaultController extends JsonController
                     ->getEventById($new->getGoogleId()));
                 $sortNews[] = [
                     'text' => 'New Event in your calendar: '. $item->getSummary(),
-                    'date' => $item->getStart()->getDateTime(),
+                    'createdAt' => $item->getStart()->getDateTime(),
                 ];
 
             }
             if ($new instanceof Survey) {
                 $sortNews[] = [
                     'text' => 'You\'ve got a new ' . $new->getType()->getName() . ' survey!',
-                    'date' => $new->getCreatedAt(),
+                    'createdAt' => $new->getCreatedAt(),
                 ];
             }
             if ($new instanceof FormRequest) {
