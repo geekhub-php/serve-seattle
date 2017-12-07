@@ -115,7 +115,7 @@ class UserController extends Controller
                 $outErrors[$error->getPropertyPath()] = $error->getMessage();
             }
 
-            throw new JsonHttpException(400, 'Bad Request', $outErrors);
+            throw new JsonHttpException(400, 'This value is already used.', $outErrors);
         }
         $this->getDoctrine()->getManager()->flush();
 
