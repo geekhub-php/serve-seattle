@@ -106,7 +106,7 @@ class UserController extends Controller
             ->deserialize($request->getContent(), User::class, 'json', [
                 AbstractNormalizer::OBJECT_TO_POPULATE => $user
             ]);
-        $errors = $this->get('validator')->validate($user);
+        $errors = $this->get('validator')->validate($user, null, ['edit']);
         if ($errors->count()) {
             $outErrors = [];
 
